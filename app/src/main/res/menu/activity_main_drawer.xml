@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <!-- TODO add icons -->
+    <group android:checkableBehavior="single">
+        <item
+            android:id="@+id/nav_goals"
+            android:title="Goals" />
+        <item
+            android:id="@+id/nav_achievements"
+            android:title="Achievements" />
+        <item
+            android:id="@+id/nav_promises"
+            android:title="Promises" />
+        <item
+            android:id="@+id/nav_timeline"
+            android:title="Timeline" />
+    </group>
+
+</menu>

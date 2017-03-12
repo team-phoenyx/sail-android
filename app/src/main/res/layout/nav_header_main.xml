@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/nav_header_height"
+    android:background="@drawable/side_nav_bar"
+    android:gravity="center_vertical"
+    android:orientation="vertical"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:theme="@style/ThemeOverlay.AppCompat.Dark">
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/numGoalsTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="16sp"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/numAchievementsTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="16sp"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/numPromisesTextView"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="16sp"
+        android:layout_marginTop="6dp" />
+
+    <TextView
+        android:id="@+id/numTimelineEventsTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Welcome to Sail!"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="20sp"
+        android:layout_marginTop="6dp" />
+
+</LinearLayout>

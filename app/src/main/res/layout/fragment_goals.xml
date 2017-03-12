@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/goalsLayout"
+    android:padding="16dp">
+
+    <TextView
+        android:text='"Setting goals is the first step in turning the invisible into the visible"'
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/noGoalsTextView"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center_horizontal"
+        android:layout_marginRight="24dp"
+        android:layout_marginLeft="24dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/goalsRecyclerView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+    <android.support.design.widget.FloatingActionButton
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/addGoalFAB"
+        app:backgroundTint="@color/colorPrimary"
+        app:srcCompat="@drawable/plus"
+        android:tint="@android:color/white"
+        android:layout_gravity="bottom|right"
+        android:layout_margin="16dp" />
+
+</FrameLayout>
