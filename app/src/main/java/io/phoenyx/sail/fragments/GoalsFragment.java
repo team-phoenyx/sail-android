@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import io.phoenyx.sail.AddGoalActivity;
 import io.phoenyx.sail.DBHandler;
@@ -48,7 +49,7 @@ public class GoalsFragment extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
-
+        Toast.makeText(getActivity().getApplicationContext(), "Resumed", Toast.LENGTH_SHORT).show();
         recyclerView.getAdapter().notifyDataSetChanged();
     }
 
