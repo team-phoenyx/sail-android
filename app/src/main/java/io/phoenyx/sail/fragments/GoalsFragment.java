@@ -51,7 +51,6 @@ public class GoalsFragment extends Fragment {
         super.onResume();
         Toast.makeText(getActivity().getApplicationContext(), "Resumed", Toast.LENGTH_SHORT).show();
         refreshAdapter();
-        //recyclerView.getAdapter().notifyDataSetChanged();
     }
 
     @Override
