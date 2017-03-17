@@ -252,20 +252,34 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         List<Goal> goals = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_GOALS;
+        String queryStarred = "SELECT * FROM " + TABLE_GOALS + " WHERE " + GOALS_STARRED_COLUMN + " = 1";
+        String queryNonStarred = "SELECT * FROM " + TABLE_GOALS + " WHERE " + GOALS_STARRED_COLUMN + " = 0";
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursorStarred = db.rawQuery(queryStarred, null);
+        Cursor cursorNonStarred = db.rawQuery(queryNonStarred, null);
 
-        if (cursor.moveToFirst()) {
+        if (cursorStarred.moveToFirst()) {
             do {
-                Goal goal = new Goal(cursor.getInt(cursor.getColumnIndex(GOALS_ID_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(GOALS_TITLE_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(GOALS_DESCRIPTION_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(GOALS_DATE_COLUMN)),
-                        (cursor.getInt(cursor.getColumnIndex(GOALS_STARRED_COLUMN)) != 0),
-                        (cursor.getInt(cursor.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0));
+                Goal goal = new Goal(cursorStarred.getInt(cursorStarred.getColumnIndex(GOALS_ID_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(GOALS_TITLE_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(GOALS_DESCRIPTION_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(GOALS_DATE_COLUMN)),
+                        (cursorStarred.getInt(cursorStarred.getColumnIndex(GOALS_STARRED_COLUMN)) != 0),
+                        (cursorStarred.getInt(cursorStarred.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0));
                 goals.add(goal);
-            } while (cursor.moveToNext());
+            } while (cursorStarred.moveToNext());
+        }
+
+        if (cursorNonStarred.moveToFirst()) {
+            do {
+                Goal goal = new Goal(cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(GOALS_ID_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(GOALS_TITLE_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(GOALS_DESCRIPTION_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(GOALS_DATE_COLUMN)),
+                        (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(GOALS_STARRED_COLUMN)) != 0),
+                        (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0));
+                goals.add(goal);
+            } while (cursorNonStarred.moveToNext());
         }
 
         return goals;

@@ -41,7 +41,7 @@ public class GoalsFragment extends Fragment {
         onItemTouchListener = new OnItemTouchListener() {
             @Override
             public void onStarClick(View view, int position, boolean isStarred) {
-                //TODO handle star click
+                refreshAdapter();
             }
         };
     }
@@ -75,16 +75,6 @@ public class GoalsFragment extends Fragment {
         });
 
         return view;
-    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-        if (resultCode == 1337 || requestCode == 1337) {
-            refreshAdapter();
-        }
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 
     private void refreshAdapter() {
