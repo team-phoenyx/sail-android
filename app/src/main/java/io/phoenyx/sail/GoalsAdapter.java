@@ -12,17 +12,13 @@ import android.widget.TextView;
 import java.util.Calendar;
 import java.util.List;
 
-import io.phoenyx.sail.fragments.GoalsFragment;
-
 public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHolder> {
 
     private List<Goal> goals;
     private DBHandler dbHandler;
-    private GoalsFragment.OnItemTouchListener onItemTouchListener;
 
-    public GoalsAdapter(List<Goal> goals, GoalsFragment.OnItemTouchListener onItemTouchListener) {
+    public GoalsAdapter(List<Goal> goals) {
         this.goals = goals;
-        this.onItemTouchListener = onItemTouchListener;
     }
 
     @Override
@@ -78,7 +74,8 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
                     goal.setStarred(true);
                 }
                 dbHandler.updateGoal(goal);
-                onItemTouchListener.onStarClick(view, holder.getAdapterPosition(), goal.isStarred());
+                goals = dbHandler.getAllGoals();
+                notifyDataSetChanged();
             }
         });
         holder.doneImageButton.setOnClickListener(new View.OnClickListener() {

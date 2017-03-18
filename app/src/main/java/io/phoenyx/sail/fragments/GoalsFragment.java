@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import io.phoenyx.sail.AddGoalActivity;
 import io.phoenyx.sail.DBHandler;
@@ -25,11 +24,6 @@ public class GoalsFragment extends Fragment {
     DBHandler dbHandler;
     FloatingActionButton addGoalFAB;
     TextView noGoalsTextView;
-    OnItemTouchListener onItemTouchListener;
-
-    public interface OnItemTouchListener {
-        public void onStarClick(View view, int position, boolean isStarred);
-    }
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,19 +31,11 @@ public class GoalsFragment extends Fragment {
         setHasOptionsMenu(false);
 
         dbHandler = new DBHandler(getActivity());
-
-        onItemTouchListener = new OnItemTouchListener() {
-            @Override
-            public void onStarClick(View view, int position, boolean isStarred) {
-                refreshAdapter();
-            }
-        };
     }
 
     @Override
     public void onResume() {
         super.onResume();
-        Toast.makeText(getActivity().getApplicationContext(), "Resumed", Toast.LENGTH_SHORT).show();
         refreshAdapter();
     }
 
@@ -78,7 +64,7 @@ public class GoalsFragment extends Fragment {
     }
 
     private void refreshAdapter() {
-        recyclerView.setAdapter(new GoalsAdapter(dbHandler.getAllGoals(), onItemTouchListener));
+        recyclerView.setAdapter(new GoalsAdapter(dbHandler.getAllGoals()));
         if (recyclerView.getAdapter().getItemCount() > 0) {
             noGoalsTextView.setVisibility(View.GONE);
         } else {
