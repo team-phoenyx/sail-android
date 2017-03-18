@@ -66,6 +66,8 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
         holder.starImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int beforePosition = holder.getAdapterPosition();
+
                 if (goal.isStarred()) {
                     holder.starImageButton.setBackgroundResource(R.drawable.star_outline);
                     goal.setStarred(false);
@@ -73,9 +75,23 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
                     holder.starImageButton.setBackgroundResource(R.drawable.star);
                     goal.setStarred(true);
                 }
+
                 dbHandler.updateGoal(goal);
+
+                int goalID = goal.getId();
                 goals = dbHandler.getAllGoals();
-                notifyDataSetChanged();
+
+                int insertPosition = -1;
+                for (int i = 0; i < goals.size(); i++) {
+                    if (goals.get(i).getId() == goalID) insertPosition = i;
+                }
+
+                if (insertPosition != beforePosition) {
+                    notifyItemRemoved(beforePosition);
+                    notifyItemRangeChanged(beforePosition, getItemCount() - beforePosition);
+                    notifyItemInserted(insertPosition);
+                }
+                //notifyDataSetChanged();
             }
         });
         holder.doneImageButton.setOnClickListener(new View.OnClickListener() {
