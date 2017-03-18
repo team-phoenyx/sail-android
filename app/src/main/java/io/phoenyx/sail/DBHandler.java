@@ -252,6 +252,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         List<Goal> goals = new ArrayList<>();
+
         String queryStarred = "SELECT * FROM " + TABLE_GOALS + " WHERE " + GOALS_STARRED_COLUMN + " = 1";
         String queryNonStarred = "SELECT * FROM " + TABLE_GOALS + " WHERE " + GOALS_STARRED_COLUMN + " = 0";
 
@@ -281,6 +282,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 goals.add(goal);
             } while (cursorNonStarred.moveToNext());
         }
+
 
         return goals;
     }

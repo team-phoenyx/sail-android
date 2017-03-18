@@ -77,9 +77,8 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
                     holder.starImageButton.setBackgroundResource(R.drawable.star);
                     goal.setStarred(true);
                 }
-                onItemTouchListener.onStarClick(view, holder.getAdapterPosition(), goal.isStarred());
                 dbHandler.updateGoal(goal);
-
+                onItemTouchListener.onStarClick(view, holder.getAdapterPosition(), goal.isStarred());
             }
         });
         holder.doneImageButton.setOnClickListener(new View.OnClickListener() {
