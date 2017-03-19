@@ -32,6 +32,12 @@ public class AchievementsFragment extends Fragment {
         dbHandler = new DBHandler(getActivity());
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshAdapter();
+    }
+
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,9 +51,7 @@ public class AchievementsFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new AchievementsAdapter(dbHandler.getAllAchievements()));
 
-        if (recyclerView.getAdapter().getItemCount() > 0) {
-            noAchievementsTextView.setVisibility(View.GONE);
-        }
+        refreshAdapter();
 
         addAchievementFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,19 +64,12 @@ public class AchievementsFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-        if (resultCode == 1337 || requestCode == 1337) {
-            recyclerView.setAdapter(new AchievementsAdapter(dbHandler.getAllAchievements()));
-            if (recyclerView.getAdapter().getItemCount() > 0) {
-                noAchievementsTextView.setVisibility(View.GONE);
-            } else {
-                noAchievementsTextView.setVisibility(View.VISIBLE);
-            }
+    private void refreshAdapter() {
+        recyclerView.setAdapter(new AchievementsAdapter(dbHandler.getAllAchievements()));
+        if (recyclerView.getAdapter().getItemCount() > 0) {
+            noAchievementsTextView.setVisibility(View.GONE);
+        } else {
+            noAchievementsTextView.setVisibility(View.VISIBLE);
         }
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 }

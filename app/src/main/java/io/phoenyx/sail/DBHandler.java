@@ -291,19 +291,32 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         List<Achievement> achievements = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_ACHIEVEMENTS;
+        String queryStarred = "SELECT * FROM " + TABLE_ACHIEVEMENTS + " WHERE " + ACHIEVEMENTS_STARRED_COLUMN + " = 1";
+        String queryNonStarred = "SELECT * FROM " + TABLE_ACHIEVEMENTS + " WHERE " + ACHIEVEMENTS_STARRED_COLUMN + " = 0";
 
-        Cursor cursor = db.rawQuery(query, null);
+        Cursor cursorStarred = db.rawQuery(queryStarred, null);
+        Cursor cursorNonStarred = db.rawQuery(queryNonStarred, null);
 
-        if (cursor.moveToFirst()) {
+        if (cursorStarred.moveToFirst()) {
             do {
-                Achievement achievement = new Achievement(cursor.getInt(cursor.getColumnIndex(ACHIEVEMENTS_ID_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_TITLE_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_DESCRIPTION_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_DATE_COLUMN)),
-                        (cursor.getInt(cursor.getColumnIndex(ACHIEVEMENTS_STARRED_COLUMN)) != 0));
+                Achievement achievement = new Achievement(cursorStarred.getInt(cursorStarred.getColumnIndex(ACHIEVEMENTS_ID_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(ACHIEVEMENTS_TITLE_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(ACHIEVEMENTS_DESCRIPTION_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(ACHIEVEMENTS_DATE_COLUMN)),
+                        (cursorStarred.getInt(cursorStarred.getColumnIndex(ACHIEVEMENTS_STARRED_COLUMN)) != 0));
                 achievements.add(achievement);
-            } while (cursor.moveToNext());
+            } while (cursorStarred.moveToNext());
+        }
+
+        if (cursorNonStarred.moveToFirst()) {
+            do {
+                Achievement achievement = new Achievement(cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(ACHIEVEMENTS_ID_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(ACHIEVEMENTS_TITLE_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(ACHIEVEMENTS_DESCRIPTION_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(ACHIEVEMENTS_DATE_COLUMN)),
+                        (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(ACHIEVEMENTS_STARRED_COLUMN)) != 0));
+                achievements.add(achievement);
+            } while (cursorNonStarred.moveToNext());
         }
 
         return achievements;
@@ -313,21 +326,37 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         List<Promise> promises = new ArrayList<>();
-        String query = "SELECT * FROM " + TABLE_PROMISES;
 
-        Cursor cursor = db.rawQuery(query, null);
+        String queryStarred = "SELECT * FROM " + TABLE_PROMISES + " WHERE " + PROMISES_STARRED_COLUMN + " = 1";
+        String queryNonStarred = "SELECT * FROM " + TABLE_PROMISES + " WHERE " + PROMISES_STARRED_COLUMN + " = 0";
 
-        if (cursor.moveToFirst()) {
+        Cursor cursorStarred = db.rawQuery(queryStarred, null);
+        Cursor cursorNonStarred = db.rawQuery(queryNonStarred, null);
+
+        if (cursorStarred.moveToFirst()) {
             do {
-                Promise promise = new Promise(cursor.getInt(cursor.getColumnIndex(PROMISES_ID_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(PROMISES_TITLE_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(PROMISES_DESCRIPTION_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(PROMISES_DATE_COLUMN)),
-                        cursor.getString(cursor.getColumnIndex(PROMISES_PERSON_COLUMN)),
-                        (cursor.getInt(cursor.getColumnIndex(PROMISES_STARRED_COLUMN)) != 0),
-                        (cursor.getInt(cursor.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0));
+                Promise promise = new Promise(cursorStarred.getInt(cursorStarred.getColumnIndex(PROMISES_ID_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(PROMISES_TITLE_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(PROMISES_DESCRIPTION_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(PROMISES_DATE_COLUMN)),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(PROMISES_PERSON_COLUMN)),
+                        (cursorStarred.getInt(cursorStarred.getColumnIndex(PROMISES_STARRED_COLUMN)) != 0),
+                        (cursorStarred.getInt(cursorStarred.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0));
                 promises.add(promise);
-            } while (cursor.moveToNext());
+            } while (cursorStarred.moveToNext());
+        }
+
+        if (cursorNonStarred.moveToFirst()) {
+            do {
+                Promise promise = new Promise(cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(PROMISES_ID_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(PROMISES_TITLE_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(PROMISES_DESCRIPTION_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(PROMISES_DATE_COLUMN)),
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(PROMISES_PERSON_COLUMN)),
+                        (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(PROMISES_STARRED_COLUMN)) != 0),
+                        (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0));
+                promises.add(promise);
+            } while (cursorNonStarred.moveToNext());
         }
 
         return promises;
@@ -337,6 +366,7 @@ public class DBHandler extends SQLiteOpenHelper {
         SQLiteDatabase db = this.getReadableDatabase();
 
         List<TimelineEvent> timelineEvents = new ArrayList<>();
+
         String query = "SELECT * FROM " + TABLE_TIMELINE;
 
         Cursor cursor = db.rawQuery(query, null);

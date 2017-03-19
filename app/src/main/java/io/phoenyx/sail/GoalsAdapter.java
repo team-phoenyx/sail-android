@@ -91,7 +91,6 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
                     notifyItemRangeChanged(beforePosition, getItemCount() - beforePosition);
                     notifyItemInserted(insertPosition);
                 }
-                //notifyDataSetChanged();
             }
         });
         holder.doneImageButton.setOnClickListener(new View.OnClickListener() {
@@ -134,6 +133,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
         public void onClick(View view) {
             Intent editGoal = new Intent(view.getContext().getApplicationContext(), EditGoalActivity.class);
             editGoal.putExtra("goal_id", goalID);
+            //TODO dont think we need the callback anymore
             ((Activity) view.getContext()).startActivityForResult(editGoal, 1337);
         }
     }

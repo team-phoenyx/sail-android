@@ -42,12 +42,6 @@ public class EditPromiseActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         promise = dbHandler.getPromise(promiseID);
 
-        /*
-        year = Calendar.getInstance().get(Calendar.YEAR);
-        month = Calendar.getInstance().get(Calendar.MONTH);
-        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
-        */
-
         months = new String[]{"Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."};
 
         promiseTitleEditText = (EditText) findViewById(R.id.promiseTitleEditText);
