@@ -32,6 +32,11 @@ public class TimelineFragment extends Fragment {
         dbHandler = new DBHandler(getActivity());
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshAdapter();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,9 +50,7 @@ public class TimelineFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new TimelineEventsAdapter(dbHandler.getAllTimelineEvents()));
 
-        if (recyclerView.getAdapter().getItemCount() > 0) {
-            noTimelineEventsTextView.setVisibility(View.GONE);
-        }
+        refreshAdapter();
 
         addTimelineEventFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,19 +63,12 @@ public class TimelineFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-        if (resultCode == 1337 || requestCode == 1337) {
-            recyclerView.setAdapter(new TimelineEventsAdapter(dbHandler.getAllTimelineEvents()));
-            if (recyclerView.getAdapter().getItemCount() > 0) {
-                noTimelineEventsTextView.setVisibility(View.GONE);
-            } else {
-                noTimelineEventsTextView.setVisibility(View.VISIBLE);
-            }
+    private void refreshAdapter() {
+        recyclerView.setAdapter(new TimelineEventsAdapter(dbHandler.getAllTimelineEvents()));
+        if (recyclerView.getAdapter().getItemCount() > 0) {
+            noTimelineEventsTextView.setVisibility(View.GONE);
+        } else {
+            noTimelineEventsTextView.setVisibility(View.VISIBLE);
         }
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 }

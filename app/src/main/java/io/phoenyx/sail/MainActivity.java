@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadNavHeader() {
+        //TODO use this nav header for something
         /*
         SharedPreferences sharedPref = getSharedPreferences(getString(R.string.user_data_sp_key), Context.MODE_PRIVATE);
         int numGoals = dbHandler.getAllGoals().size();

@@ -1,13 +1,16 @@
 package io.phoenyx.sail;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import java.util.List;
 
-public class TimelineEventsAdapter extends RecyclerView.Adapter<TimelineEventsViewHolder> {
+public class TimelineEventsAdapter extends RecyclerView.Adapter<TimelineEventsAdapter.TimelineEventsViewHolder> {
 
     private List<TimelineEvent> timelineEvents;
     private DBHandler dbHandler;
@@ -48,6 +51,30 @@ public class TimelineEventsAdapter extends RecyclerView.Adapter<TimelineEventsVi
         holder.dateTextView.setText(timelineEvent.getDate());
         holder.timelineEventID = timelineEvent.getId();
     }
+
+    public class TimelineEventsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener{
+        private TextView titleTextView;
+        private TextView descriptionTextView;
+        private TextView dateTextView;
+        int timelineEventID;
+
+        public TimelineEventsViewHolder(View itemView) {
+            super(itemView);
+            titleTextView = (TextView) itemView.findViewById(R.id.timelineTitleTextView);
+            descriptionTextView = (TextView) itemView.findViewById(R.id.timelineDescriptionTextView);
+            dateTextView = (TextView) itemView.findViewById(R.id.timelineDateTextView);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent editTimelineEvent = new Intent(view.getContext().getApplicationContext(), EditTimelineEventActivity.class);
+            editTimelineEvent.putExtra("timeline_event_id", timelineEventID);
+            ((Activity) view.getContext()).startActivityForResult(editTimelineEvent, 1337);
+        }
+    }
+
 
     @Override
     public int getItemCount() {
