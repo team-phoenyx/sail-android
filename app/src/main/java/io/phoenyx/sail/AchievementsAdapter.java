@@ -1,13 +1,17 @@
 package io.phoenyx.sail;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.List;
 
-public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsViewHolder> {
+public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsAdapter.AchievementsViewHolder> {
 
     private List<Achievement> achievements;
     private DBHandler dbHandler;
@@ -56,6 +60,8 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsViewHo
         holder.starImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int beforePosition = holder.getAdapterPosition();
+
                 if (achievement.isStarred()) {
                     holder.starImageButton.setBackgroundResource(R.drawable.star_outline);
                     achievement.setStarred(false);
@@ -64,9 +70,51 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsViewHo
                     achievement.setStarred(true);
                 }
                 dbHandler.updateAchievement(achievement);
+
+                int achievementID = achievement.getId();
+                achievements = dbHandler.getAllAchievements();
+
+                int insertPosition = -1;
+
+                for (int i = 0; i < achievements.size(); i++) {
+                    if (achievements.get(i).getId() == achievementID) insertPosition = i;
+                }
+
+                if (insertPosition != beforePosition) {
+                    notifyItemRemoved(beforePosition);
+                    notifyItemRangeChanged(beforePosition, getItemCount() - beforePosition);
+                    notifyItemInserted(insertPosition);
+                }
             }
         });
     }
+
+
+    public class AchievementsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        protected TextView titleTextView;
+        protected TextView descriptionTextView;
+        protected TextView dateTextView;
+        protected ImageButton starImageButton;
+        int achievementID;
+
+        public AchievementsViewHolder(View itemView) {
+            super(itemView);
+            titleTextView = (TextView) itemView.findViewById(R.id.achievementTitleTextView);
+            descriptionTextView = (TextView) itemView.findViewById(R.id.achievementDescriptionTextView);
+            dateTextView = (TextView) itemView.findViewById(R.id.goalDateTextView);
+            starImageButton = (ImageButton) itemView.findViewById(R.id.achievementStarButton);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent editAchievement = new Intent(view.getContext().getApplicationContext(), EditAchievementActivity.class);
+            editAchievement.putExtra("achievement_id", achievementID);
+            ((Activity) view.getContext()).startActivityForResult(editAchievement, 1337);
+        }
+    }
+
 
     @Override
     public int getItemCount() {

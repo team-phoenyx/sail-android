@@ -73,6 +73,8 @@ public class PromisesAdapter extends RecyclerView.Adapter<PromisesViewHolder> {
         holder.starImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                int beforePosition = holder.getAdapterPosition();
+
                 if (promise.isStarred()) {
                     holder.starImageButton.setBackgroundResource(R.drawable.star_outline);
                     promise.setStarred(false);
@@ -81,6 +83,20 @@ public class PromisesAdapter extends RecyclerView.Adapter<PromisesViewHolder> {
                     promise.setStarred(true);
                 }
                 dbHandler.updatePromise(promise);
+
+                int promiseID = promise.getId();
+                promises = dbHandler.getAllPromises();
+
+                int insertPosition = -1;
+                for (int i = 0; i < promises.size(); i++) {
+                    if (promises.get(i).getId() == promiseID) insertPosition = i;
+                }
+
+                if (insertPosition != beforePosition) {
+                    notifyItemRemoved(beforePosition);
+                    notifyItemRangeChanged(beforePosition, getItemCount() - beforePosition);
+                    notifyItemInserted(insertPosition);
+                }
 
             }
         });
@@ -92,6 +108,8 @@ public class PromisesAdapter extends RecyclerView.Adapter<PromisesViewHolder> {
                 Achievement achievement = new Achievement(promise.getTitle(), promise.getDescription(), date, promise.isStarred());
                 dbHandler.createAchievement(achievement);
                 dbHandler.deletePromise(promise.getId());
+                notifyItemRemoved(holder.getAdapterPosition());
+                notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount() - holder.getAdapterPosition());
             }
         });
     }
