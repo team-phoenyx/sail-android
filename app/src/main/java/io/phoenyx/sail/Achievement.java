@@ -24,6 +24,7 @@ public class Achievement {
         this.starred = starred;
     }
 
+
     public int getId() {
         return id;
     }

@@ -1,14 +1,18 @@
 package io.phoenyx.sail;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
+import android.widget.TextView;
 
 import java.util.Calendar;
 import java.util.List;
 
-public class PromisesAdapter extends RecyclerView.Adapter<PromisesViewHolder> {
+public class PromisesAdapter extends RecyclerView.Adapter<PromisesAdapter.PromisesViewHolder> {
 
     private List<Promise> promises;
     private DBHandler dbHandler;
@@ -108,11 +112,42 @@ public class PromisesAdapter extends RecyclerView.Adapter<PromisesViewHolder> {
                 Achievement achievement = new Achievement(promise.getTitle(), promise.getDescription(), date, promise.isStarred());
                 dbHandler.createAchievement(achievement);
                 dbHandler.deletePromise(promise.getId());
+                promises.remove(holder.getAdapterPosition());
                 notifyItemRemoved(holder.getAdapterPosition());
                 notifyItemRangeChanged(holder.getAdapterPosition(), getItemCount() - holder.getAdapterPosition());
             }
         });
     }
+
+    public class PromisesViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
+        private TextView titleTextView;
+        private TextView descriptionTextView;
+        private TextView dateTextView;
+        private TextView personTextView;
+        private ImageButton starImageButton;
+        private ImageButton doneImageButton;
+        int promiseID;
+
+        public PromisesViewHolder(View itemView) {
+            super(itemView);
+            titleTextView = (TextView) itemView.findViewById(R.id.promiseTitleTextView);
+            descriptionTextView = (TextView) itemView.findViewById(R.id.promiseDescriptionTextView);
+            dateTextView = (TextView) itemView.findViewById(R.id.goalDateTextView);
+            personTextView = (TextView) itemView.findViewById(R.id.promisePersonTextView);
+            starImageButton = (ImageButton) itemView.findViewById(R.id.promiseStarButton);
+            doneImageButton = (ImageButton) itemView.findViewById(R.id.promiseDoneButton);
+
+            itemView.setOnClickListener(this);
+        }
+
+        @Override
+        public void onClick(View view) {
+            Intent editPromise = new Intent(view.getContext().getApplicationContext(), EditPromiseActivity.class);
+            editPromise.putExtra("promise_id", promiseID);
+            ((Activity) view.getContext()).startActivityForResult(editPromise, 1337);
+        }
+    }
+
 
     @Override
     public int getItemCount() {

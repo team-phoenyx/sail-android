@@ -32,6 +32,11 @@ public class PromisesFragment extends Fragment {
         dbHandler = new DBHandler(getActivity());
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        refreshAdapter();
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -45,9 +50,7 @@ public class PromisesFragment extends Fragment {
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new PromisesAdapter(dbHandler.getAllPromises()));
 
-        if (recyclerView.getAdapter().getItemCount() > 0) {
-            noPromisesTextView.setVisibility(View.GONE);
-        }
+        refreshAdapter();
 
         addPromiseFAB.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -60,19 +63,12 @@ public class PromisesFragment extends Fragment {
         return view;
     }
 
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-
-
-        if (resultCode == 1337 || requestCode == 1337) {
-            recyclerView.setAdapter(new PromisesAdapter(dbHandler.getAllPromises()));
-            if (recyclerView.getAdapter().getItemCount() > 0) {
-                noPromisesTextView.setVisibility(View.GONE);
-            } else {
-                noPromisesTextView.setVisibility(View.VISIBLE);
-            }
+    private void refreshAdapter() {
+        recyclerView.setAdapter(new PromisesAdapter(dbHandler.getAllPromises()));
+        if (recyclerView.getAdapter().getItemCount() > 0) {
+            noPromisesTextView.setVisibility(View.GONE);
+        } else {
+            noPromisesTextView.setVisibility(View.VISIBLE);
         }
-        super.onActivityResult(requestCode, resultCode, data);
-
     }
 }
