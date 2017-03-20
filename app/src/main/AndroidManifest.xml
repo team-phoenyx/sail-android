@@ -9,6 +9,11 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
 
+        <receiver android:name=".NotificationPublisher" android:enabled="true">
+            <intent-filter>
+                <action  android:name="io.phoenyx.sail.ACTION_EVENT_TIME" />
+            </intent-filter>
+        </receiver>
 
         <activity android:name=".SplashActivity"
             android:label="Sail"
