@@ -11,85 +11,136 @@
     android:paddingTop="@dimen/activity_vertical_margin"
     tools:context="io.phoenyx.sail.AddPromiseActivity">
 
+    <EditText
+        android:id="@+id/promiseTitleEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:backgroundTint="@color/gray_highlight_color"
+        android:ems="10"
+        android:hint="Promise Title"
+        android:inputType="textCapSentences|textAutoCorrect"
+        android:maxLength="60"
+        android:maxLines="1"
+        android:textCursorDrawable="@drawable/color_cursor" />
+
+    <EditText
+        android:id="@+id/promisePersonEditText"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/promiseTitleEditText"
+        android:backgroundTint="@color/gray_highlight_color"
+        android:ems="10"
+        android:hint="Person (Optional)"
+        android:inputType="textCapWords|textCapSentences|textAutoCorrect"
+        android:maxLength="30"
+        android:maxLines="1"
+        android:textCursorDrawable="@drawable/color_cursor" />
+
+    <TextView
+        android:id="@+id/promiseDueDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/promisePersonEditText"
+        android:layout_marginTop="8dp"
+        android:text="Due Date" />
+
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/promiseDateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/promiseDateLayout"
-        android:padding="8dp"
-        android:weightSum="1"
-        android:layout_below="@+id/promisePersonEditText"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/promiseDueDateLabel"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:weightSum="1">
 
         <TextView
-            android:text="Mar. 20 2017"
+            android:id="@+id/promiseDateTextView"
+            style="@android:style/Widget.DeviceDefault.Light.Spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/promiseTitleEditText"
             android:layout_alignParentStart="true"
             android:layout_weight="0.6"
-            android:id="@+id/promiseDateTextView"
+            android:paddingTop="6dp"
+            android:text="Mar. 20 2017"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="18sp"
-            style="@android:style/Widget.DeviceDefault.Light.Spinner"
-            android:paddingTop="6dp" />
+            android:textSize="18sp" />
 
         <CheckBox
-            android:text="Lifelong"
-            android:layout_width="wrap_content"
-            android:layout_weight="0.4"
-            android:layout_height="wrap_content"
             android:id="@+id/promiseLongTermCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
+            android:layout_weight="0.4"
+            android:text="Lifelong"
+            android:textSize="18sp"
+            app:buttonTint="@color/gray_highlight_color" />
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/promiseNotificationLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Notifications"
+        android:layout_below="@id/promiseDateLayout"/>
+
+    <LinearLayout
+        android:id="@+id/promiseNotificationLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/promiseNotificationLabel"
+        android:orientation="horizontal"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/promiseNotificationDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.6"
+            android:paddingTop="6dp"
+            android:text="No notification"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/promiseNotifyCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="0.4"
+            android:text="Notify"
             android:textSize="18sp"
             app:buttonTint="@color/gray_highlight_color" />
     </LinearLayout>
 
     <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:layout_below="@+id/promiseDateLayout"
-        android:layout_alignParentStart="true"
         android:id="@+id/promiseDescriptionEditText"
-        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:hint="Description"
-        android:gravity="top"
-        android:paddingLeft="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/promiseNotificationLayout"
         android:backgroundTint="@android:color/transparent"
-        android:textCursorDrawable="@drawable/color_cursor"
-        android:maxLength="300" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
         android:ems="10"
-        android:id="@+id/promisePersonEditText"
-        android:hint="Person (Optional)"
-        android:textCursorDrawable="@drawable/color_cursor"
-        android:backgroundTint="@color/gray_highlight_color"
-        android:inputType="textCapWords|textCapSentences|textAutoCorrect"
-        android:layout_below="@+id/promiseTitleEditText"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:maxLength="30"
-        android:maxLines="1" />
-
-    <EditText
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/promiseTitleEditText"
-        android:hint="Promise Title"
-        android:inputType="textCapSentences|textAutoCorrect"
-        android:textCursorDrawable="@drawable/color_cursor"
-        android:backgroundTint="@color/gray_highlight_color"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:maxLines="1"
-        android:maxLength="60" />
+        android:gravity="top"
+        android:hint="Comments"
+        android:inputType="textMultiLine"
+        android:maxLength="300"
+        android:paddingLeft="8dp"
+        android:textCursorDrawable="@drawable/color_cursor" />
 
 </RelativeLayout>

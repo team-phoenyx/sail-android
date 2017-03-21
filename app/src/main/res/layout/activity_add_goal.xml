@@ -26,55 +26,107 @@
         android:maxLines="1"
         android:maxLength="60" />
 
+    <TextView
+        android:id="@+id/goalDueDateLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/goalTitleEditText"
+        android:layout_marginTop="8dp"
+        android:text="Due Date" />
+
     <LinearLayout
-        android:orientation="horizontal"
+        android:id="@+id/goalDateLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/goalDateLayout"
-        android:padding="8dp"
-        android:weightSum="1"
-        android:layout_below="@+id/goalTitleEditText"
-        android:layout_alignParentStart="true">
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/goalDueDateLabel"
+        android:orientation="horizontal"
+        android:paddingBottom="8dp"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:weightSum="1">
 
         <TextView
-            android:text="Mar. 20 2017"
+            android:id="@+id/goalDateTextView"
+            style="@android:style/Widget.DeviceDefault.Light.Spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@+id/achievementTitleEditText"
             android:layout_alignParentStart="true"
             android:layout_weight="0.6"
-            android:id="@+id/goalDateTextView"
+            android:paddingTop="6dp"
+            android:text="Mar. 20 2017"
             android:textAppearance="@style/TextAppearance.AppCompat"
-            android:textSize="18sp"
-            style="@android:style/Widget.DeviceDefault.Light.Spinner"
-            android:paddingTop="6dp" />
+            android:textSize="18sp" />
 
         <CheckBox
-            android:text="Long term"
-            android:layout_width="wrap_content"
-            android:layout_weight="0.4"
-            android:layout_height="wrap_content"
             android:id="@+id/goalLongTermCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_gravity="right"
+            android:layout_weight="0.4"
+            android:text="Long term"
             android:textSize="18sp"
             app:buttonTint="@color/gray_highlight_color" />
     </LinearLayout>
 
-    <EditText
+    <TextView
+        android:id="@+id/goalNotificationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:layout_below="@+id/goalDateLayout"
+        android:text="Notifications"
+        android:layout_below="@id/goalDateLayout"/>
+
+    <LinearLayout
+        android:id="@+id/goalNotifyLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
+        android:layout_below="@+id/goalNotificationLabel"
+        android:orientation="horizontal"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:weightSum="1">
+
+        <TextView
+            android:id="@+id/notificationDateTextView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_weight="0.6"
+            android:paddingTop="6dp"
+            android:text="No notification"
+            android:textAppearance="@style/TextAppearance.AppCompat"
+            android:textSize="18sp" />
+
+        <CheckBox
+            android:id="@+id/goalNotifyCheckBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="right"
+            android:layout_weight="0.4"
+            android:text="Notify"
+            android:textSize="18sp"
+            app:buttonTint="@color/gray_highlight_color" />
+
+
+    </LinearLayout>
+
+    <EditText
         android:id="@+id/goalDescriptionEditText"
-        android:layout_alignParentEnd="true"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:hint="Description"
-        android:gravity="top"
-        android:paddingLeft="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/goalNotifyLayout"
         android:backgroundTint="@android:color/transparent"
-        android:textCursorDrawable="@drawable/color_cursor"
-        android:maxLength="300" />
+        android:ems="10"
+        android:gravity="top"
+        android:hint="Comments"
+        android:inputType="textMultiLine"
+        android:maxLength="300"
+        android:paddingLeft="8dp"
+        android:textCursorDrawable="@drawable/color_cursor" />
 
 </RelativeLayout>
