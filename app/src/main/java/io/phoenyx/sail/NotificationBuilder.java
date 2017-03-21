@@ -16,16 +16,17 @@ import java.util.Calendar;
 
 public class NotificationBuilder {
     private Context context;
-    private int month, day, year;
+    private int month, day, year, id;
     private String title, content;
 
-    public NotificationBuilder(Context context, int month, int day, int year, String title, String content) {
+    public NotificationBuilder(Context context, int month, int day, int year, String title, String content, int id) {
         this.context = context;
         this.month = month;
         this.day = day;
         this.year = year;
         this.title = title;
         this.content = content;
+        this.id = id;
     }
 
     public void buildNotification() throws IllegalArgumentException {
@@ -49,7 +50,7 @@ public class NotificationBuilder {
         Intent notificationIntent = new Intent("io.phoenyx.sail.ACTION_EVENT_TIME");
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 0, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
         Calendar calendar = Calendar.getInstance();
 

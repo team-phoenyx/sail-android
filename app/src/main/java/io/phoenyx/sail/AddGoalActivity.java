@@ -141,7 +141,7 @@ public class AddGoalActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.done:
                 Goal goal = new Goal(goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), false, false);
-                dbHandler.createGoal(goal);
+                int goalID = dbHandler.createGoal(goal);
 
                 if (notifDay != 0 && notifMonth != 0 && notifYear != 0) {
                     NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString());
