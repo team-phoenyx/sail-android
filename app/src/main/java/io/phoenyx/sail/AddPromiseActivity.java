@@ -21,11 +21,11 @@ public class AddPromiseActivity extends AppCompatActivity {
 
     DBHandler dbHandler;
     EditText promiseTitleEditText, promiseDescriptionEditText, promisePersonEditText;
-    CheckBox promiseLongTermCheckBox;
-    TextView promiseDateTextView;
+    CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
+    TextView promiseDateTextView, promiseNotifDateTextView;
     String[] months;
 
-    int year, month, day;
+    int year, month, day, notifYear, notifMonth, notifDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +46,52 @@ public class AddPromiseActivity extends AppCompatActivity {
         promisePersonEditText = (EditText) findViewById(R.id.promisePersonEditText);
         promiseDateTextView = (TextView) findViewById(R.id.promiseDateTextView);
         promiseLongTermCheckBox = (CheckBox) findViewById(R.id.promiseLongTermCheckBox);
+
+        promiseNotifDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long timeSince1970 = System.currentTimeMillis();
+
+                DatePickerDialog dialog = new DatePickerDialog(AddPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        promiseNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        notifYear = selectedYear;
+                        notifMonth = selectedMonth + 1;
+                        notifDay = selectedDay;
+                    }
+                }, year, month, day);
+
+                dialog.getDatePicker().setMinDate(timeSince1970);
+                dialog.setTitle("");
+                dialog.show();
+            }
+        });
+
+        promiseNotificationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    long timeSince1970 = System.currentTimeMillis();
+
+                    DatePickerDialog dialog = new DatePickerDialog(AddPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            promiseNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                            notifYear = selectedYear;
+                            notifMonth = selectedMonth + 1;
+                            notifDay = selectedDay;
+                        }
+                    }, year, month, day);
+
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                } else {
+                    promiseNotifDateTextView.setText("No notification");
+                }
+            }
+        });
 
         promiseLongTermCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -92,10 +138,16 @@ public class AddPromiseActivity extends AppCompatActivity {
             case R.id.done:
                 Promise promise = new Promise(promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false);
                 dbHandler.createPromise(promise);
+
+                if (notifDay != 0 && notifMonth != 0 && notifYear != 0) {
+                    NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Promise", promiseTitleEditText.getText().toString());
+                    builder.buildNotification();
+                }
+
                 finish();
                 break;
             default:
-                Snackbar.make(findViewById(android.R.id.content), "Please try again", BaseTransientBottomBar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), "Please try again", Snackbar.LENGTH_SHORT).show();
         }
 
 

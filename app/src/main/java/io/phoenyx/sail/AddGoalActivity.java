@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,11 +22,13 @@ public class AddGoalActivity extends AppCompatActivity {
 
     DBHandler dbHandler;
     EditText goalTitleEditText, goalDescriptionEditText;
-    CheckBox goalLongTermCheckBox;
-    TextView goalDateTextView;
+    CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
+    TextView goalDateTextView, goalNotifDateTextView;
     String[] months;
 
-    int year, month, day;
+    AlertDialog notifDateDialog;
+
+    int year, month, day, notifYear, notifMonth, notifDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,7 +47,55 @@ public class AddGoalActivity extends AppCompatActivity {
         goalTitleEditText = (EditText) findViewById(R.id.goalTitleEditText);
         goalDescriptionEditText = (EditText) findViewById(R.id.goalDescriptionEditText);
         goalDateTextView = (TextView) findViewById(R.id.goalDateTextView);
+        goalNotifDateTextView = (TextView) findViewById(R.id.goalNotificationDateTextView);
         goalLongTermCheckBox = (CheckBox) findViewById(R.id.goalLongTermCheckBox);
+        goalNotificationCheckBox = (CheckBox) findViewById(R.id.goalNotifyCheckBox);
+
+        goalNotifDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long timeSince1970 = System.currentTimeMillis();
+
+                DatePickerDialog dialog = new DatePickerDialog(AddGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        goalNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        notifYear = selectedYear;
+                        notifMonth = selectedMonth + 1;
+                        notifDay = selectedDay;
+                    }
+                }, year, month, day);
+
+                dialog.getDatePicker().setMinDate(timeSince1970);
+                dialog.setTitle("");
+                dialog.show();
+            }
+        });
+
+        goalNotificationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    long timeSince1970 = System.currentTimeMillis();
+
+                    DatePickerDialog dialog = new DatePickerDialog(AddGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            goalNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                            notifYear = selectedYear;
+                            notifMonth = selectedMonth + 1;
+                            notifDay = selectedDay;
+                        }
+                    }, year, month, day);
+
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                } else {
+                    goalNotifDateTextView.setText("No notification");
+                }
+            }
+        });
 
         goalLongTermCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -91,10 +142,16 @@ public class AddGoalActivity extends AppCompatActivity {
             case R.id.done:
                 Goal goal = new Goal(goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), false, false);
                 dbHandler.createGoal(goal);
+
+                if (notifDay != 0 && notifMonth != 0 && notifYear != 0) {
+                    NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString());
+                    builder.buildNotification();
+                }
+
                 finish();
                 break;
             default:
-                Snackbar.make(findViewById(android.R.id.content), "Please try again", BaseTransientBottomBar.LENGTH_SHORT).show();
+                Snackbar.make(findViewById(android.R.id.content), "Please try again", Snackbar.LENGTH_SHORT).show();
         }
 
 

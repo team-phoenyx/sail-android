@@ -54,7 +54,7 @@ public class NotificationBuilder {
         Calendar calendar = Calendar.getInstance();
 
         Calendar current = Calendar.getInstance();
-        current.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        current.set(calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH) + 1, calendar.get(Calendar.DAY_OF_MONTH));
 
         Calendar notifTime = Calendar.getInstance();
         notifTime.set(year, month, day);
