@@ -29,6 +29,10 @@ public class NotificationBuilder {
         this.id = id;
     }
 
+    public NotificationBuilder(Context context, int id) {
+        this.id = id;
+    }
+
     public void buildNotification() throws IllegalArgumentException {
         if (context == null || month == 0 || day == 0 || year == 0) {
             throw new IllegalArgumentException("Notification parameters not initialized");
@@ -48,7 +52,7 @@ public class NotificationBuilder {
         Notification notification = notificationCompatBuilder.build();
 
         Intent notificationIntent = new Intent("io.phoenyx.sail.ACTION_EVENT_TIME");
-        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, 1);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, id);
         notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 
@@ -63,5 +67,23 @@ public class NotificationBuilder {
         long futureInMillis = SystemClock.elapsedRealtime() + notifTime.getTimeInMillis() - current.getTimeInMillis();
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
+    }
+
+    public void deleteNotification() {
+        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+
+        NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context);
+        notificationCompatBuilder.setContentTitle(title);
+        notificationCompatBuilder.setContentText(content);
+        notificationCompatBuilder.setSmallIcon(R.mipmap.ic_launcher);
+
+        Notification notification = notificationCompatBuilder.build();
+
+        Intent notificationIntent = new Intent("io.phoenyx.sail.ACTION_EVENT_TIME");
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION_ID, id);
+        notificationIntent.putExtra(NotificationPublisher.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+        alarmManager.cancel(pendingIntent);
     }
 }

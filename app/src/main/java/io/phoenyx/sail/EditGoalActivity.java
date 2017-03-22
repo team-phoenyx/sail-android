@@ -21,10 +21,10 @@ public class EditGoalActivity extends AppCompatActivity {
 
     DBHandler dbHandler;
     EditText goalTitleEditText, goalDescriptionEditText;
-    CheckBox goalLongTermCheckBox;
-    TextView goalDateTextView;
+    CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
+    TextView goalDateTextView, goalNotifDateTextView;
     String[] months;
-    int goalID, year, month ,day;
+    int goalID, year, month, day, notifDay, notifMonth, notifYear;
     Goal goal;
 
     @Override
@@ -46,6 +46,54 @@ public class EditGoalActivity extends AppCompatActivity {
         goalDescriptionEditText = (EditText) findViewById(R.id.goalDescriptionEditText);
         goalDateTextView = (TextView) findViewById(R.id.goalDateTextView);
         goalLongTermCheckBox = (CheckBox) findViewById(R.id.goalLongTermCheckBox);
+        goalNotifDateTextView = (TextView) findViewById(R.id.goalNotificationDateTextView);
+        goalNotificationCheckBox = (CheckBox) findViewById(R.id.goalNotifyCheckBox);
+
+        goalNotifDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long timeSince1970 = System.currentTimeMillis();
+
+                DatePickerDialog dialog = new DatePickerDialog(EditGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        goalNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        notifYear = selectedYear;
+                        notifMonth = selectedMonth + 1;
+                        notifDay = selectedDay;
+                    }
+                }, year, month, day);
+
+                dialog.getDatePicker().setMinDate(timeSince1970);
+                dialog.setTitle("");
+                dialog.show();
+            }
+        });
+
+        goalNotificationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    long timeSince1970 = System.currentTimeMillis();
+
+                    DatePickerDialog dialog = new DatePickerDialog(EditGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            goalNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                            notifYear = selectedYear;
+                            notifMonth = selectedMonth + 1;
+                            notifDay = selectedDay;
+                        }
+                    }, year, month, day);
+
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                } else {
+                    goalNotifDateTextView.setText("No notification");
+                }
+            }
+        });
 
         goalLongTermCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -117,6 +165,15 @@ public class EditGoalActivity extends AppCompatActivity {
 
         Goal newGoal = new Goal(goal.getId(), goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), goal.isStarred(), goal.isCompleted());
         dbHandler.updateGoal(newGoal);
+
+        NotificationBuilder notificationBuilder = new NotificationBuilder(EditGoalActivity.this, newGoal.getId());
+        notificationBuilder.deleteNotification();
+
+        if (notifDay != 0 && notifMonth != 0 && notifYear != 0) {
+            NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString(), goalID);
+            builder.buildNotification();
+        }
+
         finish();
     }
 }

@@ -144,7 +144,7 @@ public class AddGoalActivity extends AppCompatActivity {
                 int goalID = dbHandler.createGoal(goal);
 
                 if (notifDay != 0 && notifMonth != 0 && notifYear != 0) {
-                    NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString());
+                    NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString(), goalID);
                     builder.buildNotification();
                 }
 
