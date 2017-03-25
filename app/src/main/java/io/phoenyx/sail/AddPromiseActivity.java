@@ -139,7 +139,7 @@ public class AddPromiseActivity extends AppCompatActivity {
                 Promise promise = new Promise(promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false);
                 int promiseID = dbHandler.createPromise(promise);
 
-                if (notifDay != 0 && notifMonth != 0 && notifYear != 0) {
+                if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && promiseNotificationCheckBox.isChecked()) {
                     NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Promise", promiseTitleEditText.getText().toString(), promiseID);
                     builder.buildNotification();
                 }
