@@ -21,9 +21,9 @@ public class EditPromiseActivity extends AppCompatActivity {
 
     DBHandler dbHandler;
     EditText promiseTitleEditText, promiseDescriptionEditText, promisePersonEditText;
-    CheckBox promiseLongTermCheckBox;
-    TextView promiseDateTextView;
-    int promiseID;
+    CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
+    TextView promiseDateTextView, promiseNotifDateTextView;
+    int promiseID, notifYear, notifMonth, notifDay;
     Promise promise;
     String[] months;
 
@@ -49,6 +49,8 @@ public class EditPromiseActivity extends AppCompatActivity {
         promisePersonEditText = (EditText) findViewById(R.id.promisePersonEditText);
         promiseDateTextView = (TextView) findViewById(R.id.promiseDateTextView);
         promiseLongTermCheckBox = (CheckBox) findViewById(R.id.promiseLongTermCheckBox);
+        promiseNotificationCheckBox = (CheckBox) findViewById(R.id.promiseNotifyCheckBox);
+        promiseNotifDateTextView = (TextView) findViewById(R.id.promiseNotificationDateTextView);
 
         promiseTitleEditText.setText(promise.getTitle());
         promiseDescriptionEditText.setText(promise.getDescription());
@@ -58,6 +60,52 @@ public class EditPromiseActivity extends AppCompatActivity {
         if (promise.getDate().equals("Long term")) {
             promiseLongTermCheckBox.setChecked(true);
         }
+
+        promiseNotifDateTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                long timeSince1970 = System.currentTimeMillis();
+
+                DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                    @Override
+                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                        promiseNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        notifYear = selectedYear;
+                        notifMonth = selectedMonth + 1;
+                        notifDay = selectedDay;
+                    }
+                }, year, month, day);
+
+                dialog.getDatePicker().setMinDate(timeSince1970);
+                dialog.setTitle("");
+                dialog.show();
+            }
+        });
+
+        promiseNotificationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+                    long timeSince1970 = System.currentTimeMillis();
+
+                    DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            promiseNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                            notifYear = selectedYear;
+                            notifMonth = selectedMonth + 1;
+                            notifDay = selectedDay;
+                        }
+                    }, year, month, day);
+
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                } else {
+                    promiseNotifDateTextView.setText("No notification");
+                }
+            }
+        });
 
         promiseLongTermCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
