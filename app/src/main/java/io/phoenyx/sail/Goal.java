@@ -6,27 +6,35 @@ package io.phoenyx.sail;
 
 public class Goal {
     int id;
-    String title, description, date;
+    String title, description, date, notify;
     boolean starred, completed;
 
-    public Goal(int id, String title, String description, String date, boolean starred, boolean completed) {
+    public Goal(int id, String title, String description, String date, boolean starred, boolean completed, String notify) {
         this.id = id;
         this.title = title;
         this.description = description;
         this.date = date;
         this.starred = starred;
         this.completed = completed;
+        this.notify = notify;
     }
 
-    public Goal(String title, String description, String date, boolean starred, boolean completed) {
+    public Goal(String title, String description, String date, boolean starred, boolean completed, String notify) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.starred = starred;
         this.completed = completed;
+        this.notify = notify;
     }
 
+    public String getNotify() {
+        return notify;
+    }
 
+    public void setNotify(String notify) {
+        this.notify = notify;
+    }
 
     public int getId() {
         return id;

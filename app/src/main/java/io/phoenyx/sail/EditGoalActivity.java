@@ -163,7 +163,7 @@ public class EditGoalActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Goal newGoal = new Goal(goal.getId(), goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), goal.isStarred(), goal.isCompleted());
+        Goal newGoal = new Goal(goal.getId(), goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), goal.isStarred(), goal.isCompleted(), "");
         dbHandler.updateGoal(newGoal);
 
         NotificationBuilder notificationBuilder = new NotificationBuilder(EditGoalActivity.this, newGoal.getId());
@@ -172,6 +172,8 @@ public class EditGoalActivity extends AppCompatActivity {
         if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && goalNotificationCheckBox.isChecked()) {
             NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString(), goalID);
             builder.buildNotification();
+            newGoal.setNotify(notifMonth + "-" + notifDay + "-" + notifYear);
+            dbHandler.updateGoal(newGoal);
         }
 
         finish();

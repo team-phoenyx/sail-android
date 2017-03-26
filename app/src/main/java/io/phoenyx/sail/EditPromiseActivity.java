@@ -165,8 +165,19 @@ public class EditPromiseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Promise newPromise = new Promise(promiseID, promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false);
+        Promise newPromise = new Promise(promiseID, promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false, "");
         dbHandler.updatePromise(newPromise);
+
+        NotificationBuilder notificationBuilder = new NotificationBuilder(EditPromiseActivity.this, newPromise.getId());
+        notificationBuilder.deleteNotification();
+
+        if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && promiseNotificationCheckBox.isChecked()) {
+            NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", promiseTitleEditText.getText().toString(), promiseID);
+            builder.buildNotification();
+            newPromise.setNotify(notifMonth + "-" + notifDay + "-" + notifYear);
+            dbHandler.updatePromise(newPromise);
+        }
+
         finish();
     }
 }

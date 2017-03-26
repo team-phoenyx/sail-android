@@ -2,7 +2,6 @@ package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -140,12 +139,14 @@ public class AddGoalActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.done:
-                Goal goal = new Goal(goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), false, false);
+                Goal goal = new Goal(goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), false, false, "");
                 int goalID = dbHandler.createGoal(goal);
 
                 if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && goalNotificationCheckBox.isChecked()) {
                     NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString(), goalID);
                     builder.buildNotification();
+                    goal.setNotify(notifMonth + "-" + notifDay + "-" + notifYear);
+                    dbHandler.updateGoal(goal);
                 }
 
                 finish();

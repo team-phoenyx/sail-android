@@ -32,6 +32,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String GOALS_DATE_COLUMN = "date";
     private static final String GOALS_STARRED_COLUMN = "starred";
     private static final String GOALS_COMPLETED_COLUMN = "completed";
+    private static final String GOALS_NOTIFY_COLUMN = "notify";
 
     //ACHIEVEMENTS TABLE COLUMN NAMES
     private static final String ACHIEVEMENTS_ID_COLUMN = "id";
@@ -48,6 +49,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String PROMISES_DATE_COLUMN = "date";
     private static final String PROMISES_STARRED_COLUMN = "starred";
     private static final String PROMISES_COMPLETED_COLUMN = "completed";
+    private static final String PROMISES_NOTIFY_COLUMN = "notify";
 
     //TIMELINE TABLE COLUMN NAMES
     private static final String TIMELINE_EVENT_ID_COLUMN = "id";
@@ -62,7 +64,8 @@ public class DBHandler extends SQLiteOpenHelper {
             + GOALS_DESCRIPTION_COLUMN + " TEXT,"
             + GOALS_DATE_COLUMN + " TEXT,"
             + GOALS_STARRED_COLUMN + " INTEGER,"
-            + GOALS_COMPLETED_COLUMN + " INTEGER)";
+            + GOALS_COMPLETED_COLUMN + " INTEGER,"
+            + GOALS_NOTIFY_COLUMN + " TEXT)";
 
     //ACHIEVEMENTS TALBE
     private static final String CREATE_ACHIEVEMENTS_TABLE = "CREATE TABLE "
@@ -78,7 +81,8 @@ public class DBHandler extends SQLiteOpenHelper {
             + PROMISES_DATE_COLUMN + " TEXT,"
             + PROMISES_PERSON_COLUMN + " TEXT,"
             + PROMISES_STARRED_COLUMN + " INTEGER,"
-            + PROMISES_COMPLETED_COLUMN + " INTEGER)";
+            + PROMISES_COMPLETED_COLUMN + " INTEGER,"
+            + GOALS_NOTIFY_COLUMN + " TEXT)";
 
     //TIMELINE TALBE
     private static final String CREATE_TIMELINE_TABLE = "CREATE TABLE "
@@ -123,6 +127,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(GOALS_DATE_COLUMN, goal.getDate());
         values.put(GOALS_STARRED_COLUMN, (goal.isStarred()) ? 1 : 0);
         values.put(GOALS_COMPLETED_COLUMN, (goal.isCompleted()) ? 1 : 0);
+        values.put(GOALS_NOTIFY_COLUMN, goal.getNotify());
 
         long goalID = db.insert(TABLE_GOALS, null, values);
         return safeLongToInt(goalID);
@@ -151,6 +156,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(PROMISES_PERSON_COLUMN, promise.getPerson());
         values.put(PROMISES_STARRED_COLUMN, (promise.isStarred()) ? 1 : 0);
         values.put(PROMISES_COMPLETED_COLUMN, (promise.isCompleted()) ? 1 : 0);
+        values.put(PROMISES_NOTIFY_COLUMN, promise.getNotify());
 
         long promiseID = db.insert(TABLE_PROMISES, null, values);
         return safeLongToInt(promiseID);
@@ -184,7 +190,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndex(GOALS_DESCRIPTION_COLUMN)),
                 cursor.getString(cursor.getColumnIndex(GOALS_DATE_COLUMN)),
                 (cursor.getInt(cursor.getColumnIndex(GOALS_STARRED_COLUMN)) != 0),
-                (cursor.getInt(cursor.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0));
+                (cursor.getInt(cursor.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0),
+                cursor.getString(cursor.getColumnIndex(GOALS_NOTIFY_COLUMN)));
 
         return goal;
     }
@@ -224,7 +231,8 @@ public class DBHandler extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndex(PROMISES_DATE_COLUMN)),
                 cursor.getString(cursor.getColumnIndex(PROMISES_PERSON_COLUMN)),
                 (cursor.getInt(cursor.getColumnIndex(PROMISES_STARRED_COLUMN)) != 0),
-                (cursor.getInt(cursor.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0));
+                (cursor.getInt(cursor.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0),
+                cursor.getString(cursor.getColumnIndex(PROMISES_NOTIFY_COLUMN)));
 
         return promise;
     }
@@ -266,7 +274,8 @@ public class DBHandler extends SQLiteOpenHelper {
                         cursorStarred.getString(cursorStarred.getColumnIndex(GOALS_DESCRIPTION_COLUMN)),
                         cursorStarred.getString(cursorStarred.getColumnIndex(GOALS_DATE_COLUMN)),
                         (cursorStarred.getInt(cursorStarred.getColumnIndex(GOALS_STARRED_COLUMN)) != 0),
-                        (cursorStarred.getInt(cursorStarred.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0));
+                        (cursorStarred.getInt(cursorStarred.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(GOALS_NOTIFY_COLUMN)));
                 goals.add(goal);
             } while (cursorStarred.moveToNext());
         }
@@ -278,7 +287,8 @@ public class DBHandler extends SQLiteOpenHelper {
                         cursorNonStarred.getString(cursorNonStarred.getColumnIndex(GOALS_DESCRIPTION_COLUMN)),
                         cursorNonStarred.getString(cursorNonStarred.getColumnIndex(GOALS_DATE_COLUMN)),
                         (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(GOALS_STARRED_COLUMN)) != 0),
-                        (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0));
+                        (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(GOALS_NOTIFY_COLUMN)));
                 goals.add(goal);
             } while (cursorNonStarred.moveToNext());
         }
@@ -341,7 +351,8 @@ public class DBHandler extends SQLiteOpenHelper {
                         cursorStarred.getString(cursorStarred.getColumnIndex(PROMISES_DATE_COLUMN)),
                         cursorStarred.getString(cursorStarred.getColumnIndex(PROMISES_PERSON_COLUMN)),
                         (cursorStarred.getInt(cursorStarred.getColumnIndex(PROMISES_STARRED_COLUMN)) != 0),
-                        (cursorStarred.getInt(cursorStarred.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0));
+                        (cursorStarred.getInt(cursorStarred.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(PROMISES_NOTIFY_COLUMN)));
                 promises.add(promise);
             } while (cursorStarred.moveToNext());
         }
@@ -354,7 +365,8 @@ public class DBHandler extends SQLiteOpenHelper {
                         cursorNonStarred.getString(cursorNonStarred.getColumnIndex(PROMISES_DATE_COLUMN)),
                         cursorNonStarred.getString(cursorNonStarred.getColumnIndex(PROMISES_PERSON_COLUMN)),
                         (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(PROMISES_STARRED_COLUMN)) != 0),
-                        (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0));
+                        (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0),
+                        cursorStarred.getString(cursorStarred.getColumnIndex(PROMISES_NOTIFY_COLUMN)));
                 promises.add(promise);
             } while (cursorNonStarred.moveToNext());
         }
@@ -394,6 +406,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(GOALS_DATE_COLUMN, goal.getDate());
         values.put(GOALS_STARRED_COLUMN, (goal.isStarred()) ? 1 : 0);
         values.put(GOALS_COMPLETED_COLUMN, (goal.isCompleted()) ? 1 : 0);
+        values.put(GOALS_NOTIFY_COLUMN, goal.getNotify());
 
         return db.update(TABLE_GOALS, values, GOALS_ID_COLUMN + " = ?", new String[]{String.valueOf(goal.getId())});
     }
@@ -420,6 +433,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(PROMISES_PERSON_COLUMN, promise.getPerson());
         values.put(PROMISES_STARRED_COLUMN, (promise.isStarred()) ? 1 : 0);
         values.put(PROMISES_COMPLETED_COLUMN, (promise.isCompleted()) ? 1 : 0);
+        values.put(PROMISES_NOTIFY_COLUMN, promise.getNotify());
 
         return db.update(TABLE_PROMISES, values, PROMISES_ID_COLUMN + " = ?", new String[]{String.valueOf(promise.getId())});
     }
