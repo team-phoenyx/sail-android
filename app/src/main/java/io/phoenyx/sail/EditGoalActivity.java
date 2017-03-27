@@ -134,6 +134,11 @@ public class EditGoalActivity extends AppCompatActivity {
         if (goal.getDate().equals("Long term")) {
             goalLongTermCheckBox.setChecked(true);
         }
+
+        if (!goal.getNotify().equals("")) {
+            goalNotificationCheckBox.setChecked(true);
+            goalNotifDateTextView.setText(goal.getNotify());
+        }
     }
 
     @Override
@@ -154,7 +159,6 @@ public class EditGoalActivity extends AppCompatActivity {
             default:
                 Snackbar.make(findViewById(android.R.id.content), "Please try again", BaseTransientBottomBar.LENGTH_SHORT).show();
         }
-
 
         return super.onOptionsItemSelected(item);
     }

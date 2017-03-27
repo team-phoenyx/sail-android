@@ -288,7 +288,7 @@ public class DBHandler extends SQLiteOpenHelper {
                         cursorNonStarred.getString(cursorNonStarred.getColumnIndex(GOALS_DATE_COLUMN)),
                         (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(GOALS_STARRED_COLUMN)) != 0),
                         (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0),
-                        cursorStarred.getString(cursorStarred.getColumnIndex(GOALS_NOTIFY_COLUMN)));
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(GOALS_NOTIFY_COLUMN)));
                 goals.add(goal);
             } while (cursorNonStarred.moveToNext());
         }
@@ -366,7 +366,7 @@ public class DBHandler extends SQLiteOpenHelper {
                         cursorNonStarred.getString(cursorNonStarred.getColumnIndex(PROMISES_PERSON_COLUMN)),
                         (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(PROMISES_STARRED_COLUMN)) != 0),
                         (cursorNonStarred.getInt(cursorNonStarred.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0),
-                        cursorStarred.getString(cursorStarred.getColumnIndex(PROMISES_NOTIFY_COLUMN)));
+                        cursorNonStarred.getString(cursorNonStarred.getColumnIndex(PROMISES_NOTIFY_COLUMN)));
                 promises.add(promise);
             } while (cursorNonStarred.moveToNext());
         }
@@ -406,9 +406,10 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(GOALS_DATE_COLUMN, goal.getDate());
         values.put(GOALS_STARRED_COLUMN, (goal.isStarred()) ? 1 : 0);
         values.put(GOALS_COMPLETED_COLUMN, (goal.isCompleted()) ? 1 : 0);
-        values.put(GOALS_NOTIFY_COLUMN, goal.getNotify());
+        values.put(GOALS_NOTIFY_COLUMN, "TEST");
 
-        return db.update(TABLE_GOALS, values, GOALS_ID_COLUMN + " = ?", new String[]{String.valueOf(goal.getId())});
+        int i = db.update(TABLE_GOALS, values, GOALS_ID_COLUMN + " = ?", new String[]{String.valueOf(goal.getId())});
+        return i;
     }
 
     public int updateAchievement(Achievement achievement) {
