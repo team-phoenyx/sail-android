@@ -406,7 +406,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(GOALS_DATE_COLUMN, goal.getDate());
         values.put(GOALS_STARRED_COLUMN, (goal.isStarred()) ? 1 : 0);
         values.put(GOALS_COMPLETED_COLUMN, (goal.isCompleted()) ? 1 : 0);
-        values.put(GOALS_NOTIFY_COLUMN, "TEST");
+        values.put(GOALS_NOTIFY_COLUMN, goal.getNotify());
 
         int i = db.update(TABLE_GOALS, values, GOALS_ID_COLUMN + " = ?", new String[]{String.valueOf(goal.getId())});
         return i;
