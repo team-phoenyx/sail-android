@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class EditPromiseActivity extends AppCompatActivity {
 
@@ -42,6 +43,9 @@ public class EditPromiseActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         promise = dbHandler.getPromise(promiseID);
 
+        year = Calendar.getInstance().get(Calendar.YEAR);
+        month = Calendar.getInstance().get(Calendar.MONTH);
+        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         months = new String[]{"Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."};
 
         promiseTitleEditText = (EditText) findViewById(R.id.promiseTitleEditText);
@@ -113,7 +117,7 @@ public class EditPromiseActivity extends AppCompatActivity {
                 if (b) {
                     promiseDateTextView.setText("Long term");
                 } else {
-                    promiseDateTextView.setText(promise.getDate());
+                    promiseDateTextView.setText(months[month] + " " + day + " " + year);
                 }
             }
         });
@@ -121,20 +125,22 @@ public class EditPromiseActivity extends AppCompatActivity {
         promiseDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long timeSince1970 = System.currentTimeMillis();
+                if (!promiseDateTextView.getText().toString().equals("Long term")) {
+                    long timeSince1970 = System.currentTimeMillis();
 
-                DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        promiseDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
-                    }
-                }, year, month, day);
+                    DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            promiseDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        }
+                    }, year, month, day);
 
-                dialog.getDatePicker().setMinDate(timeSince1970);
-                String[] dateParams = promise.getDate().split(" ");
-                dialog.updateDate(Integer.parseInt(dateParams[2]), Arrays.asList(months).indexOf(dateParams[0]), Integer.parseInt(dateParams[1]));
-                dialog.setTitle("");
-                dialog.show();
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    String[] dateParams = promiseDateTextView.getText().toString().split(" ");
+                    dialog.updateDate(Integer.parseInt(dateParams[2]), Arrays.asList(months).indexOf(dateParams[0]), Integer.parseInt(dateParams[1]));
+                    dialog.setTitle("");
+                    dialog.show();
+                }
             }
         });
     }

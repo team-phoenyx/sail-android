@@ -45,6 +45,8 @@ public class AddPromiseActivity extends AppCompatActivity {
         promisePersonEditText = (EditText) findViewById(R.id.promisePersonEditText);
         promiseDateTextView = (TextView) findViewById(R.id.promiseDateTextView);
         promiseLongTermCheckBox = (CheckBox) findViewById(R.id.promiseLongTermCheckBox);
+        promiseNotifDateTextView = (TextView) findViewById(R.id.promiseNotificationDateTextView);
+        promiseNotificationCheckBox = (CheckBox) findViewById(R.id.promiseNotifyCheckBox);
 
         promiseNotifDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
