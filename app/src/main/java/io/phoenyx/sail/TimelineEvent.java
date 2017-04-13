@@ -5,8 +5,8 @@ package io.phoenyx.sail;
  */
 
 public class TimelineEvent {
-    int id;
-    String title, description, date;
+    private int id;
+    private String title, description, date;
 
     public TimelineEvent(int id, String title, String description, String date) {
         this.id = id;
