@@ -6,10 +6,10 @@ package io.phoenyx.sail;
 
 public class Promise {
     int id;
-    String title, description, date, person;
+    String title, description, date, person, notify;
     boolean starred, completed;
 
-    public Promise(int id, String title, String description, String date, String person, boolean starred, boolean completed) {
+    public Promise(int id, String title, String description, String date, String person, boolean starred, boolean completed, String notify) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -17,15 +17,25 @@ public class Promise {
         this.person = person;
         this.starred = starred;
         this.completed = completed;
+        this.notify = notify;
     }
 
-    public Promise(String title, String description, String date, String person, boolean starred, boolean completed) {
+    public Promise(String title, String description, String date, String person, boolean starred, boolean completed, String notify) {
         this.title = title;
         this.description = description;
         this.date = date;
         this.person = person;
         this.starred = starred;
         this.completed = completed;
+        this.notify = notify;
+    }
+
+    public String getNotify() {
+        return notify;
+    }
+
+    public void setNotify(String notify) {
+        this.notify = notify;
     }
 
     public int getId() {

@@ -2,7 +2,6 @@ package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
 import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -46,6 +45,8 @@ public class AddPromiseActivity extends AppCompatActivity {
         promisePersonEditText = (EditText) findViewById(R.id.promisePersonEditText);
         promiseDateTextView = (TextView) findViewById(R.id.promiseDateTextView);
         promiseLongTermCheckBox = (CheckBox) findViewById(R.id.promiseLongTermCheckBox);
+        promiseNotifDateTextView = (TextView) findViewById(R.id.promiseNotificationDateTextView);
+        promiseNotificationCheckBox = (CheckBox) findViewById(R.id.promiseNotifyCheckBox);
 
         promiseNotifDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,12 +137,14 @@ public class AddPromiseActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.done:
-                Promise promise = new Promise(promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false);
+                Promise promise = new Promise(promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false, "");
                 int promiseID = dbHandler.createPromise(promise);
 
                 if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && promiseNotificationCheckBox.isChecked()) {
                     NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Promise", promiseTitleEditText.getText().toString(), promiseID);
                     builder.buildNotification();
+                    promise.setNotify(months[notifMonth - 1] + " " + notifDay + " " + notifYear);
+                    dbHandler.updatePromise(promise);
                 }
 
                 finish();

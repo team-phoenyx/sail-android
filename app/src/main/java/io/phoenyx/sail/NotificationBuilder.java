@@ -30,6 +30,7 @@ public class NotificationBuilder {
     }
 
     public NotificationBuilder(Context context, int id) {
+        this.context = context;
         this.id = id;
     }
 

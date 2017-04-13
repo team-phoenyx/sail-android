@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class EditGoalActivity extends AppCompatActivity {
 
@@ -40,6 +41,9 @@ public class EditGoalActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         goal = dbHandler.getGoal(goalID);
 
+        year = Calendar.getInstance().get(Calendar.YEAR);
+        month = Calendar.getInstance().get(Calendar.MONTH);
+        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         months = new String[]{"Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."};
 
         goalTitleEditText = (EditText) findViewById(R.id.goalTitleEditText);
@@ -70,10 +74,10 @@ public class EditGoalActivity extends AppCompatActivity {
             }
         });
 
-        goalNotificationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        goalNotificationCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View v) {
+                if (goalNotificationCheckBox.isChecked()) {
                     long timeSince1970 = System.currentTimeMillis();
 
                     DatePickerDialog dialog = new DatePickerDialog(EditGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -101,7 +105,7 @@ public class EditGoalActivity extends AppCompatActivity {
                 if (b) {
                     goalDateTextView.setText("Long term");
                 } else {
-                    goalDateTextView.setText(goal.getDate());
+                    goalDateTextView.setText(months[month] + " " + day + " " + year);
                 }
             }
         });
@@ -113,27 +117,47 @@ public class EditGoalActivity extends AppCompatActivity {
         goalDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long timeSince1970 = System.currentTimeMillis();
+                if (!goalDateTextView.getText().toString().equals("Long term")) {
+                    long timeSince1970 = System.currentTimeMillis();
 
-                DatePickerDialog dialog = new DatePickerDialog(EditGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        goalDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
-                    }
-                }, year, month, day);
+                    DatePickerDialog dialog = new DatePickerDialog(EditGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            goalDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        }
+                    }, year, month, day);
 
-                dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.getDatePicker().setMinDate(timeSince1970);
 
-                String[] dateParams = goal.getDate().split(" ");
-                dialog.updateDate(Integer.parseInt(dateParams[2]), Arrays.asList(months).indexOf(dateParams[0]), Integer.parseInt(dateParams[1]));
-                dialog.setTitle("");
-                dialog.show();
+
+                    String[] dateParams = goalDateTextView.getText().toString().split(" ");
+                    dialog.updateDate(Integer.parseInt(dateParams[2]), Arrays.asList(months).indexOf(dateParams[0]), Integer.parseInt(dateParams[1]));
+                    dialog.setTitle("");
+                    dialog.show();
+                }
             }
         });
 
         if (goal.getDate().equals("Long term")) {
             goalLongTermCheckBox.setChecked(true);
         }
+
+        if (!goal.getNotify().equals("")) {
+            String notifyString = goal.getNotify();
+            goalNotificationCheckBox.setChecked(true);
+            goalNotifDateTextView.setText(notifyString);
+            String[] params = notifyString.split(" ");
+            notifDay = Integer.parseInt(params[1]);
+            notifYear = Integer.parseInt(params[2]);
+            notifMonth = getArrayIndex(months, params[0]) + 1;
+        }
+    }
+
+    public int getArrayIndex(String[] arr, String value) {
+        for(int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(value)) return i;
+        }
+        return -1;
     }
 
     @Override
@@ -155,7 +179,6 @@ public class EditGoalActivity extends AppCompatActivity {
                 Snackbar.make(findViewById(android.R.id.content), "Please try again", BaseTransientBottomBar.LENGTH_SHORT).show();
         }
 
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -163,7 +186,7 @@ public class EditGoalActivity extends AppCompatActivity {
     public void onBackPressed() {
         super.onBackPressed();
 
-        Goal newGoal = new Goal(goal.getId(), goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), goal.isStarred(), goal.isCompleted());
+        Goal newGoal = new Goal(goal.getId(), goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), goal.isStarred(), goal.isCompleted(), "");
         dbHandler.updateGoal(newGoal);
 
         NotificationBuilder notificationBuilder = new NotificationBuilder(EditGoalActivity.this, newGoal.getId());
@@ -172,6 +195,8 @@ public class EditGoalActivity extends AppCompatActivity {
         if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && goalNotificationCheckBox.isChecked()) {
             NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString(), goalID);
             builder.buildNotification();
+            newGoal.setNotify(months[notifMonth - 1] + " " + notifDay + " " + notifYear);
+            dbHandler.updateGoal(newGoal);
         }
 
         finish();

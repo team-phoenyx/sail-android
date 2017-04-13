@@ -16,6 +16,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 
 import java.util.Arrays;
+import java.util.Calendar;
 
 public class EditPromiseActivity extends AppCompatActivity {
 
@@ -42,6 +43,9 @@ public class EditPromiseActivity extends AppCompatActivity {
         dbHandler = new DBHandler(this);
         promise = dbHandler.getPromise(promiseID);
 
+        year = Calendar.getInstance().get(Calendar.YEAR);
+        month = Calendar.getInstance().get(Calendar.MONTH);
+        day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
         months = new String[]{"Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."};
 
         promiseTitleEditText = (EditText) findViewById(R.id.promiseTitleEditText);
@@ -56,6 +60,16 @@ public class EditPromiseActivity extends AppCompatActivity {
         promiseDescriptionEditText.setText(promise.getDescription());
         promiseDateTextView.setText(promise.getDate());
         promisePersonEditText.setText(promise.getPerson());
+
+        if (!promise.getNotify().equals("")) {
+            String notifyString = promise.getNotify();
+            promiseNotificationCheckBox.setChecked(true);
+            promiseNotifDateTextView.setText(notifyString);
+            String[] params = notifyString.split(" ");
+            notifDay = Integer.parseInt(params[1]);
+            notifYear = Integer.parseInt(params[2]);
+            notifMonth = getArrayIndex(months, params[0]) + 1;
+        }
 
         if (promise.getDate().equals("Long term")) {
             promiseLongTermCheckBox.setChecked(true);
@@ -82,10 +96,10 @@ public class EditPromiseActivity extends AppCompatActivity {
             }
         });
 
-        promiseNotificationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        promiseNotificationCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View v) {
+                if (promiseNotificationCheckBox.isChecked()) {
                     long timeSince1970 = System.currentTimeMillis();
 
                     DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -113,7 +127,7 @@ public class EditPromiseActivity extends AppCompatActivity {
                 if (b) {
                     promiseDateTextView.setText("Long term");
                 } else {
-                    promiseDateTextView.setText(promise.getDate());
+                    promiseDateTextView.setText(months[month] + " " + day + " " + year);
                 }
             }
         });
@@ -121,22 +135,31 @@ public class EditPromiseActivity extends AppCompatActivity {
         promiseDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long timeSince1970 = System.currentTimeMillis();
+                if (!promiseDateTextView.getText().toString().equals("Long term")) {
+                    long timeSince1970 = System.currentTimeMillis();
 
-                DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        promiseDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
-                    }
-                }, year, month, day);
+                    DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            promiseDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        }
+                    }, year, month, day);
 
-                dialog.getDatePicker().setMinDate(timeSince1970);
-                String[] dateParams = promise.getDate().split(" ");
-                dialog.updateDate(Integer.parseInt(dateParams[2]), Arrays.asList(months).indexOf(dateParams[0]), Integer.parseInt(dateParams[1]));
-                dialog.setTitle("");
-                dialog.show();
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    String[] dateParams = promiseDateTextView.getText().toString().split(" ");
+                    dialog.updateDate(Integer.parseInt(dateParams[2]), Arrays.asList(months).indexOf(dateParams[0]), Integer.parseInt(dateParams[1]));
+                    dialog.setTitle("");
+                    dialog.show();
+                }
             }
         });
+    }
+
+    public int getArrayIndex(String[] arr, String value) {
+        for(int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(value)) return i;
+        }
+        return -1;
     }
 
     @Override
@@ -165,8 +188,19 @@ public class EditPromiseActivity extends AppCompatActivity {
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Promise newPromise = new Promise(promiseID, promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false);
+        Promise newPromise = new Promise(promiseID, promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false, "");
         dbHandler.updatePromise(newPromise);
+
+        NotificationBuilder notificationBuilder = new NotificationBuilder(EditPromiseActivity.this, newPromise.getId());
+        notificationBuilder.deleteNotification();
+
+        if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && promiseNotificationCheckBox.isChecked()) {
+            NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", promiseTitleEditText.getText().toString(), promiseID);
+            builder.buildNotification();
+            newPromise.setNotify(months[notifMonth - 1] + " " + notifDay + " " + notifYear);
+            dbHandler.updatePromise(newPromise);
+        }
+
         finish();
     }
 }
