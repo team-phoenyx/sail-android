@@ -5,9 +5,9 @@ package io.phoenyx.sail;
  */
 
 public class Promise {
-    int id;
-    String title, description, date, person, notify;
-    boolean starred, completed;
+    private int id;
+    private String title, description, date, person, notify;
+    private boolean starred, completed;
 
     public Promise(int id, String title, String description, String date, String person, boolean starred, boolean completed, String notify) {
         this.id = id;

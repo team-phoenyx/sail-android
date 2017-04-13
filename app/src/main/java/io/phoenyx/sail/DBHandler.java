@@ -193,6 +193,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 (cursor.getInt(cursor.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0),
                 cursor.getString(cursor.getColumnIndex(GOALS_NOTIFY_COLUMN)));
 
+        cursor.close();
         return goal;
     }
 
@@ -212,6 +213,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_DATE_COLUMN)),
                 (cursor.getInt(cursor.getColumnIndex(ACHIEVEMENTS_STARRED_COLUMN)) != 0));
 
+        cursor.close();
         return achievement;
     }
 
@@ -234,6 +236,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 (cursor.getInt(cursor.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0),
                 cursor.getString(cursor.getColumnIndex(PROMISES_NOTIFY_COLUMN)));
 
+        cursor.close();
         return promise;
     }
 
@@ -252,6 +255,7 @@ public class DBHandler extends SQLiteOpenHelper {
                 cursor.getString(cursor.getColumnIndex(TIMELINE_EVENT_DESCRIPTION_COLUMN)),
                 cursor.getString(cursor.getColumnIndex(TIMELINE_EVENT_DATE_COLUMN)));
 
+        cursor.close();
         return timelineEvent;
     }
 
@@ -293,7 +297,8 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursorNonStarred.moveToNext());
         }
 
-
+        cursorNonStarred.close();
+        cursorStarred.close();
         return goals;
     }
 
@@ -329,6 +334,8 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursorNonStarred.moveToNext());
         }
 
+        cursorNonStarred.close();
+        cursorStarred.close();
         return achievements;
     }
 
@@ -371,6 +378,8 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursorNonStarred.moveToNext());
         }
 
+        cursorNonStarred.close();
+        cursorStarred.close();
         return promises;
     }
 
@@ -393,6 +402,7 @@ public class DBHandler extends SQLiteOpenHelper {
             } while (cursor.moveToNext());
         }
 
+        cursor.close();
         return timelineEvents;
     }
 

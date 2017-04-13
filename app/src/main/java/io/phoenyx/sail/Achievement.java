@@ -5,9 +5,9 @@ package io.phoenyx.sail;
  */
 
 public class Achievement {
-    int id;
-    String title, description, date;
-    boolean starred;
+    private int id;
+    private String title, description, date;
+    private boolean starred;
 
     public Achievement(int id, String title, String description, String date, boolean starred) {
         this.id = id;
