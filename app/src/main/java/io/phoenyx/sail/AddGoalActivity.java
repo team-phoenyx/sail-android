@@ -145,7 +145,7 @@ public class AddGoalActivity extends AppCompatActivity {
                 if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && goalNotificationCheckBox.isChecked()) {
                     NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString(), goalID);
                     builder.buildNotification();
-                    goal.setNotify(notifMonth + "-" + notifDay + "-" + notifYear);
+                    goal.setNotify(months[notifMonth - 1] + " " + notifDay + " " + notifYear);
                     dbHandler.updateGoal(goal);
                 }
 

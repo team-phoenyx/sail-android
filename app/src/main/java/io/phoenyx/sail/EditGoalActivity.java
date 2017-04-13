@@ -74,10 +74,10 @@ public class EditGoalActivity extends AppCompatActivity {
             }
         });
 
-        goalNotificationCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+        goalNotificationCheckBox.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
+            public void onClick(View v) {
+                if (goalNotificationCheckBox.isChecked()) {
                     long timeSince1970 = System.currentTimeMillis();
 
                     DatePickerDialog dialog = new DatePickerDialog(EditGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -143,9 +143,21 @@ public class EditGoalActivity extends AppCompatActivity {
         }
 
         if (!goal.getNotify().equals("")) {
+            String notifyString = goal.getNotify();
             goalNotificationCheckBox.setChecked(true);
-            goalNotifDateTextView.setText(goal.getNotify());
+            goalNotifDateTextView.setText(notifyString);
+            String[] params = notifyString.split(" ");
+            notifDay = Integer.parseInt(params[1]);
+            notifYear = Integer.parseInt(params[2]);
+            notifMonth = getArrayIndex(months, params[0]) + 1;
         }
+    }
+
+    public int getArrayIndex(String[] arr, String value) {
+        for(int i = 0; i < arr.length; i++) {
+            if (arr[i].equals(value)) return i;
+        }
+        return -1;
     }
 
     @Override
@@ -183,7 +195,7 @@ public class EditGoalActivity extends AppCompatActivity {
         if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && goalNotificationCheckBox.isChecked()) {
             NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString(), goalID);
             builder.buildNotification();
-            newGoal.setNotify(notifMonth + "-" + notifDay + "-" + notifYear);
+            newGoal.setNotify(months[notifMonth - 1] + " " + notifDay + " " + notifYear);
             dbHandler.updateGoal(newGoal);
         }
 
