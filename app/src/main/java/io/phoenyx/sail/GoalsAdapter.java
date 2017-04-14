@@ -1,6 +1,5 @@
 package io.phoenyx.sail;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -133,8 +132,7 @@ public class GoalsAdapter extends RecyclerView.Adapter<GoalsAdapter.GoalsViewHol
         public void onClick(View view) {
             Intent editGoal = new Intent(view.getContext().getApplicationContext(), EditGoalActivity.class);
             editGoal.putExtra("goal_id", goalID);
-            //TODO dont think we need the callback anymore
-            ((Activity) view.getContext()).startActivityForResult(editGoal, 1337);
+            view.getContext().startActivity(editGoal);
         }
     }
 

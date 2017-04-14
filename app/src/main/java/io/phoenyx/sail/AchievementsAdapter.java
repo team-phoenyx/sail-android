@@ -1,6 +1,5 @@
 package io.phoenyx.sail;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -91,10 +90,10 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsAdapte
 
 
     public class AchievementsViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
-        protected TextView titleTextView;
-        protected TextView descriptionTextView;
-        protected TextView dateTextView;
-        protected ImageButton starImageButton;
+        private TextView titleTextView;
+        private TextView descriptionTextView;
+        private TextView dateTextView;
+        private ImageButton starImageButton;
         int achievementID;
 
         public AchievementsViewHolder(View itemView) {
@@ -111,7 +110,7 @@ public class AchievementsAdapter extends RecyclerView.Adapter<AchievementsAdapte
         public void onClick(View view) {
             Intent editAchievement = new Intent(view.getContext().getApplicationContext(), EditAchievementActivity.class);
             editAchievement.putExtra("achievement_id", achievementID);
-            ((Activity) view.getContext()).startActivityForResult(editAchievement, 1337);
+            view.getContext().startActivity(editAchievement);
         }
     }
 

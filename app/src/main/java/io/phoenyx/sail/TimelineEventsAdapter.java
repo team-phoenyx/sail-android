@@ -1,6 +1,5 @@
 package io.phoenyx.sail;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,7 +12,6 @@ import java.util.List;
 public class TimelineEventsAdapter extends RecyclerView.Adapter<TimelineEventsAdapter.TimelineEventsViewHolder> {
 
     private List<TimelineEvent> timelineEvents;
-    private DBHandler dbHandler;
 
     public TimelineEventsAdapter(List<TimelineEvent> timelineEvents) {
         this.timelineEvents = timelineEvents;
@@ -21,7 +19,6 @@ public class TimelineEventsAdapter extends RecyclerView.Adapter<TimelineEventsAd
 
     @Override
     public TimelineEventsViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
-        dbHandler = new DBHandler(parent.getContext());
         View itemView = LayoutInflater.from(parent.getContext()).inflate(R.layout.timeline_card, parent, false);
         return new TimelineEventsViewHolder(itemView);
     }
@@ -56,7 +53,7 @@ public class TimelineEventsAdapter extends RecyclerView.Adapter<TimelineEventsAd
         private TextView titleTextView;
         private TextView descriptionTextView;
         private TextView dateTextView;
-        int timelineEventID;
+        private int timelineEventID;
 
         public TimelineEventsViewHolder(View itemView) {
             super(itemView);
@@ -71,7 +68,7 @@ public class TimelineEventsAdapter extends RecyclerView.Adapter<TimelineEventsAd
         public void onClick(View view) {
             Intent editTimelineEvent = new Intent(view.getContext().getApplicationContext(), EditTimelineEventActivity.class);
             editTimelineEvent.putExtra("timeline_event_id", timelineEventID);
-            ((Activity) view.getContext()).startActivityForResult(editTimelineEvent, 1337);
+            view.getContext().startActivity(editTimelineEvent);
         }
     }
 
