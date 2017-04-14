@@ -3,7 +3,6 @@ package io.phoenyx.sail;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -24,8 +23,6 @@ public class AddGoalActivity extends AppCompatActivity {
     CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
     TextView goalDateTextView, goalNotifDateTextView;
     String[] months;
-
-    AlertDialog notifDateDialog;
 
     int year, month, day, notifYear, notifMonth, notifDay;
 

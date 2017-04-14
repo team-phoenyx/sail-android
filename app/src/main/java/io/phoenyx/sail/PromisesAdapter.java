@@ -1,6 +1,5 @@
 package io.phoenyx.sail;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -144,7 +143,7 @@ public class PromisesAdapter extends RecyclerView.Adapter<PromisesAdapter.Promis
         public void onClick(View view) {
             Intent editPromise = new Intent(view.getContext().getApplicationContext(), EditPromiseActivity.class);
             editPromise.putExtra("promise_id", promiseID);
-            ((Activity) view.getContext()).startActivityForResult(editPromise, 1337);
+            view.getContext().startActivity(editPromise);
         }
     }
 

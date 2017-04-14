@@ -61,7 +61,6 @@ public class EditTimelineEventActivity extends AppCompatActivity {
                     }
                 }, year, month, day);
 
-
                 dialog.getDatePicker().setMaxDate(timeSince1970);
                 String[] dateParams = timelineEvent.getDate().split(" ");
                 dialog.updateDate(Integer.parseInt(dateParams[2]), Arrays.asList(months).indexOf(dateParams[0]), Integer.parseInt(dateParams[1]));
@@ -89,7 +88,6 @@ public class EditTimelineEventActivity extends AppCompatActivity {
             default:
                 Snackbar.make(findViewById(android.R.id.content), "Please try again", BaseTransientBottomBar.LENGTH_SHORT).show();
         }
-
 
         return super.onOptionsItemSelected(item);
     }

@@ -1,9 +1,5 @@
 package io.phoenyx.sail;
 
-/**
- * Created by terrance on 2/18/17.
- */
-
 public class Promise {
     private int id;
     private String title, description, date, person, notify;

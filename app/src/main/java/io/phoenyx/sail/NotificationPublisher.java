@@ -6,10 +6,6 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 
-/**
- * Created by Terrance on 3/19/2017.
- */
-
 public class NotificationPublisher extends BroadcastReceiver {
 
     public static String NOTIFICATION_ID = "notification-id";

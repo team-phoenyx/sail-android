@@ -57,7 +57,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String TIMELINE_EVENT_DESCRIPTION_COLUMN = "description";
     private static final String TIMELINE_EVENT_DATE_COLUMN = "date";
 
-    //TABLE INIT STATEMENTS
+    //TABLE INITIALIZATIONS
     //GOALS TALBE
     private static final String CREATE_GOALS_TABLE = "CREATE TABLE "
             + TABLE_GOALS + "(" + GOALS_ID_COLUMN + " INTEGER PRIMARY KEY," + GOALS_TITLE_COLUMN + " TEXT,"
@@ -89,8 +89,6 @@ public class DBHandler extends SQLiteOpenHelper {
             + TABLE_TIMELINE+ "(" + TIMELINE_EVENT_ID_COLUMN + " INTEGER PRIMARY KEY," + TIMELINE_EVENT_TITLE_COLUMN + " TEXT,"
             + TIMELINE_EVENT_DESCRIPTION_COLUMN + " TEXT,"
             + TIMELINE_EVENT_DATE_COLUMN + " TEXT)";
-
-
 
     public DBHandler(Context context) {
         super(context, DATABSE_NAME, null, DATABASE_VERSION);

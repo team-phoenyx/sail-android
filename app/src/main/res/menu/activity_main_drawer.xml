@@ -5,15 +5,19 @@
     <group android:checkableBehavior="single">
         <item
             android:id="@+id/nav_goals"
+            android:icon="@drawable/ray_start_arrow"
             android:title="Goals" />
         <item
             android:id="@+id/nav_achievements"
+            android:icon="@drawable/trophy"
             android:title="Achievements" />
         <item
             android:id="@+id/nav_promises"
+            android:icon="@drawable/heart"
             android:title="Promises" />
         <item
             android:id="@+id/nav_timeline"
+            android:icon="@drawable/chart_timeline"
             android:title="Timeline" />
     </group>
 
