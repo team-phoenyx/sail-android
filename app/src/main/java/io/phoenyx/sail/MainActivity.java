@@ -14,6 +14,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.TextView;
 
 import io.phoenyx.sail.fragments.AchievementsFragment;
 import io.phoenyx.sail.fragments.GoalsFragment;
@@ -27,8 +28,12 @@ public class MainActivity extends AppCompatActivity
     DrawerLayout drawer;
     View navHeader;
     ActionBarDrawerToggle toggle;
+    String quote;
+    String[] activityTitles = new String[]{"Goals", "Achievements", "Promises", "Timeline"};
+    TextView quoteTextView;
 
     DBHandler dbHandler;
+    Handler handler;
 
     public static int navItemIndex = 0;
     private static final String TAG_GOALS = "goals";
@@ -38,17 +43,17 @@ public class MainActivity extends AppCompatActivity
 
     public static String CURRENT_TAG = TAG_GOALS;
 
-    String[] activityTitles = new String[]{"Goals", "Achievements", "Promises", "Timeline"};
-
-    Handler handler;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Bundle extras = getIntent().getExtras();
+        quote = extras.getString("quote");
+
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -71,7 +76,8 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void loadNavHeader() {
-        //TODO use this nav header for something
+        quoteTextView = (TextView) navHeader.findViewById(R.id.quoteTextView);
+        quoteTextView.setText(quote);
     }
 
     private void navigate(int navItemIndex) {

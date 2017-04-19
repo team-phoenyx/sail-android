@@ -12,36 +12,19 @@
     android:theme="@style/ThemeOverlay.AppCompat.Dark">
 
     <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/numGoalsTextView"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="16sp"
-        android:layout_marginTop="6dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/numAchievementsTextView"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="16sp"
-        android:layout_marginTop="6dp" />
-
-    <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:id="@+id/numPromisesTextView"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="16sp"
-        android:layout_marginTop="6dp" />
-
-    <TextView
-        android:id="@+id/numTimelineEventsTextView"
+        android:id="@+id/welcomeTextView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginTop="6dp"
         android:text="Welcome to Sail!"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="20sp"
-        android:layout_marginTop="6dp" />
+        android:textSize="20sp" />
+
+    <TextView
+        android:id="@+id/quoteTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:text='"Quote"' />
 
 </LinearLayout>

@@ -24,6 +24,7 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String TABLE_ACHIEVEMENTS = "achievements";
     private static final String TABLE_PROMISES = "promises";
     private static final String TABLE_TIMELINE = "timeline";
+    private static final String TABLE_QUOTES = "quotes";
 
     //GOALS TABLE COLUMN NAMES
     private static final String GOALS_ID_COLUMN = "id";
@@ -57,6 +58,10 @@ public class DBHandler extends SQLiteOpenHelper {
     private static final String TIMELINE_EVENT_DESCRIPTION_COLUMN = "description";
     private static final String TIMELINE_EVENT_DATE_COLUMN = "date";
 
+    //QUOTES TABLE COLUMN NAMES
+    private static final String QUOTE_ID_COLUMN = "id";
+    private static final String QUOTE_TEXT_COLUMN = "text";
+
     //TABLE INITIALIZATIONS
     //GOALS TALBE
     private static final String CREATE_GOALS_TABLE = "CREATE TABLE "
@@ -86,9 +91,13 @@ public class DBHandler extends SQLiteOpenHelper {
 
     //TIMELINE TALBE
     private static final String CREATE_TIMELINE_TABLE = "CREATE TABLE "
-            + TABLE_TIMELINE+ "(" + TIMELINE_EVENT_ID_COLUMN + " INTEGER PRIMARY KEY," + TIMELINE_EVENT_TITLE_COLUMN + " TEXT,"
+            + TABLE_TIMELINE + "(" + TIMELINE_EVENT_ID_COLUMN + " INTEGER PRIMARY KEY," + TIMELINE_EVENT_TITLE_COLUMN + " TEXT,"
             + TIMELINE_EVENT_DESCRIPTION_COLUMN + " TEXT,"
             + TIMELINE_EVENT_DATE_COLUMN + " TEXT)";
+
+    //QUOTE TALBE
+    private static final String CREATE_QUOTES_TABLE = "CREATE TABLE "
+            + TABLE_QUOTES + "(" + QUOTE_ID_COLUMN + " INTEGER PRIMARY KEY," + QUOTE_TEXT_COLUMN + " TEXT)";
 
     public DBHandler(Context context) {
         super(context, DATABSE_NAME, null, DATABASE_VERSION);
@@ -101,6 +110,7 @@ public class DBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL(CREATE_ACHIEVEMENTS_TABLE);
         sqLiteDatabase.execSQL(CREATE_PROMISES_TABLE);
         sqLiteDatabase.execSQL(CREATE_TIMELINE_TABLE);
+        sqLiteDatabase.execSQL(CREATE_QUOTES_TABLE);
     }
 
     @Override
@@ -109,6 +119,7 @@ public class DBHandler extends SQLiteOpenHelper {
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_ACHIEVEMENTS);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_PROMISES);
         sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_TIMELINE);
+        sqLiteDatabase.execSQL("DROP TABLE IF EXISTS " + TABLE_QUOTES);
 
         onCreate(sqLiteDatabase);
     }
@@ -169,6 +180,16 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(TIMELINE_EVENT_DATE_COLUMN, timelineEvent.getDate());
 
         long timelineEventID = db.insert(TABLE_TIMELINE, null, values);
+        return safeLongToInt(timelineEventID);
+    }
+
+    public int createQuote(String text) {
+        SQLiteDatabase db = this.getWritableDatabase();
+
+        ContentValues values = new ContentValues();
+        values.put(QUOTE_TEXT_COLUMN, text);
+
+        long timelineEventID = db.insert(TABLE_QUOTES, null, values);
         return safeLongToInt(timelineEventID);
     }
 
@@ -255,6 +276,25 @@ public class DBHandler extends SQLiteOpenHelper {
 
         cursor.close();
         return timelineEvent;
+    }
+
+    public String getRandomQuote() {
+        SQLiteDatabase db = this.getReadableDatabase();
+
+        long quoteID = Math.round(Math.random() * 2800);
+
+        String query = "SELECT " + QUOTE_TEXT_COLUMN + " FROM " + TABLE_QUOTES + " WHERE " + QUOTE_ID_COLUMN + " = " + quoteID;
+
+        Cursor cursor = db.rawQuery(query, null);
+
+        if (cursor != null) {
+            cursor.moveToFirst();
+        }
+
+        String quote = cursor.getString(cursor.getColumnIndex(QUOTE_TEXT_COLUMN));
+
+        cursor.close();
+        return quote;
     }
 
     //LIST FETCHERS
