@@ -281,7 +281,7 @@ public class DBHandler extends SQLiteOpenHelper {
     public String getRandomQuote() {
         SQLiteDatabase db = this.getReadableDatabase();
 
-        long quoteID = Math.round(Math.random() * 2800);
+        long quoteID = Math.round(Math.random() * 1000);
 
         String query = "SELECT " + QUOTE_TEXT_COLUMN + " FROM " + TABLE_QUOTES + " WHERE " + QUOTE_ID_COLUMN + " = " + quoteID;
 

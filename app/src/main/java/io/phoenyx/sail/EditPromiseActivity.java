@@ -1,9 +1,10 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,9 +22,11 @@ import java.util.Calendar;
 public class EditPromiseActivity extends AppCompatActivity {
 
     DBHandler dbHandler;
+    SharedPreferences sharedPreferences;
     EditText promiseTitleEditText, promiseDescriptionEditText, promisePersonEditText;
     CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
     TextView promiseDateTextView, promiseNotifDateTextView;
+    AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
     int promiseID, notifYear, notifMonth, notifDay;
     Promise promise;
     String[] months;
@@ -41,6 +44,7 @@ public class EditPromiseActivity extends AppCompatActivity {
         getSupportActionBar().setTitle("Edit Promise");
 
         dbHandler = new DBHandler(this);
+        sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
         promise = dbHandler.getPromise(promiseID);
 
         year = Calendar.getInstance().get(Calendar.YEAR);
@@ -174,11 +178,13 @@ public class EditPromiseActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.delete:
-                dbHandler.deletePromise(promiseID);
-                finish();
+                delete();
+                break;
+            case R.id.save:
+                save();
                 break;
             default:
-                Snackbar.make(findViewById(android.R.id.content), "Please try again", BaseTransientBottomBar.LENGTH_SHORT).show();
+                discard();
         }
 
 
@@ -187,7 +193,10 @@ public class EditPromiseActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        discard();
+    }
+
+    private void save(){
         Promise newPromise = new Promise(promiseID, promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false, "");
         dbHandler.updatePromise(newPromise);
 
@@ -202,5 +211,77 @@ public class EditPromiseActivity extends AppCompatActivity {
         }
 
         finish();
+    }
+
+    private void discard(){
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true)) {
+            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+
+            notifyBeforeDiscardDB.setTitle("Discard Changes?");
+            notifyBeforeDiscardDB.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+
+            notifyBeforeDiscardDB.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            notifyBeforeDiscardDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            notifyBeforeDiscardDB.show();
+        } else {
+            finish();
+        }
+    }
+
+    private void delete() {
+        if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
+            notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+
+            notifyBeforeDeleteDB.setTitle("Delete Promise?");
+
+            notifyBeforeDeleteDB.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dbHandler.deletePromise(promiseID);
+                    finish();
+                }
+            });
+
+            notifyBeforeDeleteDB.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            notifyBeforeDeleteDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
+                    dbHandler.deletePromise(promiseID);
+                    finish();
+                }
+            });
+
+            notifyBeforeDeleteDB.show();
+        } else {
+            dbHandler.deletePromise(promiseID);
+            finish();
+        }
+
     }
 }

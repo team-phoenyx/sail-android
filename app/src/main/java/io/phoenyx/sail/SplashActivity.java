@@ -47,6 +47,8 @@ public class SplashActivity extends AppCompatActivity {
             } catch (IOException e) {
                 e.printStackTrace();
             }
+            sharedPreferences.edit().putBoolean("notifyBeforeDiscard", true).commit();
+            sharedPreferences.edit().putBoolean("notifyBeforeDelete", true).commit();
             sharedPreferences.edit().putBoolean("firstrun", false).commit();
         }
 
