@@ -1,9 +1,10 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
-import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -21,12 +22,15 @@ import java.util.Calendar;
 public class EditGoalActivity extends AppCompatActivity {
 
     DBHandler dbHandler;
+    SharedPreferences sharedPreferences;
     EditText goalTitleEditText, goalDescriptionEditText;
     CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
     TextView goalDateTextView, goalNotifDateTextView;
+    AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
     String[] months;
     int goalID, year, month, day, notifDay, notifMonth, notifYear;
     Goal goal;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,8 +41,10 @@ public class EditGoalActivity extends AppCompatActivity {
         goalID = extras.getInt("goal_id");
 
         getSupportActionBar().setTitle("Edit Goal");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dbHandler = new DBHandler(this);
+        sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
         goal = dbHandler.getGoal(goalID);
 
         year = Calendar.getInstance().get(Calendar.YEAR);
@@ -172,11 +178,13 @@ public class EditGoalActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.delete:
-                dbHandler.deleteGoal(goalID);
-                finish();
+                delete();
+                break;
+            case R.id.save:
+                save();
                 break;
             default:
-                Snackbar.make(findViewById(android.R.id.content), "Please try again", BaseTransientBottomBar.LENGTH_SHORT).show();
+                discard();
         }
 
         return super.onOptionsItemSelected(item);
@@ -184,8 +192,10 @@ public class EditGoalActivity extends AppCompatActivity {
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+        discard();
+    }
 
+    private void save(){
         Goal newGoal = new Goal(goal.getId(), goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), goal.isStarred(), goal.isCompleted(), "");
         dbHandler.updateGoal(newGoal);
 
@@ -201,4 +211,77 @@ public class EditGoalActivity extends AppCompatActivity {
 
         finish();
     }
+
+    private void discard() {
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true)) {
+            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+
+            notifyBeforeDiscardDB.setTitle("Discard Changes?");
+            notifyBeforeDiscardDB.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+
+            notifyBeforeDiscardDB.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            notifyBeforeDiscardDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+            notifyBeforeDiscardDB.show();
+        } else {
+            finish();
+        }
+    }
+
+    private void delete() {
+        if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
+            notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+
+            notifyBeforeDeleteDB.setTitle("Delete Goal?");
+
+            notifyBeforeDeleteDB.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dbHandler.deleteGoal(goalID);
+                    finish();
+                }
+            });
+
+            notifyBeforeDeleteDB.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+
+            notifyBeforeDeleteDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
+                    dbHandler.deleteGoal(goalID);
+                    finish();
+                }
+            });
+
+            notifyBeforeDeleteDB.show();
+        } else {
+            dbHandler.deleteGoal(goalID);
+            finish();
+        }
+
+    }
+
 }

@@ -48,7 +48,7 @@ public class NotificationBuilder {
         NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context);
         notificationCompatBuilder.setContentTitle(title);
         notificationCompatBuilder.setContentText(content);
-        notificationCompatBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        notificationCompatBuilder.setSmallIcon(R.mipmap.ic_notification);
 
         Notification notification = notificationCompatBuilder.build();
 
@@ -76,7 +76,7 @@ public class NotificationBuilder {
         NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context);
         notificationCompatBuilder.setContentTitle(title);
         notificationCompatBuilder.setContentText(content);
-        notificationCompatBuilder.setSmallIcon(R.mipmap.ic_launcher);
+        notificationCompatBuilder.setSmallIcon(R.mipmap.ic_notification);
 
         Notification notification = notificationCompatBuilder.build();
 
