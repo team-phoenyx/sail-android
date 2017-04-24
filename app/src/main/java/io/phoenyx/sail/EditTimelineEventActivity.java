@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -105,6 +106,11 @@ public class EditTimelineEventActivity extends AppCompatActivity {
     }
 
     private void save(){
+        if (timelineEventTitleEditText.getText().toString().isEmpty() || timelineEventTitleEditText.getText().toString().equals("") || timelineEventTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            Snackbar.make(findViewById(android.R.id.content), "Event must have a title", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
         TimelineEvent newTimelineEvent = new TimelineEvent(timelineEventID, timelineEventTitleEditText.getText().toString(), timelineEventDescriptionEditText.getText().toString(), timelineEventDateTextView.getText().toString());
         dbHandler.updateTimelineEvent(newTimelineEvent);
         finish();

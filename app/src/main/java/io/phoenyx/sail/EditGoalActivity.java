@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -62,21 +63,23 @@ public class EditGoalActivity extends AppCompatActivity {
         goalNotifDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long timeSince1970 = System.currentTimeMillis();
+                if (goalNotificationCheckBox.isChecked()) {
+                    long timeSince1970 = System.currentTimeMillis();
 
-                DatePickerDialog dialog = new DatePickerDialog(EditGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        goalNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
-                        notifYear = selectedYear;
-                        notifMonth = selectedMonth + 1;
-                        notifDay = selectedDay;
-                    }
-                }, year, month, day);
+                    DatePickerDialog dialog = new DatePickerDialog(EditGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            goalNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                            notifYear = selectedYear;
+                            notifMonth = selectedMonth + 1;
+                            notifDay = selectedDay;
+                        }
+                    }, year, month, day);
 
-                dialog.getDatePicker().setMinDate(timeSince1970);
-                dialog.setTitle("");
-                dialog.show();
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                }
             }
         });
 
@@ -123,7 +126,7 @@ public class EditGoalActivity extends AppCompatActivity {
         goalDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!goalDateTextView.getText().toString().equals("Long term")) {
+                if (!goalLongTermCheckBox.isChecked()) {
                     long timeSince1970 = System.currentTimeMillis();
 
                     DatePickerDialog dialog = new DatePickerDialog(EditGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -196,6 +199,11 @@ public class EditGoalActivity extends AppCompatActivity {
     }
 
     private void save(){
+        if (goalTitleEditText.getText().toString().isEmpty() || goalTitleEditText.getText().toString().equals("") || goalTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            Snackbar.make(findViewById(android.R.id.content), "Goal must have a title", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
         Goal newGoal = new Goal(goal.getId(), goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), goal.isStarred(), goal.isCompleted(), "");
         dbHandler.updateGoal(newGoal);
 
