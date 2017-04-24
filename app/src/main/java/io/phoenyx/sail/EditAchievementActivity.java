@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -106,6 +107,12 @@ public class EditAchievementActivity extends AppCompatActivity {
     }
 
     private void save(){
+        if (achievementTitleEditText.getText().toString().isEmpty() || achievementTitleEditText.getText().toString().equals("") || achievementTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            Snackbar.make(findViewById(android.R.id.content), "Achievement must have a title", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
+
         Achievement newAchievement = new Achievement(achievementID, achievementTitleEditText.getText().toString(), achievementDescriptionEditText.getText().toString(), achievementDateTextView.getText().toString(), false);
         dbHandler.updateAchievement(newAchievement);
         finish();

@@ -74,6 +74,11 @@ public class AddAchievementActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.done:
+                if (achievementTitleEditText.getText().toString().isEmpty() || achievementTitleEditText.getText().toString().equals("") || achievementTitleEditText.getText().toString().replace(" ", "").equals("")) {
+                    Snackbar.make(findViewById(android.R.id.content), "Achievement must have a title", Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+
                 Achievement achievement = new Achievement(achievementTitleEditText.getText().toString(), achievementDescriptionEditText.getText().toString(), achievementDateTextView.getText().toString(), false);
                 dbHandler.createAchievement(achievement);
                 finish();

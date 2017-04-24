@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -42,6 +43,7 @@ public class EditPromiseActivity extends AppCompatActivity {
         promiseID = extras.getInt("promise_id");
 
         getSupportActionBar().setTitle("Edit Promise");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
@@ -82,21 +84,23 @@ public class EditPromiseActivity extends AppCompatActivity {
         promiseNotifDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long timeSince1970 = System.currentTimeMillis();
+                if (promiseNotificationCheckBox.isChecked()) {
+                    long timeSince1970 = System.currentTimeMillis();
 
-                DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        promiseNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
-                        notifYear = selectedYear;
-                        notifMonth = selectedMonth + 1;
-                        notifDay = selectedDay;
-                    }
-                }, year, month, day);
+                    DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            promiseNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                            notifYear = selectedYear;
+                            notifMonth = selectedMonth + 1;
+                            notifDay = selectedDay;
+                        }
+                    }, year, month, day);
 
-                dialog.getDatePicker().setMinDate(timeSince1970);
-                dialog.setTitle("");
-                dialog.show();
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                }
             }
         });
 
@@ -139,7 +143,7 @@ public class EditPromiseActivity extends AppCompatActivity {
         promiseDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (!promiseDateTextView.getText().toString().equals("Long term")) {
+                if (!promiseLongTermCheckBox.isChecked()) {
                     long timeSince1970 = System.currentTimeMillis();
 
                     DatePickerDialog dialog = new DatePickerDialog(EditPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
@@ -197,6 +201,11 @@ public class EditPromiseActivity extends AppCompatActivity {
     }
 
     private void save(){
+        if (promiseTitleEditText.getText().toString().isEmpty() || promiseTitleEditText.getText().toString().equals("") || promiseTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            Snackbar.make(findViewById(android.R.id.content), "Promise must have a title", Snackbar.LENGTH_SHORT).show();
+            return;
+        }
+
         Promise newPromise = new Promise(promiseID, promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false, "");
         dbHandler.updatePromise(newPromise);
 

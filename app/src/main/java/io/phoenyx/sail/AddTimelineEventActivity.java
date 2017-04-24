@@ -74,6 +74,11 @@ public class AddTimelineEventActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.done:
+                if (timelineEventTitleEditText.getText().toString().isEmpty() || timelineEventTitleEditText.getText().toString().equals("") || timelineEventTitleEditText.getText().toString().replace(" ", "").equals("")) {
+                    Snackbar.make(findViewById(android.R.id.content), "Event must have a title", Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+
                 TimelineEvent timelineEvent = new TimelineEvent(timelineEventTitleEditText.getText().toString(), timelineEventDescriptionEditText.getText().toString(), timelineEventDateTextView.getText().toString());
                 dbHandler.createTimelineEvent(timelineEvent);
                 finish();

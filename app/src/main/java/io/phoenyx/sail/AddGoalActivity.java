@@ -50,21 +50,23 @@ public class AddGoalActivity extends AppCompatActivity {
         goalNotifDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long timeSince1970 = System.currentTimeMillis();
+                if (goalNotificationCheckBox.isChecked()) {
+                    long timeSince1970 = System.currentTimeMillis();
 
-                DatePickerDialog dialog = new DatePickerDialog(AddGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        goalNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
-                        notifYear = selectedYear;
-                        notifMonth = selectedMonth + 1;
-                        notifDay = selectedDay;
-                    }
-                }, year, month, day);
+                    DatePickerDialog dialog = new DatePickerDialog(AddGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            goalNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                            notifYear = selectedYear;
+                            notifMonth = selectedMonth + 1;
+                            notifDay = selectedDay;
+                        }
+                    }, year, month, day);
 
-                dialog.getDatePicker().setMinDate(timeSince1970);
-                dialog.setTitle("");
-                dialog.show();
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                }
             }
         });
 
@@ -108,18 +110,20 @@ public class AddGoalActivity extends AppCompatActivity {
         goalDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long timeSince1970 = System.currentTimeMillis();
+                if (!goalLongTermCheckBox.isChecked()) {
+                    long timeSince1970 = System.currentTimeMillis();
 
-                DatePickerDialog dialog = new DatePickerDialog(AddGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        goalDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
-                    }
-                }, year, month, day);
+                    DatePickerDialog dialog = new DatePickerDialog(AddGoalActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            goalDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        }
+                    }, year, month, day);
 
-                dialog.getDatePicker().setMinDate(timeSince1970);
-                dialog.setTitle("");
-                dialog.show();
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                }
             }
         });
     }
@@ -136,6 +140,11 @@ public class AddGoalActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.done:
+                if (goalTitleEditText.getText().toString().isEmpty() || goalTitleEditText.getText().toString().equals("") || goalTitleEditText.getText().toString().replace(" ", "").equals("")) {
+                    Snackbar.make(findViewById(android.R.id.content), "Goal must have a title", Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+
                 Goal goal = new Goal(goalTitleEditText.getText().toString(), goalDescriptionEditText.getText().toString(), goalDateTextView.getText().toString(), false, false, "");
                 int goalID = dbHandler.createGoal(goal);
 
@@ -148,6 +157,7 @@ public class AddGoalActivity extends AppCompatActivity {
 
                 finish();
                 break;
+
             default:
                 Snackbar.make(findViewById(android.R.id.content), "Please try again", Snackbar.LENGTH_SHORT).show();
         }

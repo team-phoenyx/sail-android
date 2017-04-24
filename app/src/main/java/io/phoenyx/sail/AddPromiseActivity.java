@@ -51,21 +51,23 @@ public class AddPromiseActivity extends AppCompatActivity {
         promiseNotifDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                long timeSince1970 = System.currentTimeMillis();
+                if (promiseNotificationCheckBox.isChecked()) {
+                    long timeSince1970 = System.currentTimeMillis();
 
-                DatePickerDialog dialog = new DatePickerDialog(AddPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        promiseNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
-                        notifYear = selectedYear;
-                        notifMonth = selectedMonth + 1;
-                        notifDay = selectedDay;
-                    }
-                }, year, month, day);
+                    DatePickerDialog dialog = new DatePickerDialog(AddPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            promiseNotifDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                            notifYear = selectedYear;
+                            notifMonth = selectedMonth + 1;
+                            notifDay = selectedDay;
+                        }
+                    }, year, month, day);
 
-                dialog.getDatePicker().setMinDate(timeSince1970);
-                dialog.setTitle("");
-                dialog.show();
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                }
             }
         });
 
@@ -109,18 +111,20 @@ public class AddPromiseActivity extends AppCompatActivity {
         promiseDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                long timeSince1970 = System.currentTimeMillis();
+                if (!promiseLongTermCheckBox.isChecked()) {
+                    long timeSince1970 = System.currentTimeMillis();
 
-                DatePickerDialog dialog = new DatePickerDialog(AddPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
-                    @Override
-                    public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
-                        promiseDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
-                    }
-                }, year, month, day);
+                    DatePickerDialog dialog = new DatePickerDialog(AddPromiseActivity.this, new DatePickerDialog.OnDateSetListener() {
+                        @Override
+                        public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
+                            promiseDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        }
+                    }, year, month, day);
 
-                dialog.getDatePicker().setMinDate(timeSince1970);
-                dialog.setTitle("");
-                dialog.show();
+                    dialog.getDatePicker().setMinDate(timeSince1970);
+                    dialog.setTitle("");
+                    dialog.show();
+                }
             }
         });
     }
@@ -137,6 +141,11 @@ public class AddPromiseActivity extends AppCompatActivity {
 
         switch (item.getItemId()) {
             case R.id.done:
+                if (promiseTitleEditText.getText().toString().isEmpty() || promiseTitleEditText.getText().toString().equals("") || promiseTitleEditText.getText().toString().replace(" ", "").equals("")) {
+                    Snackbar.make(findViewById(android.R.id.content), "Promise must have a title", Snackbar.LENGTH_SHORT).show();
+                    break;
+                }
+
                 Promise promise = new Promise(promiseTitleEditText.getText().toString(), promiseDescriptionEditText.getText().toString(), promiseDateTextView.getText().toString(), promisePersonEditText.getText().toString(), false, false, "");
                 int promiseID = dbHandler.createPromise(promise);
 
