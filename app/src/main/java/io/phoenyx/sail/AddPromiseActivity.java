@@ -1,6 +1,7 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -142,6 +144,11 @@ public class AddPromiseActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.done:
                 if (promiseTitleEditText.getText().toString().isEmpty() || promiseTitleEditText.getText().toString().equals("") || promiseTitleEditText.getText().toString().replace(" ", "").equals("")) {
+                    InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    mgr.hideSoftInputFromWindow(promiseTitleEditText.getWindowToken(), 0);
+                    mgr.hideSoftInputFromWindow(promiseDescriptionEditText.getWindowToken(), 0);
+                    mgr.hideSoftInputFromWindow(promisePersonEditText.getWindowToken(), 0);
+
                     Snackbar.make(findViewById(android.R.id.content), "Promise must have a title", Snackbar.LENGTH_SHORT).show();
                     break;
                 }
