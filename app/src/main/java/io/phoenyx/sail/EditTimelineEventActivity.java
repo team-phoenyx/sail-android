@@ -1,16 +1,20 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -107,6 +111,9 @@ public class EditTimelineEventActivity extends AppCompatActivity {
 
     private void save(){
         if (timelineEventTitleEditText.getText().toString().isEmpty() || timelineEventTitleEditText.getText().toString().equals("") || timelineEventTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(timelineEventTitleEditText.getWindowToken(), 0);
+
             Snackbar.make(findViewById(android.R.id.content), "Event must have a title", Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -116,14 +123,26 @@ public class EditTimelineEventActivity extends AppCompatActivity {
         finish();
     }
 
-    private void discard(){
-        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true)) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+    private boolean detectChanges() {
+        return !(timelineEvent.getTitle().equals(timelineEventTitleEditText.getText().toString()) && timelineEvent.getDate().equals(timelineEventDateTextView.getText().toString()) && timelineEvent.getDescription().equals(timelineEventDescriptionEditText.getText().toString()));
+    }
 
-            notifyBeforeDiscardDB.setTitle("Discard Changes?");
+    private void discard(){
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
+            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View discardDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
+            notifyBeforeDiscardDB.setTitle("Discard Changes?").setView(discardDialogView);
+
+            final CheckBox dontRemindCheckBox = (CheckBox) discardDialogView.findViewById(R.id.dontRemindCheckBox);
+
             notifyBeforeDiscardDB.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    if (dontRemindCheckBox.isChecked()) {
+                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                    }
+
                     dialog.dismiss();
                     finish();
                 }
@@ -135,15 +154,6 @@ public class EditTimelineEventActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
             });
-
-            notifyBeforeDiscardDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
-                    dialog.dismiss();
-                    finish();
-                }
-            });
             notifyBeforeDiscardDB.show();
         } else {
             finish();
@@ -153,12 +163,20 @@ public class EditTimelineEventActivity extends AppCompatActivity {
     private void delete() {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
             notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View deleteDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
 
-            notifyBeforeDeleteDB.setTitle("Delete Timeline Event?");
+            notifyBeforeDeleteDB.setTitle("Delete Goal?").setView(deleteDialogView);
+
+            final CheckBox dontRemindCheckBox = (CheckBox) deleteDialogView.findViewById(R.id.dontRemindCheckBox);
 
             notifyBeforeDeleteDB.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    if (dontRemindCheckBox.isChecked()) {
+                        sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
+
+                    }
                     dbHandler.deleteTimelineEvent(timelineEventID);
                     finish();
                 }
@@ -168,15 +186,6 @@ public class EditTimelineEventActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                }
-            });
-
-            notifyBeforeDeleteDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
-                    dbHandler.deleteTimelineEvent(timelineEventID);
-                    finish();
                 }
             });
 

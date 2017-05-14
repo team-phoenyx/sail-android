@@ -1,16 +1,19 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -202,6 +205,11 @@ public class EditPromiseActivity extends AppCompatActivity {
 
     private void save(){
         if (promiseTitleEditText.getText().toString().isEmpty() || promiseTitleEditText.getText().toString().equals("") || promiseTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(promiseTitleEditText.getWindowToken(), 0);
+            mgr.hideSoftInputFromWindow(promiseDescriptionEditText.getWindowToken(), 0);
+            mgr.hideSoftInputFromWindow(promisePersonEditText.getWindowToken(), 0);
+
             Snackbar.make(findViewById(android.R.id.content), "Promise must have a title", Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -213,7 +221,7 @@ public class EditPromiseActivity extends AppCompatActivity {
         notificationBuilder.deleteNotification();
 
         if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && promiseNotificationCheckBox.isChecked()) {
-            NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", promiseTitleEditText.getText().toString(), promiseID);
+            NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming promise", promiseTitleEditText.getText().toString(), promiseID);
             builder.buildNotification();
             newPromise.setNotify(months[notifMonth - 1] + " " + notifDay + " " + notifYear);
             dbHandler.updatePromise(newPromise);
@@ -222,14 +230,26 @@ public class EditPromiseActivity extends AppCompatActivity {
         finish();
     }
 
-    private void discard(){
-        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true)) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+    private boolean detectChanges() {
+        return !(promise.getTitle().equals(promiseTitleEditText.getText().toString()) && promise.getPerson().equals(promisePersonEditText.getText().toString()) && promise.getDate().equals(promiseDateTextView.getText().toString()) && (promise.getNotify().equals(promiseNotifDateTextView.getText().toString()) || (promise.getNotify().equals("") && promiseNotifDateTextView.getText().toString().equals("No notification"))) && promise.getDescription().equals(promiseDescriptionEditText.getText().toString()));
+    }
 
-            notifyBeforeDiscardDB.setTitle("Discard Changes?");
+    private void discard(){
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
+            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View discardDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
+            notifyBeforeDiscardDB.setTitle("Discard Changes?").setView(discardDialogView);
+
+            final CheckBox dontRemindCheckBox = (CheckBox) discardDialogView.findViewById(R.id.dontRemindCheckBox);
+
             notifyBeforeDiscardDB.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    if (dontRemindCheckBox.isChecked()) {
+                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                    }
+
                     dialog.dismiss();
                     finish();
                 }
@@ -241,15 +261,6 @@ public class EditPromiseActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
             });
-
-            notifyBeforeDiscardDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
-                    dialog.dismiss();
-                    finish();
-                }
-            });
             notifyBeforeDiscardDB.show();
         } else {
             finish();
@@ -259,12 +270,20 @@ public class EditPromiseActivity extends AppCompatActivity {
     private void delete() {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
             notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View deleteDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
 
-            notifyBeforeDeleteDB.setTitle("Delete Promise?");
+            notifyBeforeDeleteDB.setTitle("Delete Goal?").setView(deleteDialogView);
+
+            final CheckBox dontRemindCheckBox = (CheckBox) deleteDialogView.findViewById(R.id.dontRemindCheckBox);
 
             notifyBeforeDeleteDB.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    if (dontRemindCheckBox.isChecked()) {
+                        sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
+
+                    }
                     dbHandler.deletePromise(promiseID);
                     finish();
                 }
@@ -274,15 +293,6 @@ public class EditPromiseActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     dialog.dismiss();
-                }
-            });
-
-            notifyBeforeDeleteDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
-                    dbHandler.deletePromise(promiseID);
-                    finish();
                 }
             });
 
