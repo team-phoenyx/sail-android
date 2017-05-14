@@ -2,9 +2,13 @@ package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -21,11 +25,14 @@ import java.util.Calendar;
 public class AddGoalActivity extends AppCompatActivity {
 
     DBHandler dbHandler;
+    SharedPreferences sharedPreferences;
     EditText goalTitleEditText, goalDescriptionEditText;
     CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
     TextView goalDateTextView, goalNotifDateTextView;
+    AlertDialog.Builder notifyBeforeDiscardDB;
     String[] months;
 
+    String originalDate;
     int year, month, day, notifYear, notifMonth, notifDay;
 
     @Override
@@ -34,8 +41,10 @@ public class AddGoalActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_goal);
 
         getSupportActionBar().setTitle("New Goal");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dbHandler = new DBHandler(this);
+        sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
 
         year = Calendar.getInstance().get(Calendar.YEAR);
         month = Calendar.getInstance().get(Calendar.MONTH);
@@ -108,7 +117,8 @@ public class AddGoalActivity extends AppCompatActivity {
             }
         });
 
-        goalDateTextView.setText(months[month] + " " + day + " " + year);
+        originalDate = months[month] + " " + day + " " + year;
+        goalDateTextView.setText(originalDate);
         goalDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -128,6 +138,51 @@ public class AddGoalActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean detectChanges() {
+        return !(goalTitleEditText.getText().toString().equals("") &&
+                originalDate.equals(goalDateTextView.getText().toString()) &&
+                goalNotifDateTextView.getText().toString().equals("No notification") &&
+                goalDescriptionEditText.getText().toString().equals(""));
+    }
+
+    private void discard() {
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
+            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View discardDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
+            notifyBeforeDiscardDB.setTitle("Discard Changes?").setView(discardDialogView);
+
+            final CheckBox dontRemindCheckBox = (CheckBox) discardDialogView.findViewById(R.id.dontRemindCheckBox);
+
+            notifyBeforeDiscardDB.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (dontRemindCheckBox.isChecked()) {
+                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                    }
+
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+
+            notifyBeforeDiscardDB.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            notifyBeforeDiscardDB.show();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        discard();
     }
 
     @Override
@@ -165,7 +220,7 @@ public class AddGoalActivity extends AppCompatActivity {
                 break;
 
             default:
-                Snackbar.make(findViewById(android.R.id.content), "Please try again", Snackbar.LENGTH_SHORT).show();
+                discard();
         }
 
 

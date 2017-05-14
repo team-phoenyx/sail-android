@@ -2,15 +2,20 @@ package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -23,7 +28,10 @@ public class AddTimelineEventActivity extends AppCompatActivity {
     EditText timelineEventTitleEditText, timelineEventDescriptionEditText;
     TextView timelineEventDateTextView;
     String[] months;
+    AlertDialog.Builder notifyBeforeDiscardDB;
+    SharedPreferences sharedPreferences;
 
+    String originalDate;
     int year, month, day;
 
     @Override
@@ -32,8 +40,10 @@ public class AddTimelineEventActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_timeline_event);
 
         getSupportActionBar().setTitle("New Event");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dbHandler = new DBHandler(this);
+        sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
 
         year = Calendar.getInstance().get(Calendar.YEAR);
         month = Calendar.getInstance().get(Calendar.MONTH);
@@ -44,7 +54,8 @@ public class AddTimelineEventActivity extends AppCompatActivity {
         timelineEventDescriptionEditText = (EditText) findViewById(R.id.timelineEventDescriptionEditText);
         timelineEventDateTextView = (TextView) findViewById(R.id.timelineEventDateTextView);
 
-        timelineEventDateTextView.setText(months[month] + " " + day + " " + year);
+        originalDate = months[month] + " " + day + " " + year;
+        timelineEventDateTextView.setText(originalDate);
         timelineEventDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -62,6 +73,50 @@ public class AddTimelineEventActivity extends AppCompatActivity {
                 dialog.show();
             }
         });
+    }
+
+    private boolean detectChanges() {
+        return !(timelineEventDateTextView.getText().toString().equals("") &&
+                originalDate.equals(timelineEventDateTextView.getText().toString()) &&
+                timelineEventDescriptionEditText.getText().toString().equals(""));
+    }
+
+    private void discard() {
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
+            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View discardDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
+            notifyBeforeDiscardDB.setTitle("Discard Changes?").setView(discardDialogView);
+
+            final CheckBox dontRemindCheckBox = (CheckBox) discardDialogView.findViewById(R.id.dontRemindCheckBox);
+
+            notifyBeforeDiscardDB.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (dontRemindCheckBox.isChecked()) {
+                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                    }
+
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+
+            notifyBeforeDiscardDB.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            notifyBeforeDiscardDB.show();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        discard();
     }
 
     @Override
@@ -89,7 +144,7 @@ public class AddTimelineEventActivity extends AppCompatActivity {
                 finish();
                 break;
             default:
-                Snackbar.make(findViewById(android.R.id.content), "Please try again", BaseTransientBottomBar.LENGTH_SHORT).show();
+                discard();
         }
 
 

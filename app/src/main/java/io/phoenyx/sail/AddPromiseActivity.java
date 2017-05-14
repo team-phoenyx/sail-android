@@ -2,9 +2,13 @@ package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.DialogInterface;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -25,7 +29,10 @@ public class AddPromiseActivity extends AppCompatActivity {
     CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
     TextView promiseDateTextView, promiseNotifDateTextView;
     String[] months;
+    AlertDialog.Builder notifyBeforeDiscardDB;
+    SharedPreferences sharedPreferences;
 
+    String originalDate;
     int year, month, day, notifYear, notifMonth, notifDay;
 
     @Override
@@ -34,8 +41,10 @@ public class AddPromiseActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_promise);
 
         getSupportActionBar().setTitle("New Promise");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dbHandler = new DBHandler(this);
+        sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
 
         year = Calendar.getInstance().get(Calendar.YEAR);
         month = Calendar.getInstance().get(Calendar.MONTH);
@@ -109,7 +118,8 @@ public class AddPromiseActivity extends AppCompatActivity {
             }
         });
 
-        promiseDateTextView.setText(months[month] + " " + day + " " + year);
+        originalDate = months[month] + " " + day + " " + year;
+        promiseDateTextView.setText(originalDate);
         promiseDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -129,6 +139,51 @@ public class AddPromiseActivity extends AppCompatActivity {
                 }
             }
         });
+    }
+
+    private boolean detectChanges() {
+        return !(promiseTitleEditText.getText().toString().equals("") &&
+                promisePersonEditText.getText().toString().equals("") &&
+                originalDate.equals(promiseDateTextView.getText().toString()) &&
+                promiseDescriptionEditText.getText().toString().equals(""));
+    }
+
+    private void discard() {
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
+            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View discardDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
+            notifyBeforeDiscardDB.setTitle("Discard Changes?").setView(discardDialogView);
+
+            final CheckBox dontRemindCheckBox = (CheckBox) discardDialogView.findViewById(R.id.dontRemindCheckBox);
+
+            notifyBeforeDiscardDB.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    if (dontRemindCheckBox.isChecked()) {
+                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                    }
+
+                    dialog.dismiss();
+                    finish();
+                }
+            });
+
+            notifyBeforeDiscardDB.setNegativeButton("Cancel", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialog, int which) {
+                    dialog.dismiss();
+                }
+            });
+            notifyBeforeDiscardDB.show();
+        } else {
+            finish();
+        }
+    }
+
+    @Override
+    public void onBackPressed() {
+        discard();
     }
 
     @Override
@@ -166,7 +221,7 @@ public class AddPromiseActivity extends AppCompatActivity {
                 finish();
                 break;
             default:
-                Snackbar.make(findViewById(android.R.id.content), "Please try again", Snackbar.LENGTH_SHORT).show();
+                discard();
         }
 
 
