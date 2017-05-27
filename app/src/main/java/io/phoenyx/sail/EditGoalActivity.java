@@ -1,6 +1,7 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -200,6 +202,10 @@ public class EditGoalActivity extends AppCompatActivity {
 
     private void save(){
         if (goalTitleEditText.getText().toString().isEmpty() || goalTitleEditText.getText().toString().equals("") || goalTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(goalDescriptionEditText.getWindowToken(), 0);
+            mgr.hideSoftInputFromWindow(goalTitleEditText.getWindowToken(), 0);
+
             Snackbar.make(findViewById(android.R.id.content), "Goal must have a title", Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -220,8 +226,15 @@ public class EditGoalActivity extends AppCompatActivity {
         finish();
     }
 
+    private boolean detectChanges() {
+        return !(goal.getTitle().equals(goalTitleEditText.getText().toString()) &&
+                goal.getDate().equals(goalDateTextView.getText().toString()) &&
+                (goal.getNotify().equals(goalNotifDateTextView.getText().toString()) || (goal.getNotify().equals("") && goalNotifDateTextView.getText().toString().equals("No notification"))) &&
+                goal.getDescription().equals(goalDescriptionEditText.getText().toString()));
+    }
+
     private void discard() {
-        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true)) {
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
             notifyBeforeDiscardDB = new AlertDialog.Builder(this);
 
             notifyBeforeDiscardDB.setTitle("Discard Changes?");

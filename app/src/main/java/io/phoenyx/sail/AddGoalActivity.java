@@ -1,6 +1,7 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -8,6 +9,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -141,6 +143,10 @@ public class AddGoalActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.done:
                 if (goalTitleEditText.getText().toString().isEmpty() || goalTitleEditText.getText().toString().equals("") || goalTitleEditText.getText().toString().replace(" ", "").equals("")) {
+                    InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    mgr.hideSoftInputFromWindow(goalDescriptionEditText.getWindowToken(), 0);
+                    mgr.hideSoftInputFromWindow(goalTitleEditText.getWindowToken(), 0);
+
                     Snackbar.make(findViewById(android.R.id.content), "Goal must have a title", Snackbar.LENGTH_SHORT).show();
                     break;
                 }

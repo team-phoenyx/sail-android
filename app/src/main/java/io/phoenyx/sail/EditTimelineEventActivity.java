@@ -1,6 +1,7 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -107,6 +109,9 @@ public class EditTimelineEventActivity extends AppCompatActivity {
 
     private void save(){
         if (timelineEventTitleEditText.getText().toString().isEmpty() || timelineEventTitleEditText.getText().toString().equals("") || timelineEventTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(timelineEventTitleEditText.getWindowToken(), 0);
+
             Snackbar.make(findViewById(android.R.id.content), "Event must have a title", Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -116,8 +121,12 @@ public class EditTimelineEventActivity extends AppCompatActivity {
         finish();
     }
 
+    private boolean detectChanges() {
+        return !(timelineEvent.getTitle().equals(timelineEventTitleEditText.getText().toString()) && timelineEvent.getDate().equals(timelineEventDateTextView.getText().toString()) && timelineEvent.getDescription().equals(timelineEventDescriptionEditText.getText().toString()));
+    }
+
     private void discard(){
-        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true)) {
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
             notifyBeforeDiscardDB = new AlertDialog.Builder(this);
 
             notifyBeforeDiscardDB.setTitle("Discard Changes?");

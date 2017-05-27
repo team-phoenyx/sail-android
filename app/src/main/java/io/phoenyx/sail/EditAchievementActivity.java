@@ -1,6 +1,7 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -108,6 +110,10 @@ public class EditAchievementActivity extends AppCompatActivity {
 
     private void save(){
         if (achievementTitleEditText.getText().toString().isEmpty() || achievementTitleEditText.getText().toString().equals("") || achievementTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(achievementDescriptionEditText.getWindowToken(), 0);
+            mgr.hideSoftInputFromWindow(achievementTitleEditText.getWindowToken(), 0);
+
             Snackbar.make(findViewById(android.R.id.content), "Achievement must have a title", Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -118,8 +124,12 @@ public class EditAchievementActivity extends AppCompatActivity {
         finish();
     }
 
+    private boolean detectChanges() {
+        return !(achievement.getTitle().equals(achievementTitleEditText.getText().toString()) && achievement.getDate().equals(achievementDateTextView.getText().toString()) && achievement.getDescription().equals(achievementDescriptionEditText.getText().toString()));
+    }
+
     private void discard(){
-        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true)) {
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
             notifyBeforeDiscardDB = new AlertDialog.Builder(this);
 
             notifyBeforeDiscardDB.setTitle("Discard Changes?");

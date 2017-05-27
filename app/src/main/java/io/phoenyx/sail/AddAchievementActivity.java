@@ -1,6 +1,7 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
@@ -9,6 +10,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -75,6 +77,10 @@ public class AddAchievementActivity extends AppCompatActivity {
         switch (item.getItemId()) {
             case R.id.done:
                 if (achievementTitleEditText.getText().toString().isEmpty() || achievementTitleEditText.getText().toString().equals("") || achievementTitleEditText.getText().toString().replace(" ", "").equals("")) {
+                    InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                    mgr.hideSoftInputFromWindow(achievementDescriptionEditText.getWindowToken(), 0);
+                    mgr.hideSoftInputFromWindow(achievementTitleEditText.getWindowToken(), 0);
+
                     Snackbar.make(findViewById(android.R.id.content), "Achievement must have a title", Snackbar.LENGTH_SHORT).show();
                     break;
                 }

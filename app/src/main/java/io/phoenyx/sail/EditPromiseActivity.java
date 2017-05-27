@@ -1,6 +1,7 @@
 package io.phoenyx.sail;
 
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
@@ -11,6 +12,7 @@ import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.DatePicker;
@@ -202,6 +204,11 @@ public class EditPromiseActivity extends AppCompatActivity {
 
     private void save(){
         if (promiseTitleEditText.getText().toString().isEmpty() || promiseTitleEditText.getText().toString().equals("") || promiseTitleEditText.getText().toString().replace(" ", "").equals("")) {
+            InputMethodManager mgr = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+            mgr.hideSoftInputFromWindow(promiseTitleEditText.getWindowToken(), 0);
+            mgr.hideSoftInputFromWindow(promiseDescriptionEditText.getWindowToken(), 0);
+            mgr.hideSoftInputFromWindow(promisePersonEditText.getWindowToken(), 0);
+
             Snackbar.make(findViewById(android.R.id.content), "Promise must have a title", Snackbar.LENGTH_SHORT).show();
             return;
         }
@@ -213,7 +220,7 @@ public class EditPromiseActivity extends AppCompatActivity {
         notificationBuilder.deleteNotification();
 
         if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && promiseNotificationCheckBox.isChecked()) {
-            NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", promiseTitleEditText.getText().toString(), promiseID);
+            NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming promise", promiseTitleEditText.getText().toString(), promiseID);
             builder.buildNotification();
             newPromise.setNotify(months[notifMonth - 1] + " " + notifDay + " " + notifYear);
             dbHandler.updatePromise(newPromise);
@@ -222,8 +229,12 @@ public class EditPromiseActivity extends AppCompatActivity {
         finish();
     }
 
+    private boolean detectChanges() {
+        return !(promise.getTitle().equals(promiseTitleEditText.getText().toString()) && promise.getPerson().equals(promisePersonEditText.getText().toString()) && promise.getDate().equals(promiseDateTextView.getText().toString()) && (promise.getNotify().equals(promiseNotifDateTextView.getText().toString()) || (promise.getNotify().equals("") && promiseNotifDateTextView.getText().toString().equals("No notification"))) && promise.getDescription().equals(promiseDescriptionEditText.getText().toString()));
+    }
+
     private void discard(){
-        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true)) {
+        if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
             notifyBeforeDiscardDB = new AlertDialog.Builder(this);
 
             notifyBeforeDiscardDB.setTitle("Discard Changes?");
