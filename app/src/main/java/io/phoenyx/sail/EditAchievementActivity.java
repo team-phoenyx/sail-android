@@ -8,11 +8,13 @@ import android.os.Bundle;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -131,11 +133,19 @@ public class EditAchievementActivity extends AppCompatActivity {
     private void discard(){
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
             notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View discardDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
 
-            notifyBeforeDiscardDB.setTitle("Discard Changes?");
+            notifyBeforeDiscardDB.setTitle("Discard Changes?").setView(discardDialogView);
+
+            final CheckBox dontRemindCheckBox = (CheckBox) discardDialogView.findViewById(R.id.dontRemindCheckBox);
+
             notifyBeforeDiscardDB.setPositiveButton("Discard", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    if (dontRemindCheckBox.isChecked()) {
+                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                    }
                     dialog.dismiss();
                     finish();
                 }
@@ -147,15 +157,6 @@ public class EditAchievementActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
             });
-
-            notifyBeforeDiscardDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
-                    dialog.dismiss();
-                    finish();
-                }
-            });
             notifyBeforeDiscardDB.show();
         } else {
             finish();
@@ -165,12 +166,19 @@ public class EditAchievementActivity extends AppCompatActivity {
     private void delete() {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
             notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+            LayoutInflater layoutInflater = this.getLayoutInflater();
+            View deleteDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
 
-            notifyBeforeDeleteDB.setTitle("Delete Achievement?");
+            notifyBeforeDeleteDB.setTitle("Delete Achievement?").setView(deleteDialogView);
+
+            final CheckBox dontRemindCheckBox = (CheckBox) deleteDialogView.findViewById(R.id.dontRemindCheckBox);
 
             notifyBeforeDeleteDB.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
+                    if (dontRemindCheckBox.isChecked()) {
+                        sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
+                    }
                     dbHandler.deleteAchievement(achievementID);
                     finish();
                 }
@@ -182,16 +190,6 @@ public class EditAchievementActivity extends AppCompatActivity {
                     dialog.dismiss();
                 }
             });
-
-            notifyBeforeDeleteDB.setNeutralButton("Yes, don't remind", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialog, int which) {
-                    sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
-                    dbHandler.deleteAchievement(achievementID);
-                    finish();
-                }
-            });
-
             notifyBeforeDeleteDB.show();
         } else {
             dbHandler.deleteAchievement(achievementID);
