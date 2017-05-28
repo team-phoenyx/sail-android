@@ -11,6 +11,11 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 
+import io.phoenyx.sail.models.QuoteResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
+
 public class SplashActivity extends AppCompatActivity {
     DBHandler dbHandler;
     String quote;
@@ -27,6 +32,7 @@ public class SplashActivity extends AppCompatActivity {
 
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
 
+        /*
         if (sharedPreferences.getBoolean("firstrun", true)) {
             //ADD QUOTES TO DATABASE
             try {
@@ -61,6 +67,24 @@ public class SplashActivity extends AppCompatActivity {
         while (quote.length() > 60) {
             quote = dbHandler.getRandomQuote();
         }
+        */
+
+        SailService sailService = RetrofitClient.getClient("quotes.rest/").create(SailService.class);
+        sailService.getQOD().enqueue(new Callback<QuoteResponse>() {
+            @Override
+            public void onResponse(Call<QuoteResponse> call, Response<QuoteResponse> response) {
+                if (response.isSuccessful()) {
+                    quote = response.body().getContents().getQuotes().get(0).getQuote() + "\n" + "    ";
+                } else {
+                    quote = "Sorry, quotes are currently unavailable";
+                }
+            }
+
+            @Override
+            public void onFailure(Call<QuoteResponse> call, Throwable t) {
+                quote = "Sorry, quotes are currently unavailable";
+            }
+        });
 
         Intent startIntent = new Intent(getApplicationContext(), MainActivity.class);
         startIntent.putExtra("quote", quote);
