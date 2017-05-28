@@ -31,7 +31,7 @@ public class AddTimelineEventActivity extends AppCompatActivity {
     SharedPreferences sharedPreferences;
 
     String originalDate;
-    int year, month, day;
+    int year, month, day, finalSelectedYear, finalSelectedMonth, finalSelectedDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,6 +47,10 @@ public class AddTimelineEventActivity extends AppCompatActivity {
         year = Calendar.getInstance().get(Calendar.YEAR);
         month = Calendar.getInstance().get(Calendar.MONTH);
         day = Calendar.getInstance().get(Calendar.DAY_OF_MONTH);
+
+        finalSelectedYear = year;
+        finalSelectedMonth = month;
+        finalSelectedDay = day;
         months = new String[]{"Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."};
 
         timelineEventTitleEditText = (EditText) findViewById(R.id.timelineEventTitleEditText);
@@ -64,6 +68,9 @@ public class AddTimelineEventActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
                         timelineEventDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        finalSelectedDay = selectedDay;
+                        finalSelectedMonth = selectedMonth;
+                        finalSelectedYear = selectedYear;
                     }
                 }, year, month, day);
 
@@ -138,7 +145,7 @@ public class AddTimelineEventActivity extends AppCompatActivity {
                     break;
                 }
 
-                TimelineEvent timelineEvent = new TimelineEvent(timelineEventTitleEditText.getText().toString(), timelineEventDescriptionEditText.getText().toString(), timelineEventDateTextView.getText().toString());
+                TimelineEvent timelineEvent = new TimelineEvent(timelineEventTitleEditText.getText().toString(), finalSelectedMonth + 1, finalSelectedDay, finalSelectedYear, timelineEventDescriptionEditText.getText().toString());
                 dbHandler.createTimelineEvent(timelineEvent);
                 finish();
                 break;

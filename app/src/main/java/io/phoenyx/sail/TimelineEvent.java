@@ -1,20 +1,27 @@
 package io.phoenyx.sail;
 
 public class TimelineEvent {
-    private int id;
+    private int id, month, day, year;
     private String title, description, date;
+    String[] months = new String[]{"Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."};
 
-    public TimelineEvent(int id, String title, String description, String date) {
-        this.id = id;
+    public TimelineEvent(String title, int month, int day, int year, String description) {
+        this.month = month;
+        this.day = day;
+        this.year = year;
         this.title = title;
         this.description = description;
-        this.date = date;
+        this.date = months[month - 1] + " " + day + " " + year;
     }
 
-    public TimelineEvent(String title, String description, String date) {
+    public TimelineEvent(int id, String title, int month, int day, int year, String description) {
+        this.id = id;
+        this.month = month;
+        this.day = day;
+        this.year = year;
         this.title = title;
         this.description = description;
-        this.date = date;
+        this.date = months[month - 1] + " " + day + " " + year;
     }
 
     public int getId() {
@@ -23,6 +30,14 @@ public class TimelineEvent {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    //@param month should be from 1-12
+    public void setDateWithValues(int month, int day, int year) throws IllegalArgumentException {
+        this.month = month;
+        this.day = day;
+        this.year = year;
+        this.date = months[month - 1] + " " + day + " " + year;
     }
 
     public String getTitle() {
@@ -45,7 +60,15 @@ public class TimelineEvent {
         return date;
     }
 
-    public void setDate(String date) {
-        this.date = date;
+    public int getMonth() {
+        return month;
+    }
+
+    public int getDay() {
+        return day;
+    }
+
+    public int getYear() {
+        return year;
     }
 }
