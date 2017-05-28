@@ -43,6 +43,7 @@ public class EditTimelineEventActivity extends AppCompatActivity {
         timelineEventID = extras.getInt("timeline_event_id");
 
         getSupportActionBar().setTitle("Edit Event");
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
