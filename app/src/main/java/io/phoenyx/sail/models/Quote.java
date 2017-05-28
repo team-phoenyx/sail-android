@@ -1,121 +1,64 @@
-
 package io.phoenyx.sail.models;
 
-import java.util.List;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 public class Quote {
 
-    @SerializedName("quote")
+    @SerializedName("quoteText")
     @Expose
-    private String quote;
-    @SerializedName("length")
+    private String quoteText;
+    @SerializedName("quoteAuthor")
     @Expose
-    private String length;
-    @SerializedName("author")
+    private String quoteAuthor;
+    @SerializedName("senderName")
     @Expose
-    private String author;
-    @SerializedName("tags")
+    private String senderName;
+    @SerializedName("senderLink")
     @Expose
-    private List<String> tags = null;
-    @SerializedName("category")
+    private String senderLink;
+    @SerializedName("quoteLink")
     @Expose
-    private String category;
-    @SerializedName("date")
-    @Expose
-    private String date;
-    @SerializedName("permalink")
-    @Expose
-    private String permalink;
-    @SerializedName("title")
-    @Expose
-    private String title;
-    @SerializedName("background")
-    @Expose
-    private String background;
-    @SerializedName("id")
-    @Expose
-    private String id;
+    private String quoteLink;
 
-    public String getQuote() {
-        return quote;
+    public String getQuoteText() {
+        return quoteText;
     }
 
-    public void setQuote(String quote) {
-        this.quote = quote;
+    public void setQuoteText(String quoteText) {
+        this.quoteText = quoteText;
     }
 
-    public String getLength() {
-        return length;
+    public String getQuoteAuthor() {
+        return quoteAuthor;
     }
 
-    public void setLength(String length) {
-        this.length = length;
+    public void setQuoteAuthor(String quoteAuthor) {
+        this.quoteAuthor = quoteAuthor;
     }
 
-    public String getAuthor() {
-        return author;
+    public String getSenderName() {
+        return senderName;
     }
 
-    public void setAuthor(String author) {
-        this.author = author;
+    public void setSenderName(String senderName) {
+        this.senderName = senderName;
     }
 
-    public List<String> getTags() {
-        return tags;
+    public String getSenderLink() {
+        return senderLink;
     }
 
-    public void setTags(List<String> tags) {
-        this.tags = tags;
+    public void setSenderLink(String senderLink) {
+        this.senderLink = senderLink;
     }
 
-    public String getCategory() {
-        return category;
+    public String getQuoteLink() {
+        return quoteLink;
     }
 
-    public void setCategory(String category) {
-        this.category = category;
-    }
-
-    public String getDate() {
-        return date;
-    }
-
-    public void setDate(String date) {
-        this.date = date;
-    }
-
-    public String getPermalink() {
-        return permalink;
-    }
-
-    public void setPermalink(String permalink) {
-        this.permalink = permalink;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public String getBackground() {
-        return background;
-    }
-
-    public void setBackground(String background) {
-        this.background = background;
-    }
-
-    public String getId() {
-        return id;
-    }
-
-    public void setId(String id) {
-        this.id = id;
+    public void setQuoteLink(String quoteLink) {
+        this.quoteLink = quoteLink;
     }
 
 }
