@@ -16,9 +16,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="6dp"
-        android:text="Welcome to Sail!"
+        android:text="Inspiring quote"
         android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="20sp" />
+        android:textSize="18sp" />
 
     <TextView
         android:id="@+id/quoteTextView"
@@ -26,12 +26,5 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="8dp"
         android:text='"Quote"' />
-
-    <TextView
-        android:id="@+id/textView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:text="Quotes from They Said So" />
 
 </LinearLayout>

@@ -20,7 +20,7 @@ import io.phoenyx.sail.fragments.AchievementsFragment;
 import io.phoenyx.sail.fragments.GoalsFragment;
 import io.phoenyx.sail.fragments.PromisesFragment;
 import io.phoenyx.sail.fragments.TimelineFragment;
-import io.phoenyx.sail.models.QuoteResponse;
+import io.phoenyx.sail.models.Quote;
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -77,12 +77,12 @@ public class MainActivity extends AppCompatActivity
     }
 
     private void initializeQuotes() {
-        SailService sailService = RetrofitClient.getClient("https://quotes.rest/").create(SailService.class);
-        sailService.getQOD().enqueue(new Callback<QuoteResponse>() {
+        SailService sailService = RetrofitClient.getClient("http://api.forismatic.com/").create(SailService.class);
+        sailService.getQOD().enqueue(new Callback<Quote>() {
             @Override
-            public void onResponse(Call<QuoteResponse> call, Response<QuoteResponse> response) {
+            public void onResponse(Call<Quote> call, Response<Quote> response) {
                 if (response.isSuccessful()) {
-                    quote = response.body().getContents().getQuotes().get(0).getQuote() + "\n" + "    -" + response.body().getContents().getQuotes().get(0).getAuthor();
+                    quote = response.body().getQuoteText() + "\n" + "    -" + response.body().getQuoteAuthor();
                 } else {
                     quote = "Sorry, quotes are currently unavailable";
                 }
@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
             }
 
             @Override
-            public void onFailure(Call<QuoteResponse> call, Throwable t) {
+            public void onFailure(Call<Quote> call, Throwable t) {
                 quote = "Sorry, quotes are currently unavailable";
                 quoteTextView.setText(quote);
             }
