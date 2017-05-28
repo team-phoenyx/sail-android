@@ -1,32 +1,19 @@
 package io.phoenyx.sail;
 
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-
 public class SplashActivity extends AppCompatActivity {
-    DBHandler dbHandler;
-    String quote;
-
-    SharedPreferences sharedPreferences;
-    InputStream inputStream;
-    BufferedReader bufferedReader;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        dbHandler = new DBHandler(this);
+        //TODO Check connection
 
-        sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
-
+        /*
         if (sharedPreferences.getBoolean("firstrun", true)) {
             //ADD QUOTES TO DATABASE
             try {
@@ -61,9 +48,9 @@ public class SplashActivity extends AppCompatActivity {
         while (quote.length() > 60) {
             quote = dbHandler.getRandomQuote();
         }
+        */
 
         Intent startIntent = new Intent(getApplicationContext(), MainActivity.class);
-        startIntent.putExtra("quote", quote);
         startActivity(startIntent);
         finish();
     }

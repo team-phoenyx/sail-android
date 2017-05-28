@@ -20,6 +20,10 @@ import io.phoenyx.sail.fragments.AchievementsFragment;
 import io.phoenyx.sail.fragments.GoalsFragment;
 import io.phoenyx.sail.fragments.PromisesFragment;
 import io.phoenyx.sail.fragments.TimelineFragment;
+import io.phoenyx.sail.models.QuoteResponse;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -48,18 +52,15 @@ public class MainActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        Bundle extras = getIntent().getExtras();
-        quote = extras.getString("quote");
-
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navHeader = navigationView.getHeaderView(0);
         handler = new Handler();
         navigationView.setNavigationItemSelectedListener(this);
+        quoteTextView = (TextView) navHeader.findViewById(R.id.quoteTextView);
 
         dbHandler = new DBHandler(this);
 
@@ -70,14 +71,31 @@ public class MainActivity extends AppCompatActivity
         drawer.setDrawerListener(toggle);
         toggle.syncState();
 
-        loadNavHeader();
+        initializeQuotes();
 
         navigate(navItemIndex);
     }
 
-    private void loadNavHeader() {
-        quoteTextView = (TextView) navHeader.findViewById(R.id.quoteTextView);
-        quoteTextView.setText(quote);
+    private void initializeQuotes() {
+        SailService sailService = RetrofitClient.getClient("https://quotes.rest/").create(SailService.class);
+        sailService.getQOD().enqueue(new Callback<QuoteResponse>() {
+            @Override
+            public void onResponse(Call<QuoteResponse> call, Response<QuoteResponse> response) {
+                if (response.isSuccessful()) {
+                    quote = response.body().getContents().getQuotes().get(0).getQuote() + "\n" + "    -" + response.body().getContents().getQuotes().get(0).getAuthor();
+                } else {
+                    quote = "Sorry, quotes are currently unavailable";
+                }
+                quoteTextView.setText(quote);
+
+            }
+
+            @Override
+            public void onFailure(Call<QuoteResponse> call, Throwable t) {
+                quote = "Sorry, quotes are currently unavailable";
+                quoteTextView.setText(quote);
+            }
+        });
     }
 
     private void navigate(int navItemIndex) {

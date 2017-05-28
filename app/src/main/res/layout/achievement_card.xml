@@ -54,17 +54,17 @@
         <LinearLayout
             android:id="@+id/achievementButtonsGroup"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:background="@color/colorText"
             android:gravity="end"
-            android:orientation="horizontal"
-            android:paddingRight="16dp">
+            android:orientation="horizontal">
 
             <ImageButton
                 android:id="@+id/achievementStarButton"
-                android:layout_width="36dp"
-                android:layout_height="36dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:layout_marginBottom="4dp"
+                android:layout_marginRight="4dp"
                 android:layout_marginTop="4dp"
                 android:background="@android:color/transparent"
                 android:src="@drawable/star_outline" />
