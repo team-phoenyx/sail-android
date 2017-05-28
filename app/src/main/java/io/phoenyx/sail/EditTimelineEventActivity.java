@@ -32,7 +32,7 @@ public class EditTimelineEventActivity extends AppCompatActivity {
     TimelineEvent timelineEvent;
     int timelineEventID;
 
-    int year, month, day;
+    int year, month, day, finalSelectedYear, finalSelectedMonth, finalSelectedDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -58,6 +58,9 @@ public class EditTimelineEventActivity extends AppCompatActivity {
         timelineEventTitleEditText.setText(timelineEvent.getTitle());
         timelineEventDescriptionEditText.setText(timelineEvent.getDescription());
         timelineEventDateTextView.setText(timelineEvent.getDate());
+        finalSelectedYear = timelineEvent.getYear();
+        finalSelectedMonth = timelineEvent.getMonth();
+        finalSelectedDay = timelineEvent.getDay();
 
         timelineEventDateTextView.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -68,6 +71,9 @@ public class EditTimelineEventActivity extends AppCompatActivity {
                     @Override
                     public void onDateSet(DatePicker datePicker, int selectedYear, int selectedMonth, int selectedDay) {
                         timelineEventDateTextView.setText(months[selectedMonth] + " " + selectedDay + " " + selectedYear);
+                        finalSelectedYear = selectedYear;
+                        finalSelectedDay = selectedDay;
+                        finalSelectedMonth = selectedMonth + 1;
                     }
                 }, year, month, day);
 
@@ -119,7 +125,7 @@ public class EditTimelineEventActivity extends AppCompatActivity {
             return;
         }
 
-        TimelineEvent newTimelineEvent = new TimelineEvent(timelineEventID, timelineEventTitleEditText.getText().toString(), timelineEventDescriptionEditText.getText().toString(), timelineEventDateTextView.getText().toString());
+        TimelineEvent newTimelineEvent = new TimelineEvent(timelineEventID, timelineEventTitleEditText.getText().toString(), finalSelectedMonth, finalSelectedDay, finalSelectedYear, timelineEventDescriptionEditText.getText().toString());
         dbHandler.updateTimelineEvent(newTimelineEvent);
         finish();
     }
