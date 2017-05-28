@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -76,7 +75,7 @@ public class AddTimelineEventActivity extends AppCompatActivity {
     }
 
     private boolean detectChanges() {
-        return !(timelineEventDateTextView.getText().toString().equals("") &&
+        return !(timelineEventTitleEditText.getText().toString().equals("") &&
                 originalDate.equals(timelineEventDateTextView.getText().toString()) &&
                 timelineEventDescriptionEditText.getText().toString().equals(""));
     }
