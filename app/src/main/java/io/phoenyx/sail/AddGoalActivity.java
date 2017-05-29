@@ -26,12 +26,12 @@ public class AddGoalActivity extends AppCompatActivity {
 
     private DBHandler dbHandler;
     private SharedPreferences sharedPreferences;
+
     private EditText goalTitleEditText, goalDescriptionEditText;
     private CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
     private TextView goalDateTextView, goalNotifDateTextView;
-    private AlertDialog.Builder notifyBeforeDiscardDB;
-    private String[] months;
 
+    private String[] months;
     private String originalDate;
     private int year, month, day, notifYear, notifMonth, notifDay;
 
@@ -149,7 +149,7 @@ public class AddGoalActivity extends AppCompatActivity {
 
     private void discard() {
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")

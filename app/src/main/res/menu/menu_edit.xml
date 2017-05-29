@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto">
-    <item android:title="Delete"
+    <item android:title="@string/delete_content_desc"
         android:id="@+id/delete"
         android:icon="@drawable/delete"
         app:showAsAction="ifRoom">
     </item>
-    <item android:title="Save"
+    <item android:title="@string/save_content_desc"
         android:id="@+id/save"
         android:icon="@drawable/save"
         app:showAsAction="ifRoom">

@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/activity_add_goal"
     android:layout_width="match_parent"
@@ -12,19 +11,19 @@
     tools:context="io.phoenyx.sail.AddGoalActivity">
 
     <EditText
+        android:id="@+id/goalTitleEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/goalTitleEditText"
-        android:hint="Goal Title"
-        android:inputType="textCapWords|textCapSentences|textAutoCorrect"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:textCursorDrawable="@drawable/color_cursor"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:backgroundTint="@color/gray_highlight_color"
+        android:ems="10"
+        android:hint="@string/goal_title_hint"
+        android:inputType="textCapWords|textCapSentences|textAutoCorrect"
+        android:maxLength="60"
         android:maxLines="1"
-        android:maxLength="60" />
+        android:textCursorDrawable="@drawable/color_cursor" />
 
     <TextView
         android:id="@+id/goalDueDateLabel"
@@ -33,7 +32,7 @@
         android:layout_alignParentStart="true"
         android:layout_below="@+id/goalTitleEditText"
         android:layout_marginTop="8dp"
-        android:text="Due Date" />
+        android:text="@string/due_date_label" />
 
     <LinearLayout
         android:id="@+id/goalDateLayout"
@@ -54,7 +53,6 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
             android:paddingTop="6dp"
-            android:text="Mar. 20 2017"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="18sp" />
 
@@ -64,17 +62,18 @@
             android:layout_height="wrap_content"
             android:layout_gravity="end"
             android:layout_weight="0.4"
-            android:text="Long term"
-            android:textSize="18sp"
-            android:buttonTint="@color/gray_highlight_color" />
+            android:buttonTint="@color/gray_highlight_color"
+            android:text="@string/long_term_checkbox_label"
+            android:textSize="18sp" />
     </LinearLayout>
 
     <TextView
         android:id="@+id/goalNotificationLabel"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Notifications"
-        android:layout_below="@id/goalDateLayout"/>
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/goalDateLayout"
+        android:text="@string/notifications_label" />
 
     <LinearLayout
         android:id="@+id/goalNotifyLayout"
@@ -93,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_weight="0.6"
             android:paddingTop="6dp"
-            android:text="No notification"
+            android:text="@string/no_notif_label"
             android:textAppearance="@style/TextAppearance.AppCompat"
             android:textSize="18sp" />
 
@@ -103,9 +102,9 @@
             android:layout_height="wrap_content"
             android:layout_gravity="start"
             android:layout_weight="0.4"
-            android:text="Notify"
-            android:textSize="18sp"
-            android:buttonTint="@color/gray_highlight_color" />
+            android:buttonTint="@color/gray_highlight_color"
+            android:text="@string/notify_checkbox_label"
+            android:textSize="18sp" />
 
 
     </LinearLayout>
@@ -121,11 +120,11 @@
         android:backgroundTint="@android:color/transparent"
         android:ems="10"
         android:gravity="top"
-        android:hint="Comments"
+        android:hint="@string/description_hint"
         android:inputType="textMultiLine"
         android:maxLength="300"
-        android:paddingStart="8dp"
         android:paddingEnd="8dp"
+        android:paddingStart="8dp"
         android:textCursorDrawable="@drawable/color_cursor" />
 
 </RelativeLayout>

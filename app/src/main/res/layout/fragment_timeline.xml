@@ -7,7 +7,7 @@
     android:padding="16dp">
 
     <TextView
-        android:text='"Life is a chain of events"'
+        android:text="@string/empty_timeline_quote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/noTimelineEventsTextView"

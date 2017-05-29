@@ -1,11 +1,11 @@
 package io.phoenyx.sail;
 
-public class Goal {
+class Goal {
     private int id;
     private String title, description, date, notify;
     private boolean starred, completed;
 
-    public Goal(int id, String title, String description, String date, boolean starred, boolean completed, String notify) {
+    Goal(int id, String title, String description, String date, boolean starred, boolean completed, String notify) {
         this.id = id;
         this.title = title;
         this.description = description;
@@ -15,7 +15,7 @@ public class Goal {
         this.notify = notify;
     }
 
-    public Goal(String title, String description, String date, boolean starred, boolean completed, String notify) {
+    Goal(String title, String description, String date, boolean starred, boolean completed, String notify) {
         this.title = title;
         this.description = description;
         this.date = date;
@@ -24,11 +24,11 @@ public class Goal {
         this.notify = notify;
     }
 
-    public String getNotify() {
+    String getNotify() {
         return notify;
     }
 
-    public void setNotify(String notify) {
+    void setNotify(String notify) {
         this.notify = notify;
     }
 
@@ -64,19 +64,19 @@ public class Goal {
         this.date = date;
     }
 
-    public boolean isStarred() {
+    boolean isStarred() {
         return starred;
     }
 
-    public void setStarred(boolean starred) {
+    void setStarred(boolean starred) {
         this.starred = starred;
     }
 
-    public boolean isCompleted() {
+    boolean isCompleted() {
         return completed;
     }
 
-    public void setCompleted(boolean completed) {
+    void setCompleted(boolean completed) {
         this.completed = completed;
     }
 }

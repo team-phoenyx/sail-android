@@ -7,7 +7,7 @@
     android:padding="16dp">
 
     <TextView
-        android:text='"Losers make promises they often break. Winners make commitments they always keep"'
+        android:text="@string/empty_promises_quote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/noPromisesTextView"

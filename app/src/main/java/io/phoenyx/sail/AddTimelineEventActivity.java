@@ -28,7 +28,6 @@ public class AddTimelineEventActivity extends AppCompatActivity {
     private EditText timelineEventDescriptionEditText;
     private TextView timelineEventDateTextView;
     private String[] months;
-    private AlertDialog.Builder notifyBeforeDiscardDB;
     private SharedPreferences sharedPreferences;
 
     private String originalDate;
@@ -90,7 +89,7 @@ public class AddTimelineEventActivity extends AppCompatActivity {
 
     private void discard() {
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")

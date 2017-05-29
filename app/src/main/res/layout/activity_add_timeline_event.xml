@@ -11,49 +11,48 @@
     tools:context="io.phoenyx.sail.AddTimelineEventActivity">
 
     <EditText
+        android:id="@+id/timelineEventTitleEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/timelineEventTitleEditText"
-        android:hint="Event Title"
-        android:inputType="textCapSentences|textAutoCorrect"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:textCursorDrawable="@drawable/color_cursor"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:backgroundTint="@color/gray_highlight_color"
+        android:ems="10"
+        android:hint="@string/timeline_event_title_hint"
+        android:inputType="textCapSentences|textAutoCorrect"
+        android:maxLength="60"
         android:maxLines="1"
-        android:maxLength="60" />
+        android:textCursorDrawable="@drawable/color_cursor" />
 
     <TextView
-        android:text="Mar. 20 2017"
+        android:id="@+id/timelineEventDateTextView"
+        style="@android:style/Widget.DeviceDefault.Light.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:id="@+id/timelineEventDateTextView"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp"
-        style="@android:style/Widget.DeviceDefault.Light.Spinner"
-        android:paddingTop="6dp"
-        android:layout_marginStart="8dp"
+        android:layout_alignParentStart="true"
         android:layout_below="@+id/timelineEventTitleEditText"
-        android:layout_alignParentStart="true" />
+        android:layout_marginStart="8dp"
+        android:paddingTop="6dp"
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp" />
 
     <EditText
+        android:id="@+id/timelineEventDescriptionEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:id="@+id/timelineEventDescriptionEditText"
-        android:hint="Description"
-        android:gravity="top"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp"
         android:layout_alignParentBottom="true"
+        android:layout_alignParentEnd="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/timelineEventDateTextView"
         android:backgroundTint="@android:color/transparent"
-        android:textCursorDrawable="@drawable/color_cursor"
-        android:layout_alignParentEnd="true"
-        android:maxLength="300" />
+        android:ems="10"
+        android:gravity="top"
+        android:hint="@string/description_hint"
+        android:inputType="textMultiLine"
+        android:maxLength="300"
+        android:paddingEnd="8dp"
+        android:paddingStart="8dp"
+        android:textCursorDrawable="@drawable/color_cursor" />
 
 </RelativeLayout>

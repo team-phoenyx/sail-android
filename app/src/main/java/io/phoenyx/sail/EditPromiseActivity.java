@@ -30,7 +30,6 @@ public class EditPromiseActivity extends AppCompatActivity {
     private EditText promiseTitleEditText, promiseDescriptionEditText, promisePersonEditText;
     private CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
     private TextView promiseDateTextView, promiseNotifDateTextView;
-    private AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
     private int promiseID, notifYear, notifMonth, notifDay, year, month, day;
     private Promise promise;
     private String[] months;
@@ -234,7 +233,7 @@ public class EditPromiseActivity extends AppCompatActivity {
 
     private void discard(){
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")
@@ -269,7 +268,7 @@ public class EditPromiseActivity extends AppCompatActivity {
 
     private void delete() {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
-            notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDeleteDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")

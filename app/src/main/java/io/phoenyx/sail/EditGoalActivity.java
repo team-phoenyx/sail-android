@@ -30,7 +30,6 @@ public class EditGoalActivity extends AppCompatActivity {
     private EditText goalTitleEditText, goalDescriptionEditText;
     private CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
     private TextView goalDateTextView, goalNotifDateTextView;
-    private AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
     private String[] months;
     private int goalID, year, month, day, notifDay, notifMonth, notifYear;
     private Goal goal;
@@ -236,7 +235,7 @@ public class EditGoalActivity extends AppCompatActivity {
 
     private void discard() {
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")
@@ -271,7 +270,7 @@ public class EditGoalActivity extends AppCompatActivity {
 
     private void delete() {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
-            notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDeleteDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")

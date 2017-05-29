@@ -19,9 +19,7 @@ import io.phoenyx.sail.R;
 
 public class PromisesFragment extends Fragment {
     private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
     private DBHandler dbHandler;
-    private FloatingActionButton addPromiseFAB;
     private TextView noPromisesTextView;
 
     @Override
@@ -42,10 +40,10 @@ public class PromisesFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_promises, container, false);
 
-        addPromiseFAB = (FloatingActionButton) view.findViewById(R.id.addPromiseFAB);
+        FloatingActionButton addPromiseFAB = (FloatingActionButton) view.findViewById(R.id.addPromiseFAB);
         noPromisesTextView = (TextView) view.findViewById(R.id.noPromisesTextView);
         recyclerView = (RecyclerView) view.findViewById(R.id.promisesRecyclerView);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new PromisesAdapter(dbHandler.getAllPromises()));
