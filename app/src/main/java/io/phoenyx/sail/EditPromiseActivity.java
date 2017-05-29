@@ -288,6 +288,9 @@ public class EditPromiseActivity extends AppCompatActivity {
                         sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).apply();
 
                     }
+                    NotificationBuilder notificationBuilder = new NotificationBuilder(EditPromiseActivity.this, promiseID);
+                    notificationBuilder.deleteNotification();
+
                     dbHandler.deletePromise(promiseID);
                     finish();
                 }
@@ -302,6 +305,9 @@ public class EditPromiseActivity extends AppCompatActivity {
 
             notifyBeforeDeleteDB.show();
         } else {
+            NotificationBuilder notificationBuilder = new NotificationBuilder(EditPromiseActivity.this, promiseID);
+            notificationBuilder.deleteNotification();
+
             dbHandler.deletePromise(promiseID);
             finish();
         }

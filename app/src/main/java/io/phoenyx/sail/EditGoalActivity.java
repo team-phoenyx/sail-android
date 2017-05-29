@@ -288,6 +288,9 @@ public class EditGoalActivity extends AppCompatActivity {
                         sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).apply();
 
                     }
+                    NotificationBuilder notificationBuilder = new NotificationBuilder(EditGoalActivity.this, goalID);
+                    notificationBuilder.deleteNotification();
+
                     dbHandler.deleteGoal(goalID);
                     finish();
                 }
@@ -302,6 +305,9 @@ public class EditGoalActivity extends AppCompatActivity {
 
             notifyBeforeDeleteDB.show();
         } else {
+            NotificationBuilder notificationBuilder = new NotificationBuilder(EditGoalActivity.this, goalID);
+            notificationBuilder.deleteNotification();
+
             dbHandler.deleteGoal(goalID);
             finish();
         }
