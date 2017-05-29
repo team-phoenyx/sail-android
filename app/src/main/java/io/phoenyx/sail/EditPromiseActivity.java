@@ -25,17 +25,15 @@ import java.util.Calendar;
 
 public class EditPromiseActivity extends AppCompatActivity {
 
-    DBHandler dbHandler;
-    SharedPreferences sharedPreferences;
-    EditText promiseTitleEditText, promiseDescriptionEditText, promisePersonEditText;
-    CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
-    TextView promiseDateTextView, promiseNotifDateTextView;
-    AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
-    int promiseID, notifYear, notifMonth, notifDay;
-    Promise promise;
-    String[] months;
-
-    int year, month, day;
+    private DBHandler dbHandler;
+    private SharedPreferences sharedPreferences;
+    private EditText promiseTitleEditText, promiseDescriptionEditText, promisePersonEditText;
+    private CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
+    private TextView promiseDateTextView, promiseNotifDateTextView;
+    private AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
+    private int promiseID, notifYear, notifMonth, notifDay, year, month, day;
+    private Promise promise;
+    private String[] months;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

@@ -30,18 +30,17 @@ import retrofit2.Response;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    NavigationView navigationView;
-    DrawerLayout drawer;
-    View navHeader;
-    ActionBarDrawerToggle toggle;
-    String quote;
-    String[] activityTitles = new String[]{"Goals", "Achievements", "Promises", "Timeline"};
-    TextView quoteTextView;
-    Animation fadeoutAnimation, fadeinAnimation;
-
-    SailService sailService;
-    DBHandler dbHandler;
-    Handler handler;
+    private NavigationView navigationView;
+    private DrawerLayout drawer;
+    private View navHeader;
+    private ActionBarDrawerToggle toggle;
+    private String quote;
+    private String[] activityTitles = new String[]{"Goals", "Achievements", "Promises", "Timeline"};
+    private TextView quoteTextView;
+    private Animation fadeoutAnimation, fadeinAnimation;
+    private SailService sailService;
+    private DBHandler dbHandler;
+    private Handler handler;
 
     public static int navItemIndex = 0;
     private static final String TAG_GOALS = "goals";
@@ -208,13 +207,7 @@ public class MainActivity extends AppCompatActivity
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        int id = item.getItemId();
-
-        //noinspection SimplifiableIfStatement
-
+        //int id = item.getItemId();
         return super.onOptionsItemSelected(item);
     }
 

@@ -24,16 +24,16 @@ import java.util.Calendar;
 
 public class AddPromiseActivity extends AppCompatActivity {
 
-    DBHandler dbHandler;
-    EditText promiseTitleEditText, promiseDescriptionEditText, promisePersonEditText;
-    CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
-    TextView promiseDateTextView, promiseNotifDateTextView;
-    String[] months;
-    AlertDialog.Builder notifyBeforeDiscardDB;
-    SharedPreferences sharedPreferences;
+    private DBHandler dbHandler;
+    private EditText promiseTitleEditText, promiseDescriptionEditText, promisePersonEditText;
+    private CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
+    private TextView promiseDateTextView, promiseNotifDateTextView;
+    private String[] months;
+    private AlertDialog.Builder notifyBeforeDiscardDB;
+    private SharedPreferences sharedPreferences;
 
-    String originalDate;
-    int year, month, day, notifYear, notifMonth, notifDay;
+    private String originalDate;
+    private int year, month, day, notifYear, notifMonth, notifDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

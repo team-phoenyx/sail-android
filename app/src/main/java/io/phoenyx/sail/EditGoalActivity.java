@@ -25,15 +25,15 @@ import java.util.Calendar;
 
 public class EditGoalActivity extends AppCompatActivity {
 
-    DBHandler dbHandler;
-    SharedPreferences sharedPreferences;
-    EditText goalTitleEditText, goalDescriptionEditText;
-    CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
-    TextView goalDateTextView, goalNotifDateTextView;
-    AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
-    String[] months;
-    int goalID, year, month, day, notifDay, notifMonth, notifYear;
-    Goal goal;
+    private DBHandler dbHandler;
+    private SharedPreferences sharedPreferences;
+    private EditText goalTitleEditText, goalDescriptionEditText;
+    private CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
+    private TextView goalDateTextView, goalNotifDateTextView;
+    private AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
+    private String[] months;
+    private int goalID, year, month, day, notifDay, notifMonth, notifYear;
+    private Goal goal;
 
 
     @Override

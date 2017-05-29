@@ -18,11 +18,11 @@ import io.phoenyx.sail.R;
 import io.phoenyx.sail.TimelineEventsAdapter;
 
 public class TimelineFragment extends Fragment {
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    DBHandler dbHandler;
-    FloatingActionButton addTimelineEventFAB;
-    TextView noTimelineEventsTextView;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private DBHandler dbHandler;
+    private FloatingActionButton addTimelineEventFAB;
+    private TextView noTimelineEventsTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

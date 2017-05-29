@@ -23,16 +23,18 @@ import java.util.Arrays;
 
 public class EditAchievementActivity extends AppCompatActivity {
 
-    DBHandler dbHandler;
-    SharedPreferences sharedPreferences;
-    EditText achievementTitleEditText, achievementDescriptionEditText;
-    TextView achievementDateTextView;
-    AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
-    String[] months;
-    int achievementID;
-    Achievement achievement;
+    private DBHandler dbHandler;
+    private SharedPreferences sharedPreferences;
+    private EditText achievementTitleEditText;
+    private EditText achievementDescriptionEditText;
+    private TextView achievementDateTextView;
+    private AlertDialog.Builder notifyBeforeDiscardDB;
+    private AlertDialog.Builder notifyBeforeDeleteDB;
+    private String[] months;
+    private int achievementID;
+    private Achievement achievement;
 
-    int year, month, day;
+    private int year, month, day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
