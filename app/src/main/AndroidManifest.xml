@@ -9,9 +9,10 @@
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:fullBackupContent="@xml/backup_descriptor">
 
-        <receiver android:name=".NotificationPublisher" android:enabled="true">
+        <receiver android:name=".NotificationPublisher" android:enabled="true" android:exported="false">
             <intent-filter>
                 <action  android:name="io.phoenyx.sail.ACTION_EVENT_TIME" />
             </intent-filter>

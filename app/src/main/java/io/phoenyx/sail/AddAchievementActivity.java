@@ -5,7 +5,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.support.design.widget.BaseTransientBottomBar;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -85,6 +84,8 @@ public class AddAchievementActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
             notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
+
+            @SuppressWarnings("InflateParams")
             View discardDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
             notifyBeforeDiscardDB.setTitle("Discard Changes?").setView(discardDialogView);
 
@@ -94,7 +95,7 @@ public class AddAchievementActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (dontRemindCheckBox.isChecked()) {
-                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).apply();
                     }
 
                     dialog.dismiss();

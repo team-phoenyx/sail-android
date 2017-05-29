@@ -34,7 +34,7 @@
         android:textSize="18sp"
         style="@android:style/Widget.DeviceDefault.Light.Spinner"
         android:paddingTop="6dp"
-        android:layout_marginLeft="8dp"
+        android:layout_marginStart="8dp"
         android:layout_below="@+id/timelineEventTitleEditText"
         android:layout_alignParentStart="true" />
 
@@ -46,7 +46,8 @@
         android:id="@+id/timelineEventDescriptionEditText"
         android:hint="Description"
         android:gravity="top"
-        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/timelineEventDateTextView"

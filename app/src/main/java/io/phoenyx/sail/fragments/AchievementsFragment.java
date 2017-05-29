@@ -18,11 +18,11 @@ import io.phoenyx.sail.DBHandler;
 import io.phoenyx.sail.R;
 
 public class AchievementsFragment extends Fragment {
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    DBHandler dbHandler;
-    FloatingActionButton addAchievementFAB;
-    TextView noAchievementsTextView;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private DBHandler dbHandler;
+    private FloatingActionButton addAchievementFAB;
+    private TextView noAchievementsTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
