@@ -18,11 +18,11 @@ import io.phoenyx.sail.PromisesAdapter;
 import io.phoenyx.sail.R;
 
 public class PromisesFragment extends Fragment {
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    DBHandler dbHandler;
-    FloatingActionButton addPromiseFAB;
-    TextView noPromisesTextView;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private DBHandler dbHandler;
+    private FloatingActionButton addPromiseFAB;
+    private TextView noPromisesTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

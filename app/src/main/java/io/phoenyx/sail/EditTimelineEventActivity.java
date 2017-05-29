@@ -23,16 +23,14 @@ import java.util.Arrays;
 
 public class EditTimelineEventActivity extends AppCompatActivity {
 
-    DBHandler dbHandler;
-    SharedPreferences sharedPreferences;
-    EditText timelineEventTitleEditText, timelineEventDescriptionEditText;
-    TextView timelineEventDateTextView;
-    AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
-    String[] months;
-    TimelineEvent timelineEvent;
-    int timelineEventID;
-
-    int year, month, day, finalSelectedYear, finalSelectedMonth, finalSelectedDay;
+    private DBHandler dbHandler;
+    private SharedPreferences sharedPreferences;
+    private EditText timelineEventTitleEditText, timelineEventDescriptionEditText;
+    private TextView timelineEventDateTextView;
+    private AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
+    private String[] months;
+    private TimelineEvent timelineEvent;
+    private int timelineEventID, year, month, day, finalSelectedYear, finalSelectedMonth, finalSelectedDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

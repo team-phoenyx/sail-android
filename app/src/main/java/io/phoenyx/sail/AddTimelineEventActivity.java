@@ -23,15 +23,16 @@ import java.util.Calendar;
 
 public class AddTimelineEventActivity extends AppCompatActivity {
 
-    DBHandler dbHandler;
-    EditText timelineEventTitleEditText, timelineEventDescriptionEditText;
-    TextView timelineEventDateTextView;
-    String[] months;
-    AlertDialog.Builder notifyBeforeDiscardDB;
-    SharedPreferences sharedPreferences;
+    private DBHandler dbHandler;
+    private EditText timelineEventTitleEditText;
+    private EditText timelineEventDescriptionEditText;
+    private TextView timelineEventDateTextView;
+    private String[] months;
+    private AlertDialog.Builder notifyBeforeDiscardDB;
+    private SharedPreferences sharedPreferences;
 
-    String originalDate;
-    int year, month, day, finalSelectedYear, finalSelectedMonth, finalSelectedDay;
+    private String originalDate;
+    private int year, month, day, finalSelectedYear, finalSelectedMonth, finalSelectedDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

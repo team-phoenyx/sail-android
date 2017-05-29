@@ -10,12 +10,12 @@ import android.support.v4.app.NotificationCompat;
 
 import java.util.Calendar;
 
-public class NotificationBuilder {
+class NotificationBuilder {
     private Context context;
     private int month, day, year, id;
     private String title, content, type;
 
-    public NotificationBuilder(Context context, int month, int day, int year, String title, String content, int id, String type) {
+    NotificationBuilder(Context context, int month, int day, int year, String title, String content, int id, String type) {
         this.context = context;
         this.month = month;
         this.day = day;
@@ -26,12 +26,12 @@ public class NotificationBuilder {
         this.id = id;
     }
 
-    public NotificationBuilder(Context context, int id) {
+    NotificationBuilder(Context context, int id) {
         this.context = context;
         this.id = id;
     }
 
-    public void buildNotification() throws IllegalArgumentException {
+    void buildNotification() throws IllegalArgumentException {
         if (context == null || month == 0 || day == 0 || year == 0) {
             throw new IllegalArgumentException("Notification parameters not initialized");
         }
@@ -81,7 +81,7 @@ public class NotificationBuilder {
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
-    public void deleteNotification() {
+    void deleteNotification() {
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
 
         NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context);

@@ -82,7 +82,7 @@
             android:layout_weight="0.4"
             android:text="Lifelong"
             android:textSize="18sp"
-            app:buttonTint="@color/gray_highlight_color" />
+            android:buttonTint="@color/gray_highlight_color" />
     </LinearLayout>
 
     <TextView
@@ -121,7 +121,7 @@
             android:layout_weight="0.4"
             android:text="Notify"
             android:textSize="18sp"
-            app:buttonTint="@color/gray_highlight_color" />
+            android:buttonTint="@color/gray_highlight_color" />
     </LinearLayout>
 
     <EditText

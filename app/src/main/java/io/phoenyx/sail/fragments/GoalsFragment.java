@@ -19,11 +19,11 @@ import io.phoenyx.sail.R;
 
 public class GoalsFragment extends Fragment {
 
-    RecyclerView recyclerView;
-    LinearLayoutManager linearLayoutManager;
-    DBHandler dbHandler;
-    FloatingActionButton addGoalFAB;
-    TextView noGoalsTextView;
+    private RecyclerView recyclerView;
+    private LinearLayoutManager linearLayoutManager;
+    private DBHandler dbHandler;
+    private FloatingActionButton addGoalFAB;
+    private TextView noGoalsTextView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {

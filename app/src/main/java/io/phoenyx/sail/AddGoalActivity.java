@@ -24,16 +24,16 @@ import java.util.Calendar;
 
 public class AddGoalActivity extends AppCompatActivity {
 
-    DBHandler dbHandler;
-    SharedPreferences sharedPreferences;
-    EditText goalTitleEditText, goalDescriptionEditText;
-    CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
-    TextView goalDateTextView, goalNotifDateTextView;
-    AlertDialog.Builder notifyBeforeDiscardDB;
-    String[] months;
+    private DBHandler dbHandler;
+    private SharedPreferences sharedPreferences;
+    private EditText goalTitleEditText, goalDescriptionEditText;
+    private CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
+    private TextView goalDateTextView, goalNotifDateTextView;
+    private AlertDialog.Builder notifyBeforeDiscardDB;
+    private String[] months;
 
-    String originalDate;
-    int year, month, day, notifYear, notifMonth, notifDay;
+    private String originalDate;
+    private int year, month, day, notifYear, notifMonth, notifDay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

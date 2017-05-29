@@ -23,15 +23,16 @@ import java.util.Calendar;
 
 public class AddAchievementActivity extends AppCompatActivity {
 
-    DBHandler dbHandler;
-    EditText achievementTitleEditText, achievementDescriptionEditText;
-    TextView achievementDateTextView;
-    String[] months;
-    AlertDialog.Builder notifyBeforeDiscardDB;
-    SharedPreferences sharedPreferences;
+    private DBHandler dbHandler;
+    private EditText achievementTitleEditText;
+    private EditText achievementDescriptionEditText;
+    private TextView achievementDateTextView;
+    private String[] months;
+    private AlertDialog.Builder notifyBeforeDiscardDB;
+    private SharedPreferences sharedPreferences;
 
-    String originalDate;
-    int year, month, day;
+    private String originalDate;
+    private int year, month, day;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

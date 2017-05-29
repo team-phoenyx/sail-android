@@ -19,9 +19,7 @@ import io.phoenyx.sail.R;
 
 public class AchievementsFragment extends Fragment {
     private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
     private DBHandler dbHandler;
-    private FloatingActionButton addAchievementFAB;
     private TextView noAchievementsTextView;
 
     @Override
@@ -43,10 +41,10 @@ public class AchievementsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_achievements, container, false);
 
-        addAchievementFAB = (FloatingActionButton) view.findViewById(R.id.addAchievementFAB);
+        FloatingActionButton addAchievementFAB = (FloatingActionButton) view.findViewById(R.id.addAchievementFAB);
         noAchievementsTextView = (TextView) view.findViewById(R.id.noAchievementsTextView);
         recyclerView = (RecyclerView) view.findViewById(R.id.achievementsRecyclerView);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new AchievementsAdapter(dbHandler.getAllAchievements()));

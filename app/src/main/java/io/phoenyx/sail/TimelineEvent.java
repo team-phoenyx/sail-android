@@ -1,11 +1,11 @@
 package io.phoenyx.sail;
 
-public class TimelineEvent {
+class TimelineEvent {
     private int id, month, day, year;
     private String title, description, date;
     String[] months = new String[]{"Jan.","Feb.","Mar.","Apr.","May","Jun.","Jul.","Aug.","Sep.","Oct.","Nov.","Dec."};
 
-    public TimelineEvent(String title, int month, int day, int year, String description) {
+    TimelineEvent(String title, int month, int day, int year, String description) {
         this.month = month;
         this.day = day;
         this.year = year;
@@ -14,7 +14,7 @@ public class TimelineEvent {
         this.date = months[month - 1] + " " + day + " " + year;
     }
 
-    public TimelineEvent(int id, String title, int month, int day, int year, String description) {
+    TimelineEvent(int id, String title, int month, int day, int year, String description) {
         this.id = id;
         this.month = month;
         this.day = day;
