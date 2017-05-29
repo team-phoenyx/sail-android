@@ -218,7 +218,7 @@ public class EditGoalActivity extends AppCompatActivity {
         notificationBuilder.deleteNotification();
 
         if (notifDay != 0 && notifMonth != 0 && notifYear != 0 && goalNotificationCheckBox.isChecked()) {
-            NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString(), goalID);
+            NotificationBuilder builder = new NotificationBuilder(this, notifMonth, notifDay, notifYear, "Upcoming Goal", goalTitleEditText.getText().toString(), goalID, "goal");
             builder.buildNotification();
             newGoal.setNotify(months[notifMonth - 1] + " " + notifDay + " " + notifYear);
             dbHandler.updateGoal(newGoal);

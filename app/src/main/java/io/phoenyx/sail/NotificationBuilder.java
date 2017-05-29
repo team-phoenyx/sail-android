@@ -13,15 +13,16 @@ import java.util.Calendar;
 public class NotificationBuilder {
     private Context context;
     private int month, day, year, id;
-    private String title, content;
+    private String title, content, type;
 
-    public NotificationBuilder(Context context, int month, int day, int year, String title, String content, int id) {
+    public NotificationBuilder(Context context, int month, int day, int year, String title, String content, int id, String type) {
         this.context = context;
         this.month = month;
         this.day = day;
         this.year = year;
         this.title = title;
         this.content = content;
+        this.type = type;
         this.id = id;
     }
 
@@ -41,10 +42,24 @@ public class NotificationBuilder {
             throw new IllegalArgumentException("Day parameter out of bounds");
         }
 
-        NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context);
-        notificationCompatBuilder.setContentTitle(title);
-        notificationCompatBuilder.setContentText(content);
-        notificationCompatBuilder.setSmallIcon(R.mipmap.ic_notification);
+        NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context)
+                .setContentTitle(title)
+                .setContentText(content)
+                .setSmallIcon(R.mipmap.ic_notification)
+                .setAutoCancel(true);
+
+        Intent resultIntent;
+        if (type.equals("goal")) {
+            resultIntent = new Intent(context, EditGoalActivity.class);
+            resultIntent.putExtra("goal_id", id);
+        } else {
+            resultIntent = new Intent(context, EditPromiseActivity.class);
+            resultIntent.putExtra("promise_id", id);
+        }
+
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(context, 0, resultIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        notificationCompatBuilder.setContentIntent(resultPendingIntent);
 
         Notification notification = notificationCompatBuilder.build();
 
