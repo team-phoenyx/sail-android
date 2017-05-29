@@ -14,6 +14,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.view.animation.Animation;
+import android.view.animation.AnimationUtils;
 import android.widget.TextView;
 
 import io.phoenyx.sail.fragments.AchievementsFragment;
@@ -35,7 +37,9 @@ public class MainActivity extends AppCompatActivity
     String quote;
     String[] activityTitles = new String[]{"Goals", "Achievements", "Promises", "Timeline"};
     TextView quoteTextView;
+    Animation fadeoutAnimation, fadeinAnimation;
 
+    SailService sailService;
     DBHandler dbHandler;
     Handler handler;
 
@@ -58,6 +62,52 @@ public class MainActivity extends AppCompatActivity
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         navHeader = navigationView.getHeaderView(0);
+        fadeinAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
+        fadeoutAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadeout);
+
+        fadeoutAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                quoteTextView.setVisibility(View.INVISIBLE);
+                refreshQuotes();
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        fadeinAnimation.setAnimationListener(new Animation.AnimationListener() {
+            @Override
+            public void onAnimationStart(Animation animation) {
+
+            }
+
+            @Override
+            public void onAnimationEnd(Animation animation) {
+                quoteTextView.setVisibility(View.VISIBLE);
+            }
+
+            @Override
+            public void onAnimationRepeat(Animation animation) {
+
+            }
+        });
+
+        navHeader.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                quoteTextView.startAnimation(fadeoutAnimation);
+
+            }
+        });
+
         handler = new Handler();
         navigationView.setNavigationItemSelectedListener(this);
         quoteTextView = (TextView) navHeader.findViewById(R.id.quoteTextView);
@@ -68,16 +118,16 @@ public class MainActivity extends AppCompatActivity
         getSupportActionBar().setHomeButtonEnabled(true);
         toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
-        drawer.setDrawerListener(toggle);
+        drawer.addDrawerListener(toggle);
         toggle.syncState();
 
-        initializeQuotes();
+        sailService = RetrofitClient.getClient("http://api.forismatic.com/").create(SailService.class);
+        refreshQuotes();
 
         navigate(navItemIndex);
     }
 
-    private void initializeQuotes() {
-        SailService sailService = RetrofitClient.getClient("http://api.forismatic.com/").create(SailService.class);
+    private void refreshQuotes() {
         sailService.getQOD().enqueue(new Callback<Quote>() {
             @Override
             public void onResponse(Call<Quote> call, Response<Quote> response) {
@@ -87,6 +137,7 @@ public class MainActivity extends AppCompatActivity
                     quote = "Sorry, quotes are currently unavailable";
                 }
                 quoteTextView.setText(quote);
+                quoteTextView.startAnimation(fadeinAnimation);
 
             }
 
@@ -94,6 +145,7 @@ public class MainActivity extends AppCompatActivity
             public void onFailure(Call<Quote> call, Throwable t) {
                 quote = "Sorry, quotes are currently unavailable";
                 quoteTextView.setText(quote);
+                quoteTextView.startAnimation(fadeinAnimation);
             }
         });
     }

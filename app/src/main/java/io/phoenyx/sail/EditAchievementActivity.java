@@ -134,6 +134,8 @@ public class EditAchievementActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
             notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
+
+            @SuppressWarnings("InflateParams")
             View discardDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
 
             notifyBeforeDiscardDB.setTitle("Discard Changes?").setView(discardDialogView);
@@ -144,7 +146,7 @@ public class EditAchievementActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (dontRemindCheckBox.isChecked()) {
-                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).apply();
                     }
                     dialog.dismiss();
                     finish();
@@ -167,6 +169,8 @@ public class EditAchievementActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
             notifyBeforeDeleteDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
+
+            @SuppressWarnings("InflateParams")
             View deleteDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
 
             notifyBeforeDeleteDB.setTitle("Delete Achievement?").setView(deleteDialogView);
@@ -177,7 +181,7 @@ public class EditAchievementActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (dontRemindCheckBox.isChecked()) {
-                        sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
+                        sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).apply();
                     }
                     dbHandler.deleteAchievement(achievementID);
                     finish();

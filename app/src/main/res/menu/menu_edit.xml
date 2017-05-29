@@ -4,11 +4,11 @@
     <item android:title="Delete"
         android:id="@+id/delete"
         android:icon="@drawable/delete"
-        app:showAsAction="always">
+        app:showAsAction="ifRoom">
     </item>
     <item android:title="Save"
         android:id="@+id/save"
         android:icon="@drawable/save"
-        app:showAsAction="always">
+        app:showAsAction="ifRoom">
     </item>
 </menu>

@@ -52,7 +52,6 @@
             style="@android:style/Widget.DeviceDefault.Light.Spinner"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_weight="0.6"
             android:paddingTop="6dp"
             android:text="Mar. 20 2017"
@@ -63,7 +62,7 @@
             android:id="@+id/goalLongTermCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="end"
             android:layout_weight="0.4"
             android:text="Long term"
             android:textSize="18sp"
@@ -92,7 +91,6 @@
             android:id="@+id/goalNotificationDateTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
             android:layout_weight="0.6"
             android:paddingTop="6dp"
             android:text="No notification"
@@ -103,7 +101,7 @@
             android:id="@+id/goalNotifyCheckBox"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_gravity="right"
+            android:layout_gravity="start"
             android:layout_weight="0.4"
             android:text="Notify"
             android:textSize="18sp"
@@ -126,7 +124,8 @@
         android:hint="Comments"
         android:inputType="textMultiLine"
         android:maxLength="300"
-        android:paddingLeft="8dp"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
         android:textCursorDrawable="@drawable/color_cursor" />
 
 </RelativeLayout>

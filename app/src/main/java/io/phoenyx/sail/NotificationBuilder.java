@@ -10,10 +10,6 @@ import android.support.v4.app.NotificationCompat;
 
 import java.util.Calendar;
 
-/**
- * Created by Terrance on 3/20/2017.
- */
-
 public class NotificationBuilder {
     private Context context;
     private int month, day, year, id;

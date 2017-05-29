@@ -9,10 +9,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by terrance on 2/18/17.
- */
-
 public class DBHandler extends SQLiteOpenHelper {
 
     //DATABASE VERSION & NAME
@@ -427,8 +423,7 @@ public class DBHandler extends SQLiteOpenHelper {
         values.put(GOALS_COMPLETED_COLUMN, (goal.isCompleted()) ? 1 : 0);
         values.put(GOALS_NOTIFY_COLUMN, goal.getNotify());
 
-        int i = db.update(TABLE_GOALS, values, GOALS_ID_COLUMN + " = ?", new String[]{String.valueOf(goal.getId())});
-        return i;
+        return db.update(TABLE_GOALS, values, GOALS_ID_COLUMN + " = ?", new String[]{String.valueOf(goal.getId())});
     }
 
     public int updateAchievement(Achievement achievement) {

@@ -28,7 +28,7 @@
         app:backgroundTint="@color/colorPrimary"
         app:srcCompat="@drawable/plus"
         android:tint="@android:color/white"
-        android:layout_gravity="bottom|right"
+        android:layout_gravity="bottom|end"
         android:layout_margin="16dp" />
 
 </FrameLayout>

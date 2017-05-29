@@ -36,23 +36,24 @@
         android:textSize="18sp"
         style="@android:style/Widget.DeviceDefault.Light.Spinner"
         android:paddingTop="6dp"
-        android:layout_marginLeft="8dp" />
+        android:layout_marginStart="8dp" />
 
     <EditText
+        android:id="@+id/achievementDescriptionEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:inputType="textMultiLine"
-        android:ems="10"
-        android:layout_below="@+id/achievementDateTextView"
-        android:layout_alignParentStart="true"
-        android:id="@+id/achievementDescriptionEditText"
-        android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:hint="Description"
-        android:gravity="top"
-        android:paddingLeft="8dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/achievementDateTextView"
         android:backgroundTint="@android:color/transparent"
-        android:textCursorDrawable="@drawable/color_cursor"
-        android:maxLength="300" />
+        android:ems="10"
+        android:gravity="top"
+        android:hint="Description"
+        android:inputType="textMultiLine"
+        android:maxLength="300"
+        android:paddingStart="8dp"
+        android:paddingEnd="8dp"
+        android:textCursorDrawable="@drawable/color_cursor" />
 
 </RelativeLayout>

@@ -238,6 +238,8 @@ public class EditGoalActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
             notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
+
+            @SuppressWarnings("InflateParams")
             View discardDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
             notifyBeforeDiscardDB.setTitle("Discard Changes?").setView(discardDialogView);
 
@@ -247,7 +249,7 @@ public class EditGoalActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (dontRemindCheckBox.isChecked()) {
-                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).commit();
+                        sharedPreferences.edit().putBoolean("notifyBeforeDiscard", false).apply();
                     }
 
                     dialog.dismiss();
@@ -271,6 +273,8 @@ public class EditGoalActivity extends AppCompatActivity {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
             notifyBeforeDeleteDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
+
+            @SuppressWarnings("InflateParams")
             View deleteDialogView = layoutInflater.inflate(R.layout.discard_dialog, null);
 
             notifyBeforeDeleteDB.setTitle("Delete Goal?").setView(deleteDialogView);
@@ -281,7 +285,7 @@ public class EditGoalActivity extends AppCompatActivity {
                 @Override
                 public void onClick(DialogInterface dialog, int which) {
                     if (dontRemindCheckBox.isChecked()) {
-                        sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).commit();
+                        sharedPreferences.edit().putBoolean("notifyBeforeDelete", false).apply();
 
                     }
                     dbHandler.deleteGoal(goalID);
