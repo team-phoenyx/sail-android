@@ -183,18 +183,19 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if (cursor != null) {
             cursor.moveToFirst();
+
+            Goal goal = new Goal(cursor.getInt(cursor.getColumnIndex(GOALS_ID_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(GOALS_TITLE_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(GOALS_DESCRIPTION_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(GOALS_DATE_COLUMN)),
+                    (cursor.getInt(cursor.getColumnIndex(GOALS_STARRED_COLUMN)) != 0),
+                    (cursor.getInt(cursor.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0),
+                    cursor.getString(cursor.getColumnIndex(GOALS_NOTIFY_COLUMN)));
+
+            cursor.close();
+            return goal;
         }
-
-        Goal goal = new Goal(cursor.getInt(cursor.getColumnIndex(GOALS_ID_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(GOALS_TITLE_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(GOALS_DESCRIPTION_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(GOALS_DATE_COLUMN)),
-                (cursor.getInt(cursor.getColumnIndex(GOALS_STARRED_COLUMN)) != 0),
-                (cursor.getInt(cursor.getColumnIndex(GOALS_COMPLETED_COLUMN)) != 0),
-                cursor.getString(cursor.getColumnIndex(GOALS_NOTIFY_COLUMN)));
-
-        cursor.close();
-        return goal;
+        return null;
     }
 
     public Achievement getAchievement(int achievementID) {
@@ -205,16 +206,18 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if (cursor != null) {
             cursor.moveToFirst();
+
+            Achievement achievement = new Achievement(cursor.getInt(cursor.getColumnIndex(ACHIEVEMENTS_ID_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_TITLE_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_DESCRIPTION_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_DATE_COLUMN)),
+                    (cursor.getInt(cursor.getColumnIndex(ACHIEVEMENTS_STARRED_COLUMN)) != 0));
+
+            cursor.close();
+            return achievement;
         }
 
-        Achievement achievement = new Achievement(cursor.getInt(cursor.getColumnIndex(ACHIEVEMENTS_ID_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_TITLE_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_DESCRIPTION_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(ACHIEVEMENTS_DATE_COLUMN)),
-                (cursor.getInt(cursor.getColumnIndex(ACHIEVEMENTS_STARRED_COLUMN)) != 0));
-
-        cursor.close();
-        return achievement;
+        return null;
     }
 
     public Promise getPromise(int promiseID) {
@@ -225,19 +228,21 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if (cursor != null) {
             cursor.moveToFirst();
+
+            Promise promise = new Promise(cursor.getInt(cursor.getColumnIndex(PROMISES_ID_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(PROMISES_TITLE_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(PROMISES_DESCRIPTION_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(PROMISES_DATE_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(PROMISES_PERSON_COLUMN)),
+                    (cursor.getInt(cursor.getColumnIndex(PROMISES_STARRED_COLUMN)) != 0),
+                    (cursor.getInt(cursor.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0),
+                    cursor.getString(cursor.getColumnIndex(PROMISES_NOTIFY_COLUMN)));
+
+            cursor.close();
+            return promise;
         }
 
-        Promise promise = new Promise(cursor.getInt(cursor.getColumnIndex(PROMISES_ID_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(PROMISES_TITLE_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(PROMISES_DESCRIPTION_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(PROMISES_DATE_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(PROMISES_PERSON_COLUMN)),
-                (cursor.getInt(cursor.getColumnIndex(PROMISES_STARRED_COLUMN)) != 0),
-                (cursor.getInt(cursor.getColumnIndex(PROMISES_COMPLETED_COLUMN)) != 0),
-                cursor.getString(cursor.getColumnIndex(PROMISES_NOTIFY_COLUMN)));
-
-        cursor.close();
-        return promise;
+        return null;
     }
 
     public TimelineEvent getTimelineEvent(int timelineEventID) {
@@ -248,17 +253,19 @@ public class DBHandler extends SQLiteOpenHelper {
 
         if (cursor != null) {
             cursor.moveToFirst();
+
+            TimelineEvent timelineEvent = new TimelineEvent(cursor.getInt(cursor.getColumnIndex(TIMELINE_EVENT_ID_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(TIMELINE_EVENT_TITLE_COLUMN)),
+                    cursor.getInt(cursor.getColumnIndex(TIMELINE_EVENT_MONTH_COLUMN)),
+                    cursor.getInt(cursor.getColumnIndex(TIMELINE_EVENT_DAY_COLUMN)),
+                    cursor.getInt(cursor.getColumnIndex(TIMELINE_EVENT_YEAR_COLUMN)),
+                    cursor.getString(cursor.getColumnIndex(TIMELINE_EVENT_DESCRIPTION_COLUMN)));
+
+            cursor.close();
+            return timelineEvent;
         }
 
-        TimelineEvent timelineEvent = new TimelineEvent(cursor.getInt(cursor.getColumnIndex(TIMELINE_EVENT_ID_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(TIMELINE_EVENT_TITLE_COLUMN)),
-                cursor.getInt(cursor.getColumnIndex(TIMELINE_EVENT_MONTH_COLUMN)),
-                cursor.getInt(cursor.getColumnIndex(TIMELINE_EVENT_DAY_COLUMN)),
-                cursor.getInt(cursor.getColumnIndex(TIMELINE_EVENT_YEAR_COLUMN)),
-                cursor.getString(cursor.getColumnIndex(TIMELINE_EVENT_DESCRIPTION_COLUMN)));
-
-        cursor.close();
-        return timelineEvent;
+        return null;
     }
 
     //LIST FETCHERS

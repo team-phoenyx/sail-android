@@ -25,6 +25,7 @@
 
     <string name="description_hint">Description</string>
 
+    <string name="long_term_due_label">Long term</string>
     <string name="long_term_checkbox_label">Long term</string>
     <string name="no_notif_label">No notification</string>
     <string name="notify_checkbox_label">Notify</string>

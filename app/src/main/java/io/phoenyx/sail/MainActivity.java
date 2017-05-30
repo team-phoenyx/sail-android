@@ -3,6 +3,7 @@ package io.phoenyx.sail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -108,10 +109,11 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         quoteTextView = (TextView) navHeader.findViewById(R.id.quoteTextView);
 
-        DBHandler dbHandler = new DBHandler(this);
+        if (getSupportActionBar() 1= null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
@@ -148,7 +150,10 @@ public class MainActivity extends AppCompatActivity
 
     private void navigate(int navItemIndex) {
         navigationView.getMenu().getItem(navItemIndex).setChecked(true);
-        getSupportActionBar().setTitle(activityTitles[navItemIndex]);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(activityTitles[navItemIndex]);
+        }
 
         Fragment fragment = null;
         Class fragmentClass;
@@ -210,7 +215,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         item.setChecked(true);
 

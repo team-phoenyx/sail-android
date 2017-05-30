@@ -39,8 +39,10 @@ public class AddPromiseActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_promise);
 
-        getSupportActionBar().setTitle("New Promise");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("New Promise");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
@@ -101,7 +103,7 @@ public class AddPromiseActivity extends AppCompatActivity {
                     dialog.setTitle("");
                     dialog.show();
                 } else {
-                    promiseNotifDateTextView.setText("No notification");
+                    promiseNotifDateTextView.setText(getResources().getString(R.string.no_notif_label));
                 }
             }
         });
@@ -110,7 +112,7 @@ public class AddPromiseActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    promiseDateTextView.setText("Long term");
+                    promiseDateTextView.setText(getResources().getString(R.string.long_term_due_label));
                 } else {
                     promiseDateTextView.setText(months[month] + " " + day + " " + year);
                 }

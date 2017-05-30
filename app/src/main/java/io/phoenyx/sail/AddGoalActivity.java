@@ -40,8 +40,10 @@ public class AddGoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_goal);
 
-        getSupportActionBar().setTitle("New Goal");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("New Goal");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
@@ -101,7 +103,7 @@ public class AddGoalActivity extends AppCompatActivity {
                     dialog.setTitle("");
                     dialog.show();
                 } else {
-                    goalNotifDateTextView.setText("No notification");
+                    goalNotifDateTextView.setText(getResources().getString(R.string.no_notif_label));
                 }
             }
         });
@@ -110,7 +112,7 @@ public class AddGoalActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    goalDateTextView.setText("Long term");
+                    goalDateTextView.setText(getResources().getString(R.string.long_term_due_label));
                 } else {
                     goalDateTextView.setText(months[month] + " " + day + " " + year);
                 }

@@ -42,8 +42,10 @@ public class EditAchievementActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         achievementID = extras.getInt("achievement_id");
 
-        getSupportActionBar().setTitle("Edit Achievement");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Edit Achievement");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
