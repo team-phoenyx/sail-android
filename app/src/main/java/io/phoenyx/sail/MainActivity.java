@@ -109,7 +109,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         quoteTextView = (TextView) navHeader.findViewById(R.id.quoteTextView);
 
-        if (getSupportActionBar() 1= null) {
+        if (getSupportActionBar() != null) {
             getSupportActionBar().setDisplayHomeAsUpEnabled(true);
             getSupportActionBar().setHomeButtonEnabled(true);
         }
