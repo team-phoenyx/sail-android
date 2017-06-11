@@ -103,6 +103,15 @@ public class EditGoalActivity extends AppCompatActivity {
                         }
                     }, year, month, day);
 
+                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            goalNotificationCheckBox.setChecked(false);
+                            goalNotifDateTextView.setText(getResources().getString(R.string.no_notif_label));
+
+                        }
+                    });
+
                     dialog.getDatePicker().setMinDate(timeSince1970);
                     dialog.setTitle("");
                     dialog.show();
