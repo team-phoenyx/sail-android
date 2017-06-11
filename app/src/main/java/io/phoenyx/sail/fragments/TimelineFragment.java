@@ -19,9 +19,7 @@ import io.phoenyx.sail.TimelineEventsAdapter;
 
 public class TimelineFragment extends Fragment {
     private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
     private DBHandler dbHandler;
-    private FloatingActionButton addTimelineEventFAB;
     private TextView noTimelineEventsTextView;
 
     @Override
@@ -42,10 +40,10 @@ public class TimelineFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_timeline, container, false);
 
-        addTimelineEventFAB = (FloatingActionButton) view.findViewById(R.id.addTimelineEventFAB);
+        FloatingActionButton addTimelineEventFAB = (FloatingActionButton) view.findViewById(R.id.addTimelineEventFAB);
         noTimelineEventsTextView = (TextView) view.findViewById(R.id.noTimelineEventsTextView);
         recyclerView = (RecyclerView) view.findViewById(R.id.timelineEventsRecyclerView);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
         recyclerView.setAdapter(new TimelineEventsAdapter(dbHandler.getAllTimelineEvents()));

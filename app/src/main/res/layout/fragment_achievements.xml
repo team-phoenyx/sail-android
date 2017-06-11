@@ -7,7 +7,7 @@
     android:id="@+id/achievementsLayout">
 
     <TextView
-        android:text='"The greatest achievement was at first and for a time a dream. The oak sleeps in the acorn, the bird waits in the egg, and in the highest vision of the soul a waking angel stirs. Dreams are the seedlings of realities"'
+        android:text="@string/empty_achievements_quote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/noAchievementsTextView"

@@ -27,7 +27,6 @@ public class EditTimelineEventActivity extends AppCompatActivity {
     private SharedPreferences sharedPreferences;
     private EditText timelineEventTitleEditText, timelineEventDescriptionEditText;
     private TextView timelineEventDateTextView;
-    private AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
     private String[] months;
     private TimelineEvent timelineEvent;
     private int timelineEventID, year, month, day, finalSelectedYear, finalSelectedMonth, finalSelectedDay;
@@ -40,8 +39,10 @@ public class EditTimelineEventActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         timelineEventID = extras.getInt("timeline_event_id");
 
-        getSupportActionBar().setTitle("Edit Event");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Edit Event");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
@@ -134,7 +135,7 @@ public class EditTimelineEventActivity extends AppCompatActivity {
 
     private void discard(){
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")
@@ -169,7 +170,7 @@ public class EditTimelineEventActivity extends AppCompatActivity {
 
     private void delete() {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
-            notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDeleteDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")

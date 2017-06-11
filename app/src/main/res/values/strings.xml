@@ -3,4 +3,39 @@
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="goals_drawer_label">Goals</string>
+    <string name="achievements_drawer_label">Achievements</string>
+    <string name="promises_drawer_label">Promises</string>
+    <string name="timeline_drawer_label">Timeline</string>
+
+    <string name="nav_header_title_label">Inspiring Quote</string>
+
+    <string name="star_content_desc">Star</string>
+    <string name="done_content_desc">Done</string>
+    <string name="delete_content_desc">Delete</string>
+    <string name="save_content_desc">Save</string>
+
+    <string name="goal_title_hint">Goal Title</string>
+    <string name="achievement_title_hint">Achievement Title</string>
+    <string name="promise_title_hint">Promise Title</string>
+    <string name="timeline_event_title_hint">Event Title</string>
+
+    <string name="promise_person_hint">Person (Optional)</string>
+
+    <string name="description_hint">Description</string>
+
+    <string name="long_term_due_label">Long term</string>
+    <string name="long_term_checkbox_label">Long term</string>
+    <string name="no_notif_label">No notification</string>
+    <string name="notify_checkbox_label">Notify</string>
+    <string name="due_date_label">Due Date</string>
+    <string name="notifications_label">Notifications</string>
+
+    <string name="never_ask_again">Never ask again</string>
+
+    <string name="empty_goals_quote">Setting goals is the first step in turning the invisible into the visible</string>
+    <string name="empty_achievements_quote">The greatest achievement was at first and for a time a dream. The oak sleeps in the acorn, the bird waits in the egg, and in the highest vision of the soul a waking angel stirs. Dreams are the seedlings of realities</string>
+    <string name="empty_promises_quote">Losers make promises they often break. Winners make commitments they always keep</string>
+    <string name="empty_timeline_quote">Life is a chain of events</string>
 </resources>

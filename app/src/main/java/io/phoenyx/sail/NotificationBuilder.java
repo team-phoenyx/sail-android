@@ -45,7 +45,7 @@ class NotificationBuilder {
         NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context)
                 .setContentTitle(title)
                 .setContentText(content)
-                .setSmallIcon(R.mipmap.ic_notification)
+                .setSmallIcon(R.drawable.ic_notification)
                 .setAutoCancel(true);
 
         Intent resultIntent;
@@ -87,7 +87,7 @@ class NotificationBuilder {
         NotificationCompat.Builder notificationCompatBuilder = new NotificationCompat.Builder(context);
         notificationCompatBuilder.setContentTitle(title);
         notificationCompatBuilder.setContentText(content);
-        notificationCompatBuilder.setSmallIcon(R.mipmap.ic_notification);
+        notificationCompatBuilder.setSmallIcon(R.drawable.ic_notification);
 
         Notification notification = notificationCompatBuilder.build();
 

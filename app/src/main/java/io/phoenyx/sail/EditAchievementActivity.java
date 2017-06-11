@@ -28,8 +28,6 @@ public class EditAchievementActivity extends AppCompatActivity {
     private EditText achievementTitleEditText;
     private EditText achievementDescriptionEditText;
     private TextView achievementDateTextView;
-    private AlertDialog.Builder notifyBeforeDiscardDB;
-    private AlertDialog.Builder notifyBeforeDeleteDB;
     private String[] months;
     private int achievementID;
     private Achievement achievement;
@@ -44,8 +42,10 @@ public class EditAchievementActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         achievementID = extras.getInt("achievement_id");
 
-        getSupportActionBar().setTitle("Edit Achievement");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Edit Achievement");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
@@ -134,7 +134,7 @@ public class EditAchievementActivity extends AppCompatActivity {
 
     private void discard(){
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")
@@ -169,7 +169,7 @@ public class EditAchievementActivity extends AppCompatActivity {
 
     private void delete() {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
-            notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDeleteDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")

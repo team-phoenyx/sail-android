@@ -3,6 +3,7 @@ package io.phoenyx.sail;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.support.annotation.NonNull;
 import android.support.design.widget.NavigationView;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -32,14 +33,11 @@ public class MainActivity extends AppCompatActivity
 
     private NavigationView navigationView;
     private DrawerLayout drawer;
-    private View navHeader;
-    private ActionBarDrawerToggle toggle;
     private String quote;
     private String[] activityTitles = new String[]{"Goals", "Achievements", "Promises", "Timeline"};
     private TextView quoteTextView;
     private Animation fadeoutAnimation, fadeinAnimation;
     private SailService sailService;
-    private DBHandler dbHandler;
     private Handler handler;
 
     public static int navItemIndex = 0;
@@ -60,7 +58,7 @@ public class MainActivity extends AppCompatActivity
 
         navigationView = (NavigationView) findViewById(R.id.nav_view);
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        navHeader = navigationView.getHeaderView(0);
+        View navHeader = navigationView.getHeaderView(0);
         fadeinAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadein);
         fadeoutAnimation = AnimationUtils.loadAnimation(getApplicationContext(), R.anim.fadeout);
 
@@ -111,11 +109,12 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
         quoteTextView = (TextView) navHeader.findViewById(R.id.quoteTextView);
 
-        dbHandler = new DBHandler(this);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            getSupportActionBar().setHomeButtonEnabled(true);
+        }
 
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getSupportActionBar().setHomeButtonEnabled(true);
-        toggle = new ActionBarDrawerToggle(
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
@@ -151,7 +150,10 @@ public class MainActivity extends AppCompatActivity
 
     private void navigate(int navItemIndex) {
         navigationView.getMenu().getItem(navItemIndex).setChecked(true);
-        getSupportActionBar().setTitle(activityTitles[navItemIndex]);
+
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle(activityTitles[navItemIndex]);
+        }
 
         Fragment fragment = null;
         Class fragmentClass;
@@ -213,7 +215,7 @@ public class MainActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
     @Override
-    public boolean onNavigationItemSelected(MenuItem item) {
+    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         item.setChecked(true);
 

@@ -7,7 +7,7 @@
     android:padding="16dp">
 
     <TextView
-        android:text='"Setting goals is the first step in turning the invisible into the visible"'
+        android:text="@string/empty_goals_quote"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/noGoalsTextView"

@@ -20,9 +20,7 @@ import io.phoenyx.sail.R;
 public class GoalsFragment extends Fragment {
 
     private RecyclerView recyclerView;
-    private LinearLayoutManager linearLayoutManager;
     private DBHandler dbHandler;
-    private FloatingActionButton addGoalFAB;
     private TextView noGoalsTextView;
 
     @Override
@@ -43,10 +41,10 @@ public class GoalsFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_goals, container, false);
 
-        addGoalFAB = (FloatingActionButton) view.findViewById(R.id.addGoalFAB);
+        FloatingActionButton addGoalFAB = (FloatingActionButton) view.findViewById(R.id.addGoalFAB);
         noGoalsTextView = (TextView) view.findViewById(R.id.noGoalsTextView);
         recyclerView = (RecyclerView) view.findViewById(R.id.goalsRecyclerView);
-        linearLayoutManager = new LinearLayoutManager(getActivity());
+        LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity());
         linearLayoutManager.setOrientation(LinearLayoutManager.VERTICAL);
         recyclerView.setLayoutManager(linearLayoutManager);
 

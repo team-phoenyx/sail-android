@@ -11,32 +11,31 @@
     tools:context="io.phoenyx.sail.AddAchievementActivity">
 
     <EditText
+        android:id="@+id/achievementTitleEditText"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:ems="10"
-        android:id="@+id/achievementTitleEditText"
-        android:hint="Achievement Title"
-        android:inputType="textCapSentences|textAutoCorrect"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true"
         android:layout_alignParentEnd="true"
-        android:textCursorDrawable="@drawable/color_cursor"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
         android:backgroundTint="@color/gray_highlight_color"
+        android:ems="10"
+        android:hint="@string/achievement_title_hint"
+        android:inputType="textCapSentences|textAutoCorrect"
+        android:maxLength="60"
         android:maxLines="1"
-        android:maxLength="60" />
+        android:textCursorDrawable="@drawable/color_cursor" />
 
     <TextView
-        android:text="Mar. 20 2017"
+        android:id="@+id/achievementDateTextView"
+        style="@android:style/Widget.DeviceDefault.Light.Spinner"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/achievementTitleEditText"
         android:layout_alignParentStart="true"
-        android:id="@+id/achievementDateTextView"
-        android:textAppearance="@style/TextAppearance.AppCompat"
-        android:textSize="18sp"
-        style="@android:style/Widget.DeviceDefault.Light.Spinner"
+        android:layout_below="@+id/achievementTitleEditText"
+        android:layout_marginStart="8dp"
         android:paddingTop="6dp"
-        android:layout_marginStart="8dp" />
+        android:textAppearance="@style/TextAppearance.AppCompat"
+        android:textSize="18sp" />
 
     <EditText
         android:id="@+id/achievementDescriptionEditText"
@@ -49,11 +48,11 @@
         android:backgroundTint="@android:color/transparent"
         android:ems="10"
         android:gravity="top"
-        android:hint="Description"
+        android:hint="@string/description_hint"
         android:inputType="textMultiLine"
         android:maxLength="300"
-        android:paddingStart="8dp"
         android:paddingEnd="8dp"
+        android:paddingStart="8dp"
         android:textCursorDrawable="@drawable/color_cursor" />
 
 </RelativeLayout>

@@ -26,12 +26,12 @@ public class AddGoalActivity extends AppCompatActivity {
 
     private DBHandler dbHandler;
     private SharedPreferences sharedPreferences;
+
     private EditText goalTitleEditText, goalDescriptionEditText;
     private CheckBox goalLongTermCheckBox, goalNotificationCheckBox;
     private TextView goalDateTextView, goalNotifDateTextView;
-    private AlertDialog.Builder notifyBeforeDiscardDB;
-    private String[] months;
 
+    private String[] months;
     private String originalDate;
     private int year, month, day, notifYear, notifMonth, notifDay;
 
@@ -40,8 +40,10 @@ public class AddGoalActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_goal);
 
-        getSupportActionBar().setTitle("New Goal");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("New Goal");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
@@ -101,7 +103,7 @@ public class AddGoalActivity extends AppCompatActivity {
                     dialog.setTitle("");
                     dialog.show();
                 } else {
-                    goalNotifDateTextView.setText("No notification");
+                    goalNotifDateTextView.setText(getResources().getString(R.string.no_notif_label));
                 }
             }
         });
@@ -110,7 +112,7 @@ public class AddGoalActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    goalDateTextView.setText("Long term");
+                    goalDateTextView.setText(getResources().getString(R.string.long_term_due_label));
                 } else {
                     goalDateTextView.setText(months[month] + " " + day + " " + year);
                 }
@@ -149,7 +151,7 @@ public class AddGoalActivity extends AppCompatActivity {
 
     private void discard() {
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")

@@ -28,7 +28,6 @@ public class AddAchievementActivity extends AppCompatActivity {
     private EditText achievementDescriptionEditText;
     private TextView achievementDateTextView;
     private String[] months;
-    private AlertDialog.Builder notifyBeforeDiscardDB;
     private SharedPreferences sharedPreferences;
 
     private String originalDate;
@@ -39,8 +38,10 @@ public class AddAchievementActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_achievement);
 
-        getSupportActionBar().setTitle("New Achievement");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("New Achievement");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
@@ -83,7 +84,7 @@ public class AddAchievementActivity extends AppCompatActivity {
 
     private void discard() {
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")

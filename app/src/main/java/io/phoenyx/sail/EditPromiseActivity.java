@@ -30,7 +30,6 @@ public class EditPromiseActivity extends AppCompatActivity {
     private EditText promiseTitleEditText, promiseDescriptionEditText, promisePersonEditText;
     private CheckBox promiseLongTermCheckBox, promiseNotificationCheckBox;
     private TextView promiseDateTextView, promiseNotifDateTextView;
-    private AlertDialog.Builder notifyBeforeDiscardDB, notifyBeforeDeleteDB;
     private int promiseID, notifYear, notifMonth, notifDay, year, month, day;
     private Promise promise;
     private String[] months;
@@ -43,8 +42,10 @@ public class EditPromiseActivity extends AppCompatActivity {
         Bundle extras = getIntent().getExtras();
         promiseID = extras.getInt("promise_id");
 
-        getSupportActionBar().setTitle("Edit Promise");
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Edit Promise");
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        }
 
         dbHandler = new DBHandler(this);
         sharedPreferences = getSharedPreferences("io.phoenyx.sail", MODE_PRIVATE);
@@ -98,6 +99,15 @@ public class EditPromiseActivity extends AppCompatActivity {
                         }
                     }, year, month, day);
 
+                    dialog.setOnCancelListener(new DialogInterface.OnCancelListener() {
+                        @Override
+                        public void onCancel(DialogInterface dialog) {
+                            promiseNotificationCheckBox.setChecked(false);
+                            promiseNotifDateTextView.setText(getResources().getString(R.string.no_notif_label));
+
+                        }
+                    });
+
                     dialog.getDatePicker().setMinDate(timeSince1970);
                     dialog.setTitle("");
                     dialog.show();
@@ -125,7 +135,7 @@ public class EditPromiseActivity extends AppCompatActivity {
                     dialog.setTitle("");
                     dialog.show();
                 } else {
-                    promiseNotifDateTextView.setText("No notification");
+                    promiseNotifDateTextView.setText(getResources().getString(R.string.no_notif_label));
                 }
             }
         });
@@ -134,7 +144,7 @@ public class EditPromiseActivity extends AppCompatActivity {
             @Override
             public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
                 if (b) {
-                    promiseDateTextView.setText("Long term");
+                    promiseDateTextView.setText(getResources().getString(R.string.long_term_due_label));
                 } else {
                     promiseDateTextView.setText(months[month] + " " + day + " " + year);
                 }
@@ -234,7 +244,7 @@ public class EditPromiseActivity extends AppCompatActivity {
 
     private void discard(){
         if (sharedPreferences.getBoolean("notifyBeforeDiscard", true) && detectChanges()) {
-            notifyBeforeDiscardDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDiscardDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")
@@ -269,7 +279,7 @@ public class EditPromiseActivity extends AppCompatActivity {
 
     private void delete() {
         if (sharedPreferences.getBoolean("notifyBeforeDelete", true)) {
-            notifyBeforeDeleteDB = new AlertDialog.Builder(this);
+            AlertDialog.Builder notifyBeforeDeleteDB = new AlertDialog.Builder(this);
             LayoutInflater layoutInflater = this.getLayoutInflater();
 
             @SuppressWarnings("InflateParams")
